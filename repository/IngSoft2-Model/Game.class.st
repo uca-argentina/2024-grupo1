@@ -7,17 +7,17 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 Game class >> begin [ 
 ^ (self new) begin
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 Game >> begin [
 isOver :=false.
 ]
 
-{ #category : #accessing }
+{ #category : #adding }
 Game >> end [
 	isOver:= true.
 ]
