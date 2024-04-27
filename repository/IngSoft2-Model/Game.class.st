@@ -2,18 +2,20 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'isOver'
+		'isOver',
+		'spaceships'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> begin [ 
-^ (self new) begin
+Game class >> begin: aSpaceship [
+^ (self new) begin: aSpaceship
 ]
 
 { #category : #initialization }
-Game >> begin [
+Game >> begin: spaceship [
+spaceships := spaceship.  
 isOver :=false.
 ]
 
@@ -26,4 +28,14 @@ Game >> end [
 Game >> isOngoing [
 
 ^ isOver not.
+]
+
+{ #category : #'as yet unclassified' }
+Game >> players [
+^ spaceships.
+]
+
+{ #category : #'as yet unclassified' }
+Game >> winner [
+	^ spaceships
 ]

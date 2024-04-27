@@ -5,11 +5,29 @@ Class {
 }
 
 { #category : #tests }
+GameTest >> testGameBeginsWithAPlayer [ 
+
+| aGame aSpaceship |
+aSpaceship := Spaceship launch.
+aGame := Game begin: aSpaceship.
+self assert: (aGame players = aSpaceship). 
+]
+
+{ #category : #tests }
+GameTest >> testGameWithOnePlayerReturnsWinner [ 
+
+| aGame aSpaceship |
+aSpaceship := Spaceship launch.
+aGame := Game begin: aSpaceship.
+self assert: (aGame winner =  aSpaceship)
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsOverReturnFalse [ 
 
-|aGame|
-
-aGame:= Game begin.
+|aGame aSpaceship |
+aSpaceship := Spaceship launch.
+aGame:= Game begin: aSpaceship.
 aGame end.
 
 self deny: (aGame isOngoing  )
@@ -19,8 +37,9 @@ self deny: (aGame isOngoing  )
 GameTest >> testIfTheGameIsOngoingReturnTrue [
 "Let the games begin"
 
-| aGame |
-aGame:= Game begin.
+| aGame aSpaceship |
+aSpaceship := Spaceship launch.
+aGame:= Game begin: aSpaceship.
 ^self assert: (aGame isOngoing) .
 ]
 
