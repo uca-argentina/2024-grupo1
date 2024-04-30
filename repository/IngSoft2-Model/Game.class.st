@@ -30,12 +30,12 @@ Game >> isOngoing [
 ^ isOver not.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> players [
 ^ spaceships.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> winner [
 	^ spaceships
 ]

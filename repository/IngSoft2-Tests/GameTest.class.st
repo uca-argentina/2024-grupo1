@@ -10,16 +10,16 @@ GameTest >> testGameBeginsWithAPlayer [
 | aGame aSpaceship |
 aSpaceship := Spaceship launch.
 aGame := Game begin: aSpaceship.
-self assert: (aGame players = aSpaceship). 
+self assert: aGame players equals: aSpaceship. 
 ]
 
 { #category : #tests }
-GameTest >> testGameWithOnePlayerReturnsWinner [ 
+GameTest >> testGameWithOnePlayerReturnsWinner [
 
-| aGame aSpaceship |
-aSpaceship := Spaceship launch.
-aGame := Game begin: aSpaceship.
-self assert: (aGame winner =  aSpaceship)
+	| aGame aSpaceship |
+	aSpaceship := Spaceship launch.
+	aGame := Game begin: aSpaceship.
+	self assert: aGame winner equals: aSpaceship
 ]
 
 { #category : #tests }
