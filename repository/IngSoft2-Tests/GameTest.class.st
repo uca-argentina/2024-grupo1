@@ -5,25 +5,17 @@ Class {
 }
 
 { #category : #tests }
-GameTest >> testGameBeginsWithAPlayer [ 
+GameTest >> test001IfTheGameIsOngoingReturnTrue [
+"Let the games begin"
 
 | aGame aSpaceship |
 aSpaceship := Spaceship launch.
-aGame := Game begin: aSpaceship.
-self assert: aGame players equals: aSpaceship. 
+aGame:= Game begin: aSpaceship.
+^self assert: (aGame isOngoing) .
 ]
 
 { #category : #tests }
-GameTest >> testGameWithOnePlayerReturnsWinner [
-
-	| aGame aSpaceship |
-	aSpaceship := Spaceship launch.
-	aGame := Game begin: aSpaceship.
-	self assert: aGame winner equals: aSpaceship
-]
-
-{ #category : #tests }
-GameTest >> testIfGameIsOverReturnFalse [ 
+GameTest >> test002IfGameIsOverReturnFalse [ 
 
 |aGame aSpaceship |
 aSpaceship := Spaceship launch.
@@ -34,17 +26,24 @@ self deny: (aGame isOngoing  )
 ]
 
 { #category : #tests }
-GameTest >> testIfTheGameIsOngoingReturnTrue [
-"Let the games begin"
+GameTest >> test003GameBeginsWithAPlayer [ 
 
 | aGame aSpaceship |
 aSpaceship := Spaceship launch.
-aGame:= Game begin: aSpaceship.
-^self assert: (aGame isOngoing) .
+aGame := Game begin: aSpaceship.
+self assert: aGame players equals: aSpaceship. 
 ]
 
 { #category : #tests }
-GameTest >> testSpaceshipChangedPositionByOneWhenMoved [
+GameTest >> test004SpaceshipIsCreatedAtStartPoint0 [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launch.
+	self assert: aSpaceship getPosition equals: 0
+]
+
+{ #category : #tests }
+GameTest >> test005SpaceshipChangedPositionByOneWhenMoved [
 
 	| aSpaceship |
 	aSpaceship := Spaceship launch.
@@ -53,9 +52,33 @@ GameTest >> testSpaceshipChangedPositionByOneWhenMoved [
 ]
 
 { #category : #tests }
-GameTest >> testSpaceshipIsCreatedAtStartPoint0 [
+GameTest >> test006GameWithOnePlayerReturnsWinner [
 
-	| aSpaceship |
+	| aGame aSpaceship |
 	aSpaceship := Spaceship launch.
-	self assert: aSpaceship getPosition equals: 0
+	aGame := Game begin: aSpaceship.
+	aGame end.
+	self assert: aGame winner equals: aSpaceship
+]
+
+{ #category : #tests }
+GameTest >> test007BoardCreatedWithOneSquare [
+
+	| aBoard |
+	aBoard := Board new.
+	self assert: aBoard squares equals: 1
+]
+
+{ #category : #tests }
+GameTest >> test008WhenGameIsOngoingWinnerIsNil [
+
+| aGame aSpaceship aBoard|
+
+aBoard := Board new.
+aSpaceship := Spaceship launch.
+aGame := Game begin: aSpaceship with: aBoard.
+
+self assert: aGame winner equals: nil.
+
+
 ]
