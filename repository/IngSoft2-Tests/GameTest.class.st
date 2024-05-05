@@ -5,42 +5,80 @@ Class {
 }
 
 { #category : #tests }
-GameTest >> testGameBeginsWithAPlayer [ 
+GameTest >> test008WhenGameIsOngoingWinnerIsNil [
 
-| aGame aSpaceship |
+	| aGame aSpaceship aBoard|
+
+aBoard := Board new.
 aSpaceship := Spaceship launch.
-aGame := Game begin: aSpaceship.
-self assert: (aGame players = aSpaceship). 
+aGame := Game begin: aSpaceship with: aBoard.
+
+self assert: aGame winner equals: nil.
 ]
 
 { #category : #tests }
-GameTest >> testGameWithOnePlayerReturnsWinner [ 
+GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
 
-| aGame aSpaceship |
+| aGame aSpaceship aBoard|
+
 aSpaceship := Spaceship launch.
-aGame := Game begin: aSpaceship.
-self assert: (aGame winner =  aSpaceship)
-]
+aBoard := Board new.
+aGame := Game begin: aSpaceship  with: aBoard.
 
-{ #category : #tests }
-GameTest >> testIfGameIsOverReturnFalse [ 
-
-|aGame aSpaceship |
-aSpaceship := Spaceship launch.
-aGame:= Game begin: aSpaceship.
 aGame end.
 
-self deny: (aGame isOngoing  )
+self deny: aGame winner equals: aSpaceship.
+]
+
+{ #category : #tests }
+GameTest >> testBoardCreatedWithOneSquare [
+
+	|aBoard|
+	
+	aBoard := Board new.
+	self assert: aBoard squares equals: 1
+]
+
+{ #category : #tests }
+GameTest >> testGameBeginsWithAPlayer [
+
+	| aGame aSpaceship |
+	aSpaceship := Spaceship launch.
+	aGame := Game begin: aSpaceship with: nil.
+	self assert: aGame players equals: aSpaceship
+]
+
+{ #category : #tests }
+GameTest >> testGameWithOnePlayerReturnsWinner [
+
+	| aGame aSpaceship aBoard|
+	aSpaceship := Spaceship launch.
+	aBoard := Board new.
+	aGame := Game begin: aSpaceship with: aBoard.
+	aSpaceship move.
+	aGame end.
+	self assert: aGame winner equals: aSpaceship
+]
+
+{ #category : #tests }
+GameTest >> testIfGameIsOverReturnFalse [
+
+	| aGame aSpaceship |
+	aSpaceship := Spaceship launch.
+	aGame := Game begin: aSpaceship with: nil.
+	aGame end.
+
+	self deny: aGame isOngoing
 ]
 
 { #category : #tests }
 GameTest >> testIfTheGameIsOngoingReturnTrue [
-"Let the games begin"
+	"Let the games begin"
 
-| aGame aSpaceship |
-aSpaceship := Spaceship launch.
-aGame:= Game begin: aSpaceship.
-^self assert: (aGame isOngoing) .
+	| aGame aSpaceship |
+	aSpaceship := Spaceship launch.
+	aGame := Game begin: aSpaceship with: nil.
+	^ self assert: aGame isOngoing
 ]
 
 { #category : #tests }

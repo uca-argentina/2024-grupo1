@@ -2,40 +2,44 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'isOver',
-		'spaceships'
+		'spaceships',
+		'board',
+		'state'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> begin: aSpaceship [
-^ (self new) begin: aSpaceship
+Game class >> begin: aSpaceship with: aBoard [
+
+	^ self new begin: aSpaceship with: aBoard 
 ]
 
 { #category : #initialization }
-Game >> begin: spaceship [
+Game >> begin: spaceship with: aBoard [
 spaceships := spaceship.  
-isOver :=false.
+state := GameOngoingState new.
+board := aBoard.
 ]
 
 { #category : #adding }
 Game >> end [
-	isOver:= true.
+	state := GameFinishedState new.
 ]
 
 { #category : #testing }
 Game >> isOngoing [
 
-^ isOver not.
+^ state isOngoing.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> players [
 ^ spaceships.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> winner [
-	^ spaceships
+
+	^ state whoWon:  spaceships with: board 
 ]
