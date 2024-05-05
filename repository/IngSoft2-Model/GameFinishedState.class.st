@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""A board""
+For the Class part:  ""State when the game is finished""
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -21,13 +21,20 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #Board,
+	#name : #GameFinishedState,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
-Board >> squares [ 
+{ #category : #testing }
+GameFinishedState >> isOngoing [ 
 
-^1
+^ false
+]
+
+{ #category : #accessing }
+GameFinishedState >> whoWon: players with: aBoard [
+
+players getPosition = aBoard squares ifTrue: [ ^players ] ifFalse: [ ^nil ].
+
 ]

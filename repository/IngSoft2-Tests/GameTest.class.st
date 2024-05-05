@@ -17,6 +17,20 @@ self assert: aGame winner equals: nil.
 ]
 
 { #category : #tests }
+GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
+
+| aGame aSpaceship aBoard|
+
+aSpaceship := Spaceship launch.
+aBoard := Board new.
+aGame := Game begin: aSpaceship  with: aBoard.
+
+aGame end.
+
+self deny: aGame winner equals: aSpaceship.
+]
+
+{ #category : #tests }
 GameTest >> testBoardCreatedWithOneSquare [
 
 	|aBoard|
@@ -37,9 +51,11 @@ GameTest >> testGameBeginsWithAPlayer [
 { #category : #tests }
 GameTest >> testGameWithOnePlayerReturnsWinner [
 
-	| aGame aSpaceship |
+	| aGame aSpaceship aBoard|
 	aSpaceship := Spaceship launch.
-	aGame := Game begin: aSpaceship with: nil.
+	aBoard := Board new.
+	aGame := Game begin: aSpaceship with: aBoard.
+	aSpaceship move.
 	aGame end.
 	self assert: aGame winner equals: aSpaceship
 ]
