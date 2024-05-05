@@ -15,7 +15,8 @@ Spaceship class >> launch [
 
 { #category : #accessing }
 Spaceship >> getPosition [
-^position 
+
+	^position 
 ]
 
 { #category : #initialize }
@@ -25,20 +26,17 @@ position := 0.
 ]
 
 { #category : #action }
-Spaceship >> move [
-position := position +1.
+Spaceship >> move: squares [
+position := position + squares.
 ]
 
 { #category : #action }
 Spaceship >> playTurn: aDie [ 
-	|i squaresToMove|
+
 	
-	squaresToMove := aDie throw.
-	i:=1.
-	[i <= squaresToMove] whileTrue: [  
-		self move.
-		i := i+1.
-	].
+	
+	
+	self move: (aDie throw).
 
 	
 	

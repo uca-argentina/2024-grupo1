@@ -87,7 +87,7 @@ GameTest >> testGameWithOnePlayerReturnsWinner [
 	aSpaceship := Spaceship launch.
 	aBoard := Board of: 1.
 	aGame := Game begin: aSpaceship with: aBoard.
-	aSpaceship move.
+	aSpaceship move: 1.
 	aGame end.
 	self assert: aGame winner equals: aSpaceship
 ]
@@ -118,7 +118,7 @@ GameTest >> testSpaceshipChangedPositionByOneWhenMoved [
 
 	| aSpaceship |
 	aSpaceship := Spaceship launch.
-	aSpaceship move.
+	aSpaceship move: 1.
 	self assert: aSpaceship getPosition equals: 1
 ]
 
