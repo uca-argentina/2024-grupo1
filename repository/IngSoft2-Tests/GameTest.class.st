@@ -40,6 +40,29 @@ self assert: aBoard squares equals: 2.
 ]
 
 { #category : #tests }
+GameTest >> test011ASpaceshipMovesFiveSquaresWhenLoadedDieIsThrown [
+
+
+| aSpaceship aDie |
+aSpaceship := Spaceship launch.
+aDie := LoadedDie of: 5.
+aSpaceship playTurn: aDie.
+self assert: aSpaceship getPosition equals: 5.
+]
+
+{ #category : #tests }
+GameTest >> test012ASpaceshipMovesSevenSquaresWhenLoadedDieIsThrown [
+
+
+| aSpaceship aDie |
+aSpaceship := Spaceship launch.
+aDie := LoadedDie of: 7.
+
+aSpaceship playTurn: aDie.
+self assert: aSpaceship getPosition equals: 7.
+]
+
+{ #category : #tests }
 GameTest >> testBoardCreatedWithOneSquare [
 
 	| aBoard |

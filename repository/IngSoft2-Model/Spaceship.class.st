@@ -28,3 +28,19 @@ position := 0.
 Spaceship >> move [
 position := position +1.
 ]
+
+{ #category : #action }
+Spaceship >> playTurn: aDie [ 
+	|i squaresToMove|
+	
+	squaresToMove := aDie throw.
+	i:=1.
+	[i <= squaresToMove] whileTrue: [  
+		self move.
+		i := i+1.
+	].
+
+	
+	
+	
+]
