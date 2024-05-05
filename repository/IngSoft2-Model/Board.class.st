@@ -23,11 +23,28 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #Board,
 	#superclass : #Object,
+	#instVars : [
+		'numberOfSquares'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'instance creation' }
+Board class >> of: aNumberOfSquares [
+
+ 
+	^ (self new) of: aNumberOfSquares
+]
+
+{ #category : #'instance creation' }
+Board >> of: aNumberOfSquares [
+
+ 
+	numberOfSquares := aNumberOfSquares.
+]
 
 { #category : #accessing }
 Board >> squares [ 
 
-^1
+^numberOfSquares 
 ]
