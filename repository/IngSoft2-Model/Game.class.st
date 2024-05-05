@@ -3,32 +3,19 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'isOver',
-		'spaceships',
-		'board'
+		'spaceships'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> begin: aSpaceship [ 
+Game class >> begin: aSpaceship [
 ^ (self new) begin: aSpaceship
-]
-
-{ #category : #initialization }
-Game class >> begin: aSpaceship with: aBoard [
-^ (self new) begin: aSpaceship with: aBoard 
 ]
 
 { #category : #initialization }
 Game >> begin: spaceship [
 spaceships := spaceship.  
-isOver :=false.
-]
-
-{ #category : #initialization }
-Game >> begin: spaceship with: aBoard [
-spaceships := spaceship.  
-board := aBoard.
 isOver :=false.
 ]
 
@@ -43,14 +30,12 @@ Game >> isOngoing [
 ^ isOver not.
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 Game >> players [
 ^ spaceships.
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 Game >> winner [
-
-	self isOngoing ifTrue: [ ^ nil ].
 	^ spaceships
 ]
