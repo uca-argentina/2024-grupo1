@@ -43,13 +43,8 @@ self assert: aBoard squares equals: 2.
 GameTest >> testBoardCreatedWithOneSquare [
 
 	| aBoard |
-	self
-		deprecated: 'Use #test010BoardCreatedWithNSquares instead'
-		on: '5 May 2024'
-		in:
-		'Pharo-11.0.0+build.726.sha.aece1b5473acf3830a0e082c1bc3a15d4ff3522b (64 Bit)'.
 
-	aBoard := Board new.
+	aBoard := Board of: 1.
 	self assert: aBoard squares equals: 1
 ]
 
