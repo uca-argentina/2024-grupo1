@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""A board""
+For the Class part:  ""I am an instance of playing dice""
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -21,30 +21,30 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #Board,
+	#name : #LoadedDie,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfSquares'
+		'faces'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'instance creation' }
-Board class >> of: aNumberOfSquares [
+LoadedDie class >> of: anAmountOfFaces [  "anArrayOfValues -> para testear y controlar el comportamiento"
 
- 
-	^ (self new) of: aNumberOfSquares
+anAmountOfFaces < 3 ifTrue: [ Error signal: 'Faces should be more than 2' ].
+
+^ (self new) initializeOf: anAmountOfFaces 
 ]
 
-{ #category : #'instance creation' }
-Board >> of: aNumberOfSquares [
+{ #category : #initialization }
+LoadedDie >> initializeOf: anAmountOfFaces [
 
- 
-	numberOfSquares := aNumberOfSquares.
+faces := anAmountOfFaces.
 ]
 
-{ #category : #accessing }
-Board >> squares [ 
+{ #category : #action }
+LoadedDie >> throw [
 
-^numberOfSquares 
+	^ faces 
 ]
