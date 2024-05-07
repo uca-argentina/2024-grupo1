@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #tests }
+SpaceshipTest >> test004SpaceshipChangedPositionByOneWhenMoved [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launch.
+	aSpaceship move: 1.
+	self assert: aSpaceship getPosition equals: 1
+]
+
+{ #category : #tests }
+SpaceshipTest >> test005SpaceshipIsCreatedAtStartPoint0 [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launch.
+	self assert: aSpaceship getPosition equals: 0
+]
+
+{ #category : #tests }
 SpaceshipTest >> test011ASpaceshipMovesFiveSquaresWhenLoadedDieIsThrown [
 
 
@@ -25,21 +42,4 @@ aDie := LoadedDie of: 7.
 
 aSpaceship playTurn: aDie.
 self assert: aSpaceship getPosition equals: 7.
-]
-
-{ #category : #tests }
-SpaceshipTest >> testSpaceshipChangedPositionByOneWhenMoved [
-
-	| aSpaceship |
-	aSpaceship := Spaceship launch.
-	aSpaceship move: 1.
-	self assert: aSpaceship getPosition equals: 1
-]
-
-{ #category : #tests }
-SpaceshipTest >> testSpaceshipIsCreatedAtStartPoint0 [
-
-	| aSpaceship |
-	aSpaceship := Spaceship launch.
-	self assert: aSpaceship getPosition equals: 0
 ]
