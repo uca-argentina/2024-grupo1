@@ -35,6 +35,8 @@ GameFinishedState >> isOngoing [
 { #category : #accessing }
 GameFinishedState >> whoWon: players with: aBoard [
 
-players getPosition = aBoard squares ifTrue: [ ^players ] ifFalse: [ ^nil ].
+"players getPosition = aBoard squares ifTrue: [ ^players ] ifFalse: [ ^nil ]." 
+^ (players detect: [ :aSpaceship | aSpaceship getPosition = aBoard squares]).
+ 
 
 ]

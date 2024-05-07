@@ -47,7 +47,9 @@ Game >> isOngoing [
 
 { #category : #'as yet unclassified' }
 Game >> nextTurn [
-	index := index + 1.
+	| numberOfPlayers |
+	numberOfPlayers := spaceships size.
+	numberOfPlayers = index ifTrue: [index:=1]  ifFalse: [index := index + 1].  
 	
 ]
 
