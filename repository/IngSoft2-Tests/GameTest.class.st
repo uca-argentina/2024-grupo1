@@ -39,7 +39,7 @@ GameTest >> test006GameWithOnePlayerReturnsWinner [
 
 	| aGame aSpaceship aBoard|
 	aSpaceship := Spaceship launch.
-	aBoard := Board of: 1.
+	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 0.
 	aGame := Game begin: aSpaceship with: aBoard.
 	aSpaceship move: 1.
 	aGame end.

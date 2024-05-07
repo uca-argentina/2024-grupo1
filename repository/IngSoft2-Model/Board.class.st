@@ -24,23 +24,36 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfSquares'
+		'numberOfSquares',
+		'wormholeStartPoint',
+		'wormholeEndPoint'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Board class >> of: aNumberOfSquares [
+Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
- 
-	^ (self new) of: aNumberOfSquares
+	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint 
+]
+
+{ #category : #'as yet unclassified' }
+Board >> finalSquareAfterLandingIn: aSquare [
+
+	aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
+	aSquare = wormholeEndPoint ifTrue: [ ^ wormholeStartPoint  ].
+	
+	^ aSquare 
+	
 ]
 
 { #category : #'instance creation' }
-Board >> of: aNumberOfSquares [
+Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
  
 	numberOfSquares := aNumberOfSquares.
+	wormholeStartPoint := startingPoint.
+	wormholeEndPoint := endPoint.
 ]
 
 { #category : #accessing }
