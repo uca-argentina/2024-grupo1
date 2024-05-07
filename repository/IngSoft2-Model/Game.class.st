@@ -27,6 +27,16 @@ Game >> end [
 	state := GameFinishedState new.
 ]
 
+{ #category : #action }
+Game >> finalPositionFor: aSpaceship [ 
+
+	| currentPosition finalPosition |
+	currentPosition := 	aSpaceship getPosition.
+	finalPosition := board finalSquareAfterLandingIn: currentPosition.
+	
+	aSpaceship move: (finalPosition - currentPosition).
+]
+
 { #category : #testing }
 Game >> isOngoing [
 

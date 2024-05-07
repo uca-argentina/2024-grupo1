@@ -33,10 +33,8 @@ position := position + squares.
 { #category : #action }
 Spaceship >> playTurn: aDie [ 
 
-	
-	
-	
-	self move: (aDie throw).
+
+	self move: ( aDie throw).
 
 	
 	
