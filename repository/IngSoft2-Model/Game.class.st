@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'spaceships',
 		'board',
-		'state'
+		'state',
+		'index'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,6 +21,7 @@ Game >> begin: spaceship with: aBoard [
 spaceships := spaceship.  
 state := GameOngoingState new.
 board := aBoard.
+index := 1.
 ]
 
 { #category : #adding }
@@ -43,9 +45,20 @@ Game >> isOngoing [
 ^ state isOngoing.
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> nextTurn [
+	index := index + 1.
+	
+]
+
 { #category : #accessing }
 Game >> players [
 ^ spaceships.
+]
+
+{ #category : #accessing }
+Game >> whoseTurn [
+	^ spaceships at: index.
 ]
 
 { #category : #accessing }

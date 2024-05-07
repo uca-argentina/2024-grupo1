@@ -71,3 +71,42 @@ aGame end.
 
 self deny: aGame winner equals: aSpaceship.
 ]
+
+{ #category : #tests }
+GameTest >> test016GameIndicatesTurnWithOnePlayer [
+	
+	| aGame aSpaceship stack |
+	aSpaceship := Spaceship launch.
+	stack := OrderedCollection with: (aSpaceship).
+	aGame := Game begin: stack with: nil.
+	self assert: aGame whoseTurn equals: aSpaceship.  	
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test017GameIndicatesFirstTurnWithTwoPlayers [
+	
+	| aGame aSpaceship anotherSpaceship stack |
+	aSpaceship := Spaceship launch.
+	anotherSpaceship := Spaceship launch.
+	stack := OrderedCollection with: aSpaceship  with: anotherSpaceship.
+	aGame := Game begin: stack with: nil. 
+	self assert: aGame whoseTurn equals: aSpaceship.  	
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test018GameIndicatesSecondTurnWithTwoPlayers [
+	
+	| aGame aSpaceship anotherSpaceship stack |
+	aSpaceship := Spaceship launch.
+	anotherSpaceship := Spaceship launch.
+	stack := OrderedCollection with: aSpaceship  with: anotherSpaceship.
+	aGame := Game begin: stack with: nil.
+	aGame nextTurn. 
+	self assert: aGame whoseTurn equals: anotherSpaceship.  	
+	
+
+]

@@ -37,7 +37,7 @@ Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: e
 	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
 
 	aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
