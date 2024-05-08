@@ -51,6 +51,8 @@ Spaceship >> playTurn: aDie in: aGame [
 { #category : #'as yet unclassified' }
 Spaceship >> playTurnIn: aGame [ 
 	| squaresToMove |
+	
+	aGame whoseTurn = self ifFalse: [ Error signal: 'It is not your turn!' ].
 	squaresToMove := 0.
 	aGame getDice do: [:aDie | squaresToMove := squaresToMove + (aDie throw)].
 	self move: ( squaresToMove ).

@@ -61,6 +61,16 @@ Game >> leaderBoard [
 ]
 
 { #category : #'as yet unclassified' }
+Game >> leaderboardString [
+
+	| string leaderboard |
+	string := ''.
+	leaderboard := self leaderBoard.
+	leaderboard do: [ :spaceship | string := string , spaceship getName , ' in position ', spaceship getPosition asString, (Character cr asString) ].
+	^ string
+]
+
+{ #category : #'as yet unclassified' }
 Game >> nextTurn [
 	| numberOfPlayers |
 	numberOfPlayers := spaceships size.

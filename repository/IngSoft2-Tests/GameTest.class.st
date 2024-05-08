@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #tests }
+GameTest >> should: anErrorBlock raise: anError withMessage: errorMessage [
+
+self 
+	should: anErrorBlock 
+	raise: anError 
+	withExceptionDo: [ :error |
+										self assert: error messageText  equals: errorMessage  ].
+]
+
+{ #category : #tests }
 GameTest >> test001IfTheGameIsOngoingReturnTrue [
 	"Let the games begin"
 
@@ -208,6 +218,60 @@ GameTest >> test025GameCanUseMultipleDice [
 	aGame := Game begin: stack with: aBoard with: someDice.
 	aSpaceship playTurnIn: aGame.
 	self assert: aSpaceship getPosition equals: 10.  	 
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test028GameWithOnePlayerReturnsLeaderboardWithPositions [
+
+
+| aGame aSpaceship aDie aBoard|
+
+aSpaceship := Spaceship launch: 'Millenium Falcon'.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aDie := LoadedDie of: 5.
+aGame := Game begin: (OrderedCollection  with: aSpaceship ) with: aBoard with: (OrderedCollection with: aDie).
+aSpaceship playTurnIn: aGame.
+
+
+self assert: aGame leaderboardString equals: 'Millenium Falcon in position 5', (Character cr asString).
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test029GameWithMultiplePlayersReturnsLeaderBoardWithPositions [
+
+
+| aGame aSpaceship anotherSpaceship aDie aBoard |
+
+aSpaceship := Spaceship launch: 'Millenium Falcon'.
+anotherSpaceship := Spaceship launch: 'Death Star'.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aDie := LoadedDie of: 5.
+aGame := Game begin: (OrderedCollection  with: aSpaceship with: anotherSpaceship) with: aBoard with: (OrderedCollection with: aDie).
+aSpaceship playTurnIn: aGame.
+
+
+self assert: aGame leaderboardString equals: ('Millenium Falcon in position 5' , (Character cr asString),'Death Star in position 0', (Character cr asString)).
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test030GameRaisesAnExceptionWhenPlayerMovesOutOfTurn [
+
+
+| aGame aSpaceship anotherSpaceship aDie aBoard |
+
+aSpaceship := Spaceship launch: 'Millenium Falcon'.
+anotherSpaceship := Spaceship launch: 'Death Star'.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aDie := LoadedDie of: 5.
+aGame := Game begin: (OrderedCollection  with: aSpaceship with: anotherSpaceship) with: aBoard with: (OrderedCollection with: aDie).
+
+self should: [ anotherSpaceship playTurnIn: aGame ] raise: Error withMessage: 'It is not your turn!'.
 	
 
 ]
