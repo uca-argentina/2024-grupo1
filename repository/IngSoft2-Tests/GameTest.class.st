@@ -1,9 +1,6 @@
 Class {
 	#name : #GameTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'someDice'
-	],
 	#category : #'IngSoft2-Tests'
 }
 
@@ -135,7 +132,7 @@ GameTest >> test019GameResetsTurnsForNextRound [
 { #category : #tests }
 GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie |
+	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	aLoadedDie := LoadedDie of: 3.
@@ -151,7 +148,7 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 { #category : #tests }
 GameTest >> test021AfterGameEndsReturnsLeaderboard [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie |
+	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
@@ -171,7 +168,7 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 { #category : #tests }
 GameTest >> test023ReturnLeaderboardWithThreePlayers [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie yetAnotherSpaceship |
+	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie yetAnotherSpaceship someDice |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	yetAnotherSpaceship := Spaceship launch: ''.
