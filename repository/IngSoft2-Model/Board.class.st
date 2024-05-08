@@ -35,7 +35,9 @@ Class {
 { #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint 
+	aNumberOfSquares <= 0 ifTrue: [ Error signal: 'Board must have at least 1 square' ].
+	((startingPoint > aNumberOfSquares) or: (endPoint > aNumberOfSquares )) ifTrue: [ Error signal: 'Wormhole out of bounds' ].
+	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
 ]
 
 { #category : #accessing }

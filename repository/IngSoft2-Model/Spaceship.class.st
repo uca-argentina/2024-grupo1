@@ -14,7 +14,7 @@ Spaceship class >> launch: aName [
 	^ self new launch: aName
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 Spaceship >> getName [
 ^ myName.
 ]
@@ -48,11 +48,12 @@ Spaceship >> playTurn: aDie in: aGame [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Spaceship >> playTurnIn: aGame [ 
 	| squaresToMove |
 	
-	aGame whoseTurn = self ifFalse: [ Error signal: 'It is not your turn!' ].
+	aGame canIPlay: self.
+	
 	squaresToMove := 0.
 	aGame getDice do: [:aDie | squaresToMove := squaresToMove + (aDie throw)].
 	self move: ( squaresToMove ).

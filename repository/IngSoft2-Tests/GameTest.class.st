@@ -275,3 +275,20 @@ self should: [ anotherSpaceship playTurnIn: aGame ] raise: Error withMessage: 'I
 	
 
 ]
+
+{ #category : #tests }
+GameTest >> test031SpaceshipCannotPlayIfGameIsOver [
+
+
+| aGame aSpaceship aDie aBoard|
+
+aSpaceship := Spaceship launch: 'Millenium Falcon'.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aDie := LoadedDie of: 5.
+aGame := Game begin: (OrderedCollection  with: aSpaceship ) with: aBoard with: (OrderedCollection with: aDie).
+aSpaceship playTurnIn: aGame.
+
+self should: [ aSpaceship playTurnIn: aGame ] raise: Error withMessage: 'Game has already ended'.
+	
+
+]

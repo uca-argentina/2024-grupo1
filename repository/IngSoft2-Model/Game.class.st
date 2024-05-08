@@ -26,6 +26,13 @@ index := 1.
 dice := someDice.
 ]
 
+{ #category : #testing }
+Game >> canIPlay: aSpaceship [	
+	
+	self whoseTurn = aSpaceship ifFalse: [ Error signal: 'It is not your turn!' ].
+	self isOngoing ifFalse: [ Error signal: 'Game has already ended' ].
+]
+
 { #category : #adding }
 Game >> end [
 	state := GameFinishedState new.
@@ -42,7 +49,7 @@ Game >> finalPositionFor: aSpaceship [
 	finalPosition = board squares ifTrue: [ self end . ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> getDice [
 ^ dice.
 ]
@@ -53,14 +60,14 @@ Game >> isOngoing [
 ^ state isOngoing.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> leaderBoard [
 	
 	^ spaceships asSortedCollection: [ :sp1 :sp2 | sp1 getPosition >= sp2 getPosition ].  
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> leaderboardString [
 
 	| string leaderboard |
@@ -70,7 +77,7 @@ Game >> leaderboardString [
 	^ string
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> nextTurn [
 	| numberOfPlayers |
 	numberOfPlayers := spaceships size.

@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #tests }
+BoardTest >> should: anErrorBlock raise: anError withMessage: errorMessage [
+
+self 
+	should: anErrorBlock 
+	raise: anError 
+	withExceptionDo: [ :error |
+										self assert: error messageText  equals: errorMessage  ].
+]
+
+{ #category : #tests }
 BoardTest >> test007BoardCreatedWithOneSquare [
 
 	| aBoard |
@@ -79,4 +89,20 @@ BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 	aSpaceship playTurn: aLoadedDie in: aGame.
 
 	self deny: aGame isOngoing
+]
+
+{ #category : #tests }
+BoardTest >> test032BoardMustBeCreatedWithAtLeastOneSquare [
+
+	| aBoard |
+	
+	self should: [ aBoard := Board of: 0 wormholeBeginsAt: 0 andEndsAt: 0. ] raise: Error withMessage: 'Board must have at least 1 square'.
+]
+
+{ #category : #tests }
+BoardTest >> test033BoardCannotBeCreatedIfWormholeIsOutOfBounds [
+
+	| aBoard |
+	
+	self should: [ aBoard := Board of: 1 wormholeBeginsAt: 2 andEndsAt: 3. ] raise: Error withMessage: 'Wormhole out of bounds'. 
 ]
