@@ -26,7 +26,7 @@ self assert: aBoard squares equals: 2.
 BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSquareFive [
 
 	| aSpaceship aLoadedDie aGame aBoard |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
 	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
@@ -41,7 +41,7 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 
 	| aSpaceship aLoadedDie aGame aBoard |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
@@ -56,7 +56,7 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 
 	| aSpaceship aLoadedDie aGame aBoard |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 7.
@@ -72,7 +72,7 @@ BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 
 	| aBoard aSpaceship aGame stack aLoadedDie |
 	aBoard := Board of: 8 wormholeBeginsAt: 0 andEndsAt: 0.
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 8.

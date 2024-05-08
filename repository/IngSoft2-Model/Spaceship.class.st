@@ -2,15 +2,21 @@ Class {
 	#name : #Spaceship,
 	#superclass : #Object,
 	#instVars : [
-		'position'
+		'position',
+		'myName'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialize }
-Spaceship class >> launch [ 
+Spaceship class >> launch: aName [
 
-^ (self new) launch
+	^ self new launch: aName
+]
+
+{ #category : #private }
+Spaceship >> getName [
+^ myName.
 ]
 
 { #category : #accessing }
@@ -20,9 +26,10 @@ Spaceship >> getPosition [
 ]
 
 { #category : #initialize }
-Spaceship >> launch [ 
+Spaceship >> launch: aName [ 
 
 position := 0.
+myName := aName.
 ]
 
 { #category : #action }

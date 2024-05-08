@@ -9,7 +9,7 @@ GameTest >> test001IfTheGameIsOngoingReturnTrue [
 	"Let the games begin"
 
 	| aGame aSpaceship |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aGame := Game begin: aSpaceship with: nil with: nil.
 	^ self assert: aGame isOngoing
 ]
@@ -18,7 +18,7 @@ GameTest >> test001IfTheGameIsOngoingReturnTrue [
 GameTest >> test002IfGameIsOverReturnFalse [
 
 	| aGame aSpaceship |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aGame := Game begin: aSpaceship with: nil with: nil.
 	aGame end.
 
@@ -29,7 +29,7 @@ GameTest >> test002IfGameIsOverReturnFalse [
 GameTest >> test003GameBeginsWithAPlayer [
 
 	| aGame aSpaceship |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aGame := Game begin: aSpaceship with: nil with: nil.
 	self assert: aGame players equals: aSpaceship
 ]
@@ -38,7 +38,7 @@ GameTest >> test003GameBeginsWithAPlayer [
 GameTest >> test006GameWithOnePlayerReturnsWinner [
 
 	| aGame aSpaceship aBoard stack |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 0.
 	aGame := Game begin: stack with: aBoard with: nil.
@@ -52,7 +52,7 @@ GameTest >> test008WhenGameIsOngoingWinnerIsNil [
 
 	| aGame aSpaceship aBoard |
 	aBoard := Board new.
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	aGame := Game begin: aSpaceship with: aBoard with: nil.
 
 	self assert: aGame winner equals: nil
@@ -62,7 +62,7 @@ GameTest >> test008WhenGameIsOngoingWinnerIsNil [
 GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
 
 	| aGame aSpaceship aBoard stack |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
@@ -76,7 +76,7 @@ GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
 GameTest >> test016GameIndicatesTurnWithOnePlayer [
 
 	| aGame aSpaceship stack |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aGame := Game begin: stack with: nil with: nil.
 	self assert: aGame whoseTurn equals: aSpaceship
@@ -86,8 +86,8 @@ GameTest >> test016GameIndicatesTurnWithOnePlayer [
 GameTest >> test017GameIndicatesFirstTurnWithTwoPlayers [
 
 	| aGame aSpaceship anotherSpaceship stack |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aGame := Game begin: stack with: nil with: nil.
 	self assert: aGame whoseTurn equals: aSpaceship
@@ -97,8 +97,8 @@ GameTest >> test017GameIndicatesFirstTurnWithTwoPlayers [
 GameTest >> test018GameIndicatesSecondTurnWithTwoPlayers [
 
 	| aGame aSpaceship anotherSpaceship stack |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aGame := Game begin: stack with: nil with: nil.
 	aGame nextTurn.
@@ -109,8 +109,8 @@ GameTest >> test018GameIndicatesSecondTurnWithTwoPlayers [
 GameTest >> test019GameResetsTurnsForNextRound [
 
 	| aGame aSpaceship anotherSpaceship stack |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aGame := Game begin: stack with: nil with: nil.
 	aGame
@@ -123,8 +123,8 @@ GameTest >> test019GameResetsTurnsForNextRound [
 GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 0.
 	aGame := Game begin: stack with: aBoard with: nil.
@@ -138,8 +138,8 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 GameTest >> test021AfterGameEndsReturnsLeaderboard [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie anotherLoadedDie |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 0.
 	aGame := Game begin: stack with: aBoard with: nil.
@@ -157,9 +157,9 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 GameTest >> test023ReturnLeaderboardWithThreePlayers [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie anotherLoadedDie yetAnotherSpaceship |
-	aSpaceship := Spaceship launch.
-	anotherSpaceship := Spaceship launch.
-	yetAnotherSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
+	anotherSpaceship := Spaceship launch: ''.
+	yetAnotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection
 		         with: aSpaceship
 		         with: anotherSpaceship
@@ -183,7 +183,7 @@ GameTest >> test023ReturnLeaderboardWithThreePlayers [
 GameTest >> test024GameStoresADie [
 	
 	| aGame aSpaceship stack aBoard aLoadedDie someDice |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 10 wormholeBeginsAt: 0 andEndsAt: 0.
 	aLoadedDie := LoadedDie of: 6.
@@ -199,7 +199,7 @@ GameTest >> test024GameStoresADie [
 GameTest >> test025GameCanUseMultipleDice [
 	
 	| aGame aSpaceship stack aBoard aLoadedDie anotherLoadedDie someDice |
-	aSpaceship := Spaceship launch.
+	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 12 wormholeBeginsAt: 0 andEndsAt: 0.
 	aLoadedDie := LoadedDie of: 6.
