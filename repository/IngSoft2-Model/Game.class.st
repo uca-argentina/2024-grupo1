@@ -46,6 +46,11 @@ Game >> isOngoing [
 ]
 
 { #category : #'as yet unclassified' }
+Game >> leaderBoard [
+	^ OrderedCollection with: (spaceships at: 2) with: (spaceships at: 1).
+]
+
+{ #category : #'as yet unclassified' }
 Game >> nextTurn [
 	| numberOfPlayers |
 	numberOfPlayers := spaceships size.

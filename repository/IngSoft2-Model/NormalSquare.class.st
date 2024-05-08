@@ -7,13 +7,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #evaluating }
-NormalSquare class >> in: position [
-^ self new in: position.
+{ #category : #testing }
+NormalSquare class >> isIn: position [
+^ self new isIn: position.
 ]
 
-{ #category : #evaluating }
-NormalSquare >> in: position [
+{ #category : #testing }
+NormalSquare >> isIn: position [
 myPosition := position.
 ]
 

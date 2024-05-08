@@ -41,30 +41,36 @@ Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: e
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
 
-	aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
+	"aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
 	aSquare = wormholeEndPoint ifTrue: [ ^ wormholeStartPoint  ].
 	
 	^ aSquare 
-	
+	"
+	^ (boardOfSquares at: aSquare) land. 
 ]
 
 { #category : #'instance creation' }
 Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	|i|
- 	i := 1. 
+	| i |
+	i := 1.
 	numberOfSquares := aNumberOfSquares.
 	wormholeStartPoint := startingPoint.
 	wormholeEndPoint := endPoint.
 	boardOfSquares := OrderedCollection new.
-	[i <= numberOfSquares] whileTrue: [ i := i+1. 
-		i = startingPoint ifTrue: [ boardOfSquares add: (WormholeSquare of: endPoint) ].
-		i = endPoint ifTrue: [ boardOfSquares add: (WormholeSquare of: startingPoint)  ]. 
-		(((i= startingPoint) not) and: ((i = endPoint) not)) ifTrue: [boardOfSquares add: (NormalSquare new)].].
+	[ i <= numberOfSquares ] whileTrue: [
+		i = startingPoint ifTrue: [
+			boardOfSquares add: (WormholeSquare of: endPoint) ].
+		i = endPoint ifTrue: [
+			boardOfSquares add: (WormholeSquare of: startingPoint) ].
+		(i ~= startingPoint and: i ~= endPoint) ifTrue: [
+			boardOfSquares add: (NormalSquare isIn: i) ]. 
+		i := i + 1. 
+		]
 	
-
-
-
+	
+	
+		
 ]
 
 { #category : #accessing }
