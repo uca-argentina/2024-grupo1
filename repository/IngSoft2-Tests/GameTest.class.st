@@ -66,7 +66,7 @@ GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
 
 aSpaceship := Spaceship launch.
 stack := OrderedCollection with: aSpaceship.
-aBoard := Board new.
+aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 1.
 aGame := Game begin: stack  with: aBoard.
 
 aGame end.

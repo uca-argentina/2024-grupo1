@@ -26,7 +26,8 @@ Class {
 	#instVars : [
 		'numberOfSquares',
 		'wormholeStartPoint',
-		'wormholeEndPoint'
+		'wormholeEndPoint',
+		'boardOfSquares'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -50,14 +51,25 @@ Board >> finalSquareAfterLandingIn: aSquare [
 { #category : #'instance creation' }
 Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
- 
+	|i|
+ 	i := 1. 
 	numberOfSquares := aNumberOfSquares.
 	wormholeStartPoint := startingPoint.
 	wormholeEndPoint := endPoint.
+	boardOfSquares := OrderedCollection new.
+	[i <= numberOfSquares] whileTrue: [ i := i+1. 
+		i = startingPoint ifTrue: [ boardOfSquares add: (WormholeSquare of: endPoint) ].
+		i = endPoint ifTrue: [ boardOfSquares add: (WormholeSquare of: startingPoint)  ]. 
+		(((i= startingPoint) not) and: ((i = endPoint) not)) ifTrue: [boardOfSquares add: (NormalSquare new)].].
+	
+
+
+
 ]
 
 { #category : #accessing }
 Board >> squares [ 
 
-^numberOfSquares 
+"^numberOfSquares" 
+^ boardOfSquares size.
 ]
