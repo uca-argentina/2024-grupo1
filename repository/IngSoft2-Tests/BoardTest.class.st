@@ -19,7 +19,7 @@ BoardTest >> test007BoardCreatedWithOneSquare [
 
 	| aBoard |
 
-	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 1.
 	self assert: aBoard squares equals: 1
 ]
 
@@ -28,7 +28,7 @@ BoardTest >> test010BoardCreatedWithNSquares [
 
 | aBoard |
 
-aBoard := Board of: 2 wormholeBeginsAt: 0 andEndsAt: 0.
+aBoard := Board of: 2 wormholeBeginsAt: 0 andEndsAt: 1.
 self assert: aBoard squares equals: 2.
 ]
 
@@ -81,7 +81,7 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 
 	| aBoard aSpaceship aGame stack aLoadedDie |
-	aBoard := Board of: 8 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 8 wormholeBeginsAt: 0 andEndsAt: 1.
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
 	aGame := Game begin: stack with: aBoard with: nil.
@@ -105,4 +105,21 @@ BoardTest >> test033BoardCannotBeCreatedIfWormholeIsOutOfBounds [
 	| aBoard |
 	
 	self should: [ aBoard := Board of: 1 wormholeBeginsAt: 2 andEndsAt: 3. ] raise: Error withMessage: 'Wormhole out of bounds'. 
+]
+
+{ #category : #tests }
+BoardTest >> test034BoardCannotBeCreatedIfWormholeEndpointsAreNegative [
+
+	| aBoard |
+	
+
+	self should: [ aBoard := Board of: 1 wormholeBeginsAt: -1 andEndsAt: -1. ] raise: Error withMessage: 'Wormhole out of bounds'.  
+]
+
+{ #category : #tests }
+BoardTest >> test035BoardCannotBeCreatedIfWormholeEndpointsAreInTheSameSquare [
+
+	| aBoard | 
+
+	self should: [ aBoard := Board of: 3 wormholeBeginsAt: 1 andEndsAt: 1. ] raise: Error withMessage: 'Wormhole endpoints cannot be in the same square'.  
 ]

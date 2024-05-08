@@ -36,7 +36,8 @@ Class {
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	aNumberOfSquares <= 0 ifTrue: [ Error signal: 'Board must have at least 1 square' ].
-	((startingPoint > aNumberOfSquares) or: (endPoint > aNumberOfSquares )) ifTrue: [ Error signal: 'Wormhole out of bounds' ].
+	((((startingPoint > aNumberOfSquares) or: (endPoint > aNumberOfSquares ))) or: ((startingPoint < 0) or: (endPoint < 0))) ifTrue: [ Error signal: 'Wormhole out of bounds' ].
+	startingPoint = endPoint ifTrue: [ Error signal: 'Wormhole endpoints cannot be in the same square'].
 	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
 ]
 

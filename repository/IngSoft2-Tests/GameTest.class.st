@@ -50,7 +50,7 @@ GameTest >> test006GameWithOnePlayerReturnsWinner [
 	| aGame aSpaceship aBoard stack |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
 	aSpaceship move: 1.
 	aGame end.
@@ -74,7 +74,7 @@ GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
 	| aGame aSpaceship aBoard stack |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 1.
+	aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 2.
 	aGame := Game begin: stack with: aBoard with: nil.
 
 	aGame end.
@@ -136,7 +136,7 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
-	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
 	aSpaceship playTurn: aLoadedDie in: aGame.
@@ -151,7 +151,7 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
-	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
 	anotherLoadedDie := LoadedDie of: 6.
@@ -174,7 +174,7 @@ GameTest >> test023ReturnLeaderboardWithThreePlayers [
 		         with: aSpaceship
 		         with: anotherSpaceship
 		         with: yetAnotherSpaceship.
-	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 6.
 	anotherLoadedDie := LoadedDie of: 3.
@@ -195,7 +195,7 @@ GameTest >> test024GameStoresADie [
 	| aGame aSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 10 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 10 wormholeBeginsAt: 0 andEndsAt: 1.
 	aLoadedDie := LoadedDie of: 6.
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game begin: stack with: aBoard with: someDice.
@@ -211,7 +211,7 @@ GameTest >> test025GameCanUseMultipleDice [
 	| aGame aSpaceship stack aBoard aLoadedDie anotherLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 12 wormholeBeginsAt: 0 andEndsAt: 0.
+	aBoard := Board of: 12 wormholeBeginsAt: 0 andEndsAt: 1.
 	aLoadedDie := LoadedDie of: 6.
 	anotherLoadedDie := LoadedDie of: 4.
 	someDice := OrderedCollection with: aLoadedDie with: anotherLoadedDie.
@@ -229,7 +229,7 @@ GameTest >> test028GameWithOnePlayerReturnsLeaderboardWithPositions [
 | aGame aSpaceship aDie aBoard|
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
-aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 1.
 aDie := LoadedDie of: 5.
 aGame := Game begin: (OrderedCollection  with: aSpaceship ) with: aBoard with: (OrderedCollection with: aDie).
 aSpaceship playTurnIn: aGame.
@@ -248,7 +248,7 @@ GameTest >> test029GameWithMultiplePlayersReturnsLeaderBoardWithPositions [
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
 anotherSpaceship := Spaceship launch: 'Death Star'.
-aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 1.
 aDie := LoadedDie of: 5.
 aGame := Game begin: (OrderedCollection  with: aSpaceship with: anotherSpaceship) with: aBoard with: (OrderedCollection with: aDie).
 aSpaceship playTurnIn: aGame.
@@ -267,7 +267,7 @@ GameTest >> test030GameRaisesAnExceptionWhenPlayerMovesOutOfTurn [
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
 anotherSpaceship := Spaceship launch: 'Death Star'.
-aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 1.
 aDie := LoadedDie of: 5.
 aGame := Game begin: (OrderedCollection  with: aSpaceship with: anotherSpaceship) with: aBoard with: (OrderedCollection with: aDie).
 
@@ -283,7 +283,7 @@ GameTest >> test031SpaceshipCannotPlayIfGameIsOver [
 | aGame aSpaceship aDie aBoard|
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
-aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 0.
+aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 1.
 aDie := LoadedDie of: 5.
 aGame := Game begin: (OrderedCollection  with: aSpaceship ) with: aBoard with: (OrderedCollection with: aDie).
 aSpaceship playTurnIn: aGame.
