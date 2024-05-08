@@ -137,7 +137,7 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 0.
 	aGame := Game begin: stack with: aBoard.
 	aLoadedDie := LoadedDie of: 3.
-	aSpaceship playTurn: aLoadedDie.
+	aSpaceship playTurn: aLoadedDie in: aGame .
 	aGame end.
 	self assert: aGame winner equals: aSpaceship.  	
 	
@@ -155,8 +155,8 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 	aGame := Game begin: stack with: aBoard.
 	aLoadedDie := LoadedDie of: 3.
 	anotherLoadedDie := LoadedDie of: 6.
-	aSpaceship playTurn: aLoadedDie.
-	anotherSpaceship playTurn: anotherLoadedDie.
+	aSpaceship playTurn: aLoadedDie in: aGame.
+	anotherSpaceship playTurn: anotherLoadedDie in: aGame.
 	aGame end.
 	self assert: aGame leaderBoard equals: (OrderedCollection with: anotherSpaceship with: aSpaceship).  	
 	

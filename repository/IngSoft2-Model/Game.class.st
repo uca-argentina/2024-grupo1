@@ -37,6 +37,7 @@ Game >> finalPositionFor: aSpaceship [
 	finalPosition := board finalSquareAfterLandingIn: currentPosition.
 	
 	aSpaceship move: (finalPosition - currentPosition).
+	finalPosition = board squares ifTrue: [ self end . ]
 ]
 
 { #category : #testing }

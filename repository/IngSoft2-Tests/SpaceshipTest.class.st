@@ -25,10 +25,12 @@ SpaceshipTest >> test005SpaceshipIsCreatedAtStartPoint0 [
 SpaceshipTest >> test011ASpaceshipMovesFiveSquaresWhenLoadedDieIsThrown [
 
 
-| aSpaceship aDie |
+| aSpaceship aDie aBoard aGame |
 aSpaceship := Spaceship launch.
 aDie := LoadedDie of: 5.
-aSpaceship playTurn: aDie.
+aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 7.
+aGame:=Game begin: aSpaceship  with: aBoard.
+aSpaceship playTurn: aDie in: aGame.
 self assert: aSpaceship getPosition equals: 5.
 ]
 
@@ -36,10 +38,12 @@ self assert: aSpaceship getPosition equals: 5.
 SpaceshipTest >> test012ASpaceshipMovesSevenSquaresWhenLoadedDieIsThrown [
 
 
-| aSpaceship aDie |
+
+| aSpaceship aDie aBoard aGame |
 aSpaceship := Spaceship launch.
 aDie := LoadedDie of: 7.
-
-aSpaceship playTurn: aDie.
+aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 8.
+aGame:=Game begin: aSpaceship  with: aBoard.
+aSpaceship playTurn: aDie in: aGame.
 self assert: aSpaceship getPosition equals: 7.
 ]
