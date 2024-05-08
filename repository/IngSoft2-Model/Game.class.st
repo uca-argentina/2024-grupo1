@@ -5,23 +5,25 @@ Class {
 		'spaceships',
 		'board',
 		'state',
-		'index'
+		'index',
+		'dice'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> begin: aSpaceship with: aBoard [
+Game class >> begin: aSpaceship with: aBoard with: someDice [
 
-	^ self new begin: aSpaceship with: aBoard 
+	^ self new begin: aSpaceship with: aBoard with: someDice.
 ]
 
 { #category : #initialization }
-Game >> begin: spaceship with: aBoard [
+Game >> begin: spaceship with: aBoard with: someDice [
 spaceships := spaceship.  
 state := GameOngoingState new.
 board := aBoard.
 index := 1.
+dice := someDice.
 ]
 
 { #category : #adding }
@@ -40,6 +42,11 @@ Game >> finalPositionFor: aSpaceship [
 	finalPosition = board squares ifTrue: [ self end . ]
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> getDice [
+^ dice.
+]
+
 { #category : #testing }
 Game >> isOngoing [
 
@@ -48,7 +55,9 @@ Game >> isOngoing [
 
 { #category : #'as yet unclassified' }
 Game >> leaderBoard [
-	^ OrderedCollection with: (spaceships at: 2) with: (spaceships at: 1).
+	
+	^ spaceships asSortedCollection: [ :sp1 :sp2 | sp1 getPosition >= sp2 getPosition ].  
+	
 ]
 
 { #category : #'as yet unclassified' }

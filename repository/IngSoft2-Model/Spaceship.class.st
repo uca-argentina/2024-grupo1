@@ -40,3 +40,13 @@ Spaceship >> playTurn: aDie in: aGame [
 	
 	
 ]
+
+{ #category : #'as yet unclassified' }
+Spaceship >> playTurnIn: aGame [ 
+	| squaresToMove |
+	squaresToMove := 0.
+	aGame getDice do: [:aDie | squaresToMove := squaresToMove + (aDie throw)].
+	self move: ( squaresToMove ).
+	aGame finalPositionFor: self.
+	
+]
