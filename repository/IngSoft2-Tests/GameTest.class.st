@@ -207,7 +207,7 @@ GameTest >> test025GameCanUseMultipleDice [
 	someDice := OrderedCollection with: aLoadedDie with: anotherLoadedDie.
 	aGame := Game begin: stack with: aBoard with: someDice.
 	aSpaceship playTurnIn: aGame.
-	self assert: aSpaceship getPosition equals: 10.  	
+	self assert: aSpaceship getPosition equals: 10.  	 
 	
 
 ]
