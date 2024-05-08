@@ -1,6 +1,9 @@
 Class {
 	#name : #GameTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'someDice'
+	],
 	#category : #'IngSoft2-Tests'
 }
 
@@ -135,11 +138,12 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
-	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
-	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 1.
-	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
-	aSpaceship playTurn: aLoadedDie in: aGame.
+	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
+	someDice:= OrderedCollection with: aLoadedDie.
+	aBoard := Board of: 3 wormholeBeginsAt: 0 andEndsAt: 1.
+	aGame := Game begin: stack with: aBoard with: someDice.
+	aSpaceship playTurnIn: aGame.
 	aGame end.
 	self assert: aGame winner equals: aSpaceship
 ]
@@ -147,16 +151,17 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 { #category : #tests }
 GameTest >> test021AfterGameEndsReturnsLeaderboard [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie anotherLoadedDie |
+	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 1.
-	aGame := Game begin: stack with: aBoard with: nil.
-	aLoadedDie := LoadedDie of: 3.
-	anotherLoadedDie := LoadedDie of: 6.
-	aSpaceship playTurn: aLoadedDie in: aGame.
-	anotherSpaceship playTurn: anotherLoadedDie in: aGame.
+	aLoadedDie := LoadedDie of: 5.
+	someDice:= OrderedCollection with: aLoadedDie .
+	aGame := Game begin: stack with: aBoard with: someDice .
+	aSpaceship playTurnIn: aGame.
+	anotherSpaceship move: 1.
+	anotherSpaceship playTurnIn: aGame.
 	aGame end.
 	self
 		assert: aGame leaderBoard asOrderedCollection
@@ -166,7 +171,7 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 { #category : #tests }
 GameTest >> test023ReturnLeaderboardWithThreePlayers [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie anotherLoadedDie yetAnotherSpaceship |
+	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie yetAnotherSpaceship |
 	aSpaceship := Spaceship launch: ''.
 	anotherSpaceship := Spaceship launch: ''.
 	yetAnotherSpaceship := Spaceship launch: ''.
@@ -176,16 +181,18 @@ GameTest >> test023ReturnLeaderboardWithThreePlayers [
 		         with: yetAnotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 0 andEndsAt: 1.
 	aGame := Game begin: stack with: aBoard with: nil.
-	aLoadedDie := LoadedDie of: 6.
-	anotherLoadedDie := LoadedDie of: 3.
-	aSpaceship playTurn: aLoadedDie in: aGame.
-	anotherSpaceship playTurn: anotherLoadedDie in: aGame.
+	aLoadedDie := LoadedDie of: 4.
+	someDice:= OrderedCollection with: aLoadedDie .
+	aGame := Game begin: stack with: aBoard with: someDice.
+	anotherSpaceship move: 2.
+	aSpaceship playTurnIn: aGame.
+	anotherSpaceship playTurnIn: aGame.
 
 	self
 		assert: aGame leaderBoard asOrderedCollection
 		equals: (OrderedCollection
+				 with: anotherSpaceship 
 				 with: aSpaceship
-				 with: anotherSpaceship
 				 with: yetAnotherSpaceship)
 ]
 

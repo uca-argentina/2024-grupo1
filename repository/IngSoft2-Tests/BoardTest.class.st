@@ -35,13 +35,14 @@ self assert: aBoard squares equals: 2.
 { #category : #tests }
 BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSquareFive [
 
-	| aSpaceship aLoadedDie aGame aBoard |
+	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
+	stack := OrderedCollection with: aSpaceship .
 	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
-	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
-
-	aSpaceship playTurn: aLoadedDie in: aGame.
+	someDice:=OrderedCollection with: aLoadedDie.
+	aGame := Game begin: stack with: aBoard with: someDice .
+	aSpaceship playTurnIn: aGame.
 
 
 	self assert: aSpaceship getPosition equals: 5
@@ -50,13 +51,15 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 { #category : #tests }
 BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 
-	| aSpaceship aLoadedDie aGame aBoard |
+	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
+	stack := OrderedCollection with: aSpaceship .
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
-	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 3.
+	someDice:= OrderedCollection with: aLoadedDie .
+	aGame := Game begin: stack with: aBoard with: someDice.
 
-	aSpaceship playTurn: aLoadedDie in: aGame.
+	aSpaceship playTurnIn: aGame.
 
 
 	self assert: aSpaceship getPosition equals: 7
@@ -65,13 +68,15 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 { #category : #tests }
 BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 
-	| aSpaceship aLoadedDie aGame aBoard |
+	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
-	aGame := Game begin: aSpaceship with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 7.
+	stack:= OrderedCollection with: aSpaceship .
+	someDice:= OrderedCollection with: aLoadedDie .
+	aGame := Game begin: stack with: aBoard with: someDice.
 
-	aSpaceship playTurn: aLoadedDie in: aGame.
+	aSpaceship playTurnIn: aGame.
 
 
 	self assert: aSpaceship getPosition equals: 3
@@ -80,13 +85,14 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 { #category : #tests }
 BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 
-	| aBoard aSpaceship aGame stack aLoadedDie |
+	| aBoard aSpaceship aGame stack aLoadedDie someDice |
 	aBoard := Board of: 8 wormholeBeginsAt: 0 andEndsAt: 1.
 	aSpaceship := Spaceship launch: ''.
-	stack := OrderedCollection with: aSpaceship.
-	aGame := Game begin: stack with: aBoard with: nil.
 	aLoadedDie := LoadedDie of: 8.
-	aSpaceship playTurn: aLoadedDie in: aGame.
+	stack := OrderedCollection with: aSpaceship.
+	someDice := OrderedCollection with: aLoadedDie .
+	aGame := Game begin: stack with: aBoard with: someDice.
+	aSpaceship playTurnIn: aGame.
 
 	self deny: aGame isOngoing
 ]

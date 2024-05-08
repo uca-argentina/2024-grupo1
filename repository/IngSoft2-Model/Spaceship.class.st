@@ -38,17 +38,6 @@ position := position + squares.
 ]
 
 { #category : #action }
-Spaceship >> playTurn: aDie in: aGame [
-
-
-	self move: ( aDie throw).
-	aGame finalPositionFor: self.
-	
-	
-	
-]
-
-{ #category : #action }
 Spaceship >> playTurnIn: aGame [ 
 	| squaresToMove |
 	
@@ -58,5 +47,6 @@ Spaceship >> playTurnIn: aGame [
 	aGame getDice do: [:aDie | squaresToMove := squaresToMove + (aDie throw)].
 	self move: ( squaresToMove ).
 	aGame finalPositionFor: self.
+	aGame nextTurn.
 	
 ]
