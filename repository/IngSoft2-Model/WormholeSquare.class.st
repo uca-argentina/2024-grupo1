@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""State when the game is finished""
+For the Class part:  ""I can teleport!""
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,26 +17,32 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
+    Instance Variables
+	otherSide:		<Object>
+
 
     Implementation Points
 "
 Class {
-	#name : #GameFinishedState,
+	#name : #WormholeSquare,
 	#superclass : #Object,
+	#instVars : [
+		'otherSide'
+	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-GameFinishedState >> isOngoing [ 
-
-^ false
+{ #category : #'instance creation' }
+WormholeSquare class >> of: otherSquare [
+^ self new of: otherSquare.
 ]
 
-{ #category : #accessing }
-GameFinishedState >> whoWon: players with: aBoard [
+{ #category : #'instance creation' }
+WormholeSquare >> land [
+^ otherSide.
+]
 
-"players getPosition = aBoard squares ifTrue: [ ^players ] ifFalse: [ ^nil ]." 
-^ (players detect: [ :aSpaceship | aSpaceship getPosition = aBoard squares]).
- 
-
+{ #category : #'instance creation' }
+WormholeSquare >> of: otherSquare [
+otherSide := otherSquare.
 ]
