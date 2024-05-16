@@ -24,7 +24,7 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #RealDie,
+	#name : #Die,
 	#superclass : #Object,
 	#instVars : [
 		'faces'
@@ -36,20 +36,20 @@ Class {
 }
 
 { #category : #'instance creation' }
-RealDie class >> of: anAmountOfFaces [
+Die class >> of: anAmountOfFaces [
 	
 	anAmountOfFaces < 3 ifTrue: [ Error signal: 'Faces should be more than 2' ].
 	^ self new initializeOf: anAmountOfFaces 
 ]
 
 { #category : #initialization }
-RealDie >> initializeOf: anAmountOfFaces [
+Die >> initializeOf: anAmountOfFaces [
 
 faces := anAmountOfFaces.
 ]
 
 { #category : #action }
-RealDie >> throw [
+Die >> throw [
 
 	^ faces atRandom 
 ]

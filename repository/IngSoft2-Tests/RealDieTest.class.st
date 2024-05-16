@@ -20,7 +20,7 @@ self
 { #category : #tests }
 RealDieTest >> testDieCannotHaveLessThanThreeFaces [ 
 
-self should: [RealDie of: 1] raise: Error  withMessage: 'Faces should be more than 2'
+self should: [Die of: 1] raise: Error  withMessage: 'Faces should be more than 2'
 ]
 
 { #category : #tests }
@@ -28,6 +28,6 @@ RealDieTest >> testDieThrowBetweenOneAndAmountOfFaces [
 
 | aDie |
 
-aDie := RealDie of: 5.
+aDie := Die of: 5.
 self assert:  ((aDie throw) between: 1 and: 5)
 ]

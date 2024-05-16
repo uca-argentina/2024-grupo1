@@ -15,7 +15,7 @@ self
 ]
 
 { #category : #tests }
-GameTest >> test001IfTheGameIsOngoingReturnTrue [
+GameTest >> test001WhenGameStartedThenIsOngoing [
 	"Let the games begin"
 
 	| aGame aSpaceship |
@@ -25,7 +25,7 @@ GameTest >> test001IfTheGameIsOngoingReturnTrue [
 ]
 
 { #category : #tests }
-GameTest >> test002IfGameIsOverReturnFalse [
+GameTest >> test002WhenGameEndsThenIsOver [
 
 	| aGame aSpaceship |
 	aSpaceship := Spaceship launch: ''.

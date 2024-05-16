@@ -35,25 +35,39 @@ Class {
 { #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
+	self validateSizeOf: aNumberOfSquares.
+	self validateWormholeEndpointsOf: startingPoint and: endPoint inABoardOf: aNumberOfSquares.
+	
+	^ self new initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
+]
+
+{ #category : #'argument validation' }
+Board class >> validateSizeOf: aNumberOfSquares [
 	aNumberOfSquares <= 0 ifTrue: [ Error signal: 'Board must have at least 1 square' ].
-	((((startingPoint > aNumberOfSquares) or: (endPoint > aNumberOfSquares ))) or: ((startingPoint < 0) or: (endPoint < 0))) ifTrue: [ Error signal: 'Wormhole out of bounds' ].
-	startingPoint = endPoint ifTrue: [ Error signal: 'Wormhole endpoints cannot be in the same square'].
-	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
+	
+]
+
+{ #category : #'argument validation' }
+Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint inABoardOf: aNumberOfSquares [
+
+	(startingPoint >= 0 and: (endPoint >= 0 and:
+	(startingPoint < aNumberOfSquares and:
+	endPoint <= aNumberOfSquares))) ifFalse: 
+		[Error signal: 'Wormhole out of bounds' ].
+	
+	startingPoint = endPoint ifTrue: 
+		[Error signal: 'Wormhole endpoints cannot be in the same square' ]
 ]
 
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
 
-	"aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
-	aSquare = wormholeEndPoint ifTrue: [ ^ wormholeStartPoint  ].
 	
-	^ aSquare 
-	"
 	^ (boardOfSquares at: aSquare) land. 
 ]
 
 { #category : #'instance creation' }
-Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
+Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	| i |
 	i := 1.
@@ -79,6 +93,6 @@ Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoin
 { #category : #accessing }
 Board >> squares [ 
 
-"^numberOfSquares" 
+
 ^ boardOfSquares size.
 ]
