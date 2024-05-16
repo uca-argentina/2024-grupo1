@@ -82,12 +82,14 @@ Game >> nextSpaceshipToPlay [
 	^ spaceships at: index.
 ]
 
-{ #category : #accessing }
+{ #category : #adding }
 Game >> nextTurn [
+
 	| numberOfPlayers |
 	numberOfPlayers := spaceships size.
-	numberOfPlayers = index ifTrue: [index:=1]  ifFalse: [index := index + 1].  
-	
+	index := numberOfPlayers = index
+		         ifTrue: [ 1 ]
+		         ifFalse: [ index + 1 ]
 ]
 
 { #category : #accessing }
