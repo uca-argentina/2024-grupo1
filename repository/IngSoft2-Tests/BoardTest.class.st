@@ -37,11 +37,11 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
-	stack := OrderedCollection with: aSpaceship .
+	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 3.
-	someDice:=OrderedCollection with: aLoadedDie.
-	aGame := Game playedBy: stack on: aBoard throwing: someDice .
+	someDice := OrderedCollection with: aLoadedDie.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aSpaceship playTurnIn: aGame.
 
 
@@ -119,7 +119,7 @@ BoardTest >> test034BoardCannotBeCreatedIfWormholeEndpointsAreNegative [
 	| aBoard |
 	
 
-	self should: [ aBoard := Board of: 1 wormholeBeginsAt: -1 andEndsAt: -1. ] raise: Error withMessage: 'Wormhole out of bounds'.  
+	self should: [ aBoard := Board of: 1 wormholeBeginsAt: -1 andEndsAt: -2. ] raise: Error withMessage: 'Wormhole out of bounds'.  
 ]
 
 { #category : #tests }

@@ -35,10 +35,33 @@ Class {
 { #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
+	self
+		validate: aNumberOfSquares
+		and: endPoint
+		and: startingPoint.
+		
+	^ self new
+		  initializeOf: aNumberOfSquares
+		  wormholeBeginsAt: startingPoint
+		  andEndsAt: endPoint
+]
+
+{ #category : #'argument validation' }
+Board class >> validate: aNumberOfSquares and: endPoint and: startingPoint [
+
 	self validateSizeOf: aNumberOfSquares.
-	self validateWormholeEndpointsOf: startingPoint and: endPoint inABoardOf: aNumberOfSquares.
-	
-	^ self new initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
+	self validate: endPoint isNotEqualTo: startingPoint.
+	self
+		validateWormholeEndpointsOf: startingPoint
+		and: endPoint
+		areWithin: aNumberOfSquares
+]
+
+{ #category : #'argument validation' }
+Board class >> validate: endPoint isNotEqualTo: startingPoint [
+
+	startingPoint = endPoint ifTrue: [
+		Error signal: 'Wormhole endpoints cannot be in the same square' ]
 ]
 
 { #category : #'argument validation' }
@@ -48,15 +71,13 @@ Board class >> validateSizeOf: aNumberOfSquares [
 ]
 
 { #category : #'argument validation' }
-Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint inABoardOf: aNumberOfSquares [
+Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithin: aNumberOfSquares [
 
 	(startingPoint >= 0 and: (endPoint >= 0 and:
-	(startingPoint < aNumberOfSquares and:
-	endPoint <= aNumberOfSquares))) ifFalse: 
-		[Error signal: 'Wormhole out of bounds' ].
+			  (startingPoint < aNumberOfSquares and:
+				   endPoint <= aNumberOfSquares))) ifFalse: [
+		Error signal: 'Wormhole out of bounds' ].
 	
-	startingPoint = endPoint ifTrue: 
-		[Error signal: 'Wormhole endpoints cannot be in the same square' ]
 ]
 
 { #category : #accessing }

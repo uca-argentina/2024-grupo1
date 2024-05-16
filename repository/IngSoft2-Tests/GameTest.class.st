@@ -45,7 +45,7 @@ GameTest >> test003GameBeginsWithAPlayer [
 ]
 
 { #category : #tests }
-GameTest >> test006GameWithOnePlayerReturnsWinner [
+GameTest >> test006WhenGameHasOnlyOnePlayerThenThatPlayerWins [
 
 	| aGame aSpaceship aBoard stack |
 	aSpaceship := Spaceship launch: ''.
@@ -58,7 +58,7 @@ GameTest >> test006GameWithOnePlayerReturnsWinner [
 ]
 
 { #category : #tests }
-GameTest >> test008WhenGameIsOngoingWinnerIsNil [
+GameTest >> test008WhenGameIsOngoingThereIsNoWinner [
 
 	| aGame aSpaceship aBoard |
 	aBoard := Board new.
@@ -69,7 +69,7 @@ GameTest >> test008WhenGameIsOngoingWinnerIsNil [
 ]
 
 { #category : #tests }
-GameTest >> test009GameDoesntReturnWinnerIfSpaceshipIsNotInTheLastSquare [
+GameTest >> test009SpaceshipDoesNotWinUntilItLandsOnTheLastSquare [
 
 	| aGame aSpaceship aBoard stack |
 	aSpaceship := Spaceship launch: ''.
@@ -130,7 +130,7 @@ GameTest >> test019GameResetsTurnsForNextRound [
 ]
 
 { #category : #tests }
-GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
+GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
@@ -146,7 +146,7 @@ GameTest >> test020GameReturnsWinnerWithMultiplePlayers [
 ]
 
 { #category : #tests }
-GameTest >> test021AfterGameEndsReturnsLeaderboard [
+GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: ''.
@@ -166,7 +166,7 @@ GameTest >> test021AfterGameEndsReturnsLeaderboard [
 ]
 
 { #category : #tests }
-GameTest >> test023ReturnLeaderboardWithThreePlayers [
+GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie yetAnotherSpaceship someDice |
 	aSpaceship := Spaceship launch: ''.
@@ -264,7 +264,7 @@ self assert: aGame leaderboardString equals: ('Millenium Falcon in position 5' ,
 ]
 
 { #category : #tests }
-GameTest >> test030GameRaisesAnExceptionWhenPlayerMovesOutOfTurn [
+GameTest >> test030PlayerCannotMoveOutOfTurn [
 
 
 | aGame aSpaceship anotherSpaceship aDie aBoard |

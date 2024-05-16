@@ -18,10 +18,17 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
 ]
 
 { #category : #testing }
-Game >> canIPlay: aSpaceship [	
+Game >> canIPlay: aSpaceship [
+
+	self nextSpaceshipToPlay = aSpaceship ifFalse: [
+		Error signal: 'It is not your turn!' ].
 	
-	self nextSpaceshipToPlay = aSpaceship ifFalse: [ Error signal: 'It is not your turn!' ].
-	self isOngoing ifFalse: [ Error signal: 'Game has already ended' ].
+	self isOngoing ifFalse: [ Error signal: 'Game has already ended' ]
+]
+
+{ #category : #accessing }
+Game >> dice [
+^ dice.
 ]
 
 { #category : #adding }
@@ -38,11 +45,6 @@ Game >> finalPositionFor: aSpaceship [
 	
 	aSpaceship move: (finalPosition - currentPosition).
 	finalPosition = board squares ifTrue: [ self end . ]
-]
-
-{ #category : #accessing }
-Game >> getDice [
-^ dice.
 ]
 
 { #category : #initialization }

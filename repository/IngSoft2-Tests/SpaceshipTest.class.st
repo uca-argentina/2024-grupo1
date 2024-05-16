@@ -50,7 +50,7 @@ SpaceshipTest >> test012ASpaceshipMovesSevenSquaresWhenLoadedDieIsThrown [
 ]
 
 { #category : #tests }
-SpaceshipTest >> test026SpaceshipReturnsName [
+SpaceshipTest >> test026SpaceshipCreatedWithAName [
 	
 	| aSpaceship |
 	aSpaceship := Spaceship launch: 'Millenium Falcon'.
@@ -58,7 +58,7 @@ SpaceshipTest >> test026SpaceshipReturnsName [
 ]
 
 { #category : #tests }
-SpaceshipTest >> test027SpaceshipReturnsAnotherName [
+SpaceshipTest >> test027SpaceshipCreatedWithAnotherName [
 
 	| aSpaceship |
 	aSpaceship := Spaceship launch: 'Death Star'.
