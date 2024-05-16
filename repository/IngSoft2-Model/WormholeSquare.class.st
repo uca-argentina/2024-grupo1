@@ -34,15 +34,15 @@ Class {
 
 { #category : #'instance creation' }
 WormholeSquare class >> of: otherSquare [
-^ self new of: otherSquare.
+^ self new initializeOf: otherSquare.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #initialization }
+WormholeSquare >> initializeOf: otherSquare [
+otherSide := otherSquare.
+]
+
+{ #category : #action }
 WormholeSquare >> land [
 ^ otherSide.
-]
-
-{ #category : #'instance creation' }
-WormholeSquare >> of: otherSquare [
-otherSide := otherSquare.
 ]

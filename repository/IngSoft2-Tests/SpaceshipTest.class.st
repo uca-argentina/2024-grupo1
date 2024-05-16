@@ -30,7 +30,7 @@ SpaceshipTest >> test011ASpaceshipMovesFiveSquaresWhenLoadedDieIsThrown [
 	someDice:=OrderedCollection with: aLoadedDie .
 	aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 7.
 	stack:=OrderedCollection with: aSpaceship .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aSpaceship playTurnIn: aGame.
 	self assert: aSpaceship getPosition equals: 5
 ]
@@ -44,7 +44,7 @@ SpaceshipTest >> test012ASpaceshipMovesSevenSquaresWhenLoadedDieIsThrown [
 	aLoadedDie := LoadedDie of: 7.
 	someDice:= OrderedCollection with: aLoadedDie .
 	aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 8.
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aSpaceship playTurnIn: aGame.
 	self assert: aSpaceship getPosition equals: 7
 ]

@@ -12,24 +12,15 @@ Class {
 }
 
 { #category : #initialization }
-Game class >> begin: aSpaceship with: aBoard with: someDice [
+Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
 
-	^ self new begin: aSpaceship with: aBoard with: someDice.
-]
-
-{ #category : #initialization }
-Game >> begin: spaceship with: aBoard with: someDice [
-spaceships := spaceship.  
-state := GameOngoingState new.
-board := aBoard.
-index := 1.
-dice := someDice.
+	^ self new initializePlayedBy: someSpaceships on: aBoard throwing: someDice
 ]
 
 { #category : #testing }
 Game >> canIPlay: aSpaceship [	
 	
-	self whoseTurn = aSpaceship ifFalse: [ Error signal: 'It is not your turn!' ].
+	self nextSpaceshipToPlay = aSpaceship ifFalse: [ Error signal: 'It is not your turn!' ].
 	self isOngoing ifFalse: [ Error signal: 'Game has already ended' ].
 ]
 
@@ -52,6 +43,15 @@ Game >> finalPositionFor: aSpaceship [
 { #category : #accessing }
 Game >> getDice [
 ^ dice.
+]
+
+{ #category : #initialization }
+Game >> initializePlayedBy: spaceship on: aBoard throwing: someDice [
+spaceships := spaceship.  
+state := GameOngoingState new.
+board := aBoard.
+index := 1.
+dice := someDice.
 ]
 
 { #category : #testing }
@@ -78,6 +78,11 @@ Game >> leaderboardString [
 ]
 
 { #category : #accessing }
+Game >> nextSpaceshipToPlay [
+	^ spaceships at: index.
+]
+
+{ #category : #accessing }
 Game >> nextTurn [
 	| numberOfPlayers |
 	numberOfPlayers := spaceships size.
@@ -91,12 +96,7 @@ Game >> players [
 ]
 
 { #category : #accessing }
-Game >> whoseTurn [
-	^ spaceships at: index.
-]
-
-{ #category : #accessing }
 Game >> winner [
 
-	^ state whoWon:  spaceships with: board 
+	^ state winnerOf:  spaceships playingIn: board 
 ]

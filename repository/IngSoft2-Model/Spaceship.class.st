@@ -11,7 +11,7 @@ Class {
 { #category : #initialize }
 Spaceship class >> launch: aName [
 
-	^ self new launch: aName
+	^ self new initializeLaunch: aName
 ]
 
 { #category : #accessing }
@@ -26,7 +26,7 @@ Spaceship >> getPosition [
 ]
 
 { #category : #initialize }
-Spaceship >> launch: aName [ 
+Spaceship >> initializeLaunch: aName [ 
 
 position := 0.
 myName := aName.

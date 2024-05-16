@@ -33,9 +33,8 @@ GameFinishedState >> isOngoing [
 ]
 
 { #category : #accessing }
-GameFinishedState >> whoWon: players with: aBoard [
+GameFinishedState >> winnerOf: spaceships playingIn: aBoard [
 
-^ (players detect: [ :aSpaceship | aSpaceship getPosition = aBoard squares]).
- 
-
+	^ spaceships detect: [ :aSpaceship |
+		  aSpaceship getPosition = aBoard squares ]
 ]

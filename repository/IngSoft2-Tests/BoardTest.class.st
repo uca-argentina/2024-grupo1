@@ -41,7 +41,7 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 3.
 	someDice:=OrderedCollection with: aLoadedDie.
-	aGame := Game begin: stack with: aBoard with: someDice .
+	aGame := Game playedBy: stack on: aBoard throwing: someDice .
 	aSpaceship playTurnIn: aGame.
 
 
@@ -57,7 +57,7 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 3.
 	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 
 	aSpaceship playTurnIn: aGame.
 
@@ -74,7 +74,7 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 	aLoadedDie := LoadedDie of: 7.
 	stack:= OrderedCollection with: aSpaceship .
 	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 
 	aSpaceship playTurnIn: aGame.
 
@@ -91,7 +91,7 @@ BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 	aLoadedDie := LoadedDie of: 8.
 	stack := OrderedCollection with: aSpaceship.
 	someDice := OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aSpaceship playTurnIn: aGame.
 
 	self deny: aGame isOngoing

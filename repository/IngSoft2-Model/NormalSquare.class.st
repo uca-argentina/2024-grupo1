@@ -34,15 +34,15 @@ Class {
 
 { #category : #testing }
 NormalSquare class >> isIn: position [
-^ self new isIn: position.
+^ self new initializeIn: position.
 ]
 
-{ #category : #testing }
-NormalSquare >> isIn: position [
+{ #category : #initialization }
+NormalSquare >> initializeIn: position [
 myPosition := position.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #action }
 NormalSquare >> land [
 ^ myPosition.
 ]

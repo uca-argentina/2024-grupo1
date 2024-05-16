@@ -82,6 +82,7 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 			boardOfSquares add: (WormholeSquare of: startingPoint) ].
 		(i ~= startingPoint and: i ~= endPoint) ifTrue: [
 			boardOfSquares add: (NormalSquare isIn: i) ]. 
+		
 		i := i + 1. 
 		]
 	

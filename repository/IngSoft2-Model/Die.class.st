@@ -37,9 +37,16 @@ Class {
 
 { #category : #'instance creation' }
 Die class >> of: anAmountOfFaces [
-	
-	anAmountOfFaces < 3 ifTrue: [ Error signal: 'Faces should be more than 2' ].
-	^ self new initializeOf: anAmountOfFaces 
+
+	self validateNumberOf: anAmountOfFaces.
+	^ self new initializeOf: anAmountOfFaces
+]
+
+{ #category : #validation }
+Die class >> validateNumberOf: anAmountOfFaces [
+
+	anAmountOfFaces < 3 ifTrue: [
+		Error signal: 'Faces should be more than 2' ]
 ]
 
 { #category : #initialization }

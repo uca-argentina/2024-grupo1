@@ -30,11 +30,18 @@ Class {
 }
 
 { #category : #'instance creation' }
-LoadedDie class >> of: anAmountOfFaces [  "anArrayOfValues -> para testear y controlar el comportamiento"
+LoadedDie class >> of: anAmountOfFaces [
 
-anAmountOfFaces < 3 ifTrue: [ Error signal: 'Faces should be more than 2' ].
+	self validateNumberOf: anAmountOfFaces.
 
-^ (self new) initializeOf: anAmountOfFaces 
+	^ self new initializeOf: anAmountOfFaces
+]
+
+{ #category : #validation }
+LoadedDie class >> validateNumberOf: anAmountOfFaces [
+
+	anAmountOfFaces < 3 ifTrue: [
+		Error signal: 'Faces should be more than 2' ]
 ]
 
 { #category : #initialization }

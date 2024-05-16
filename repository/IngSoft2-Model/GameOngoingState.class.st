@@ -33,7 +33,7 @@ GameOngoingState >> isOngoing [
 ]
 
 { #category : #accessing }
-GameOngoingState >> whoWon: players with: aBoard [
+GameOngoingState >> winnerOf: spaceships playingIn: aBoard [
 
-^ nil
+	^ nil
 ]
