@@ -83,18 +83,20 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
 
-	
+	"validar que no se pase del ultimo"
 	^ (boardOfSquares at: aSquare) land. 
 ]
 
 { #category : #'instance creation' }
 Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
+	
+
 	| i |
 	i := 1.
 	numberOfSquares := aNumberOfSquares.
-	wormholeStartPoint := startingPoint.
-	wormholeEndPoint := endPoint.
+	"wormholeStartPoint := startingPoint.
+	wormholeEndPoint := endPoint."
 	boardOfSquares := OrderedCollection new.
 	[ i <= numberOfSquares ] whileTrue: [
 		i = startingPoint ifTrue: [

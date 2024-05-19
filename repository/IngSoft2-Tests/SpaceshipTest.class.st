@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 SpaceshipTest >> test004SpaceshipChangedPositionByOneWhenMoved [
-
+"mover todo a GameTest menos el Name"
 	| aSpaceship |
 	aSpaceship := Spaceship launch: ''.
 	aSpaceship move: 1.

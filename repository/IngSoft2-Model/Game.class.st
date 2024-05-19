@@ -50,10 +50,13 @@ Game >> finalPositionFor: aSpaceship [
 { #category : #initialization }
 Game >> initializePlayedBy: spaceship on: aBoard throwing: someDice [
 spaceships := spaceship.  
+"dictionary con positions"
 state := GameOngoingState new.
 board := aBoard.
 index := 1.
 dice := someDice.
+
+
 ]
 
 { #category : #testing }
@@ -70,16 +73,6 @@ Game >> leaderBoard [
 ]
 
 { #category : #accessing }
-Game >> leaderboardString [
-
-	| string leaderboard |
-	string := ''.
-	leaderboard := self leaderBoard.
-	leaderboard do: [ :spaceship | string := string , spaceship getName , ' in position ', spaceship getPosition asString, (Character cr asString) ].
-	^ string
-]
-
-{ #category : #accessing }
 Game >> nextSpaceshipToPlay [
 	^ spaceships at: index.
 ]
@@ -92,6 +85,27 @@ Game >> nextTurn [
 	index := numberOfPlayers = index
 		         ifTrue: [ 1 ]
 		         ifFalse: [ index + 1 ]
+]
+
+{ #category : #action }
+Game >> playTurn [
+
+^0
+"
+aSpaceship := self nextSpaceshipToPlay.
+dice do: [  ]
+
+finalPosition := positionInitial + squaresToMove.
+finalPosition := landIn: finalPosition.
+position := finalPosition
+
+terminar el juego si esta en el ultimo cuadrado
+self nextTurn
+
+
+
+eliminar position en Spaceship, move y canIPlay
+"
 ]
 
 { #category : #accessing }

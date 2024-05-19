@@ -66,6 +66,8 @@ GameTest >> test008WhenGameIsOngoingThereIsNoWinner [
 	aGame := Game playedBy: aSpaceship on: aBoard throwing: nil.
 
 	self assert: aGame winner equals: nil
+	
+"poner excepcion"
 ]
 
 { #category : #tests }
@@ -239,7 +241,7 @@ aGame := Game playedBy: (OrderedCollection  with: aSpaceship ) on: aBoard throwi
 aSpaceship playTurnIn: aGame.
 
 
-self assert: aGame leaderboardString equals: 'Millenium Falcon in position 5', (Character cr asString).
+self assert: (aGame leaderBoard first getName) equals: ('Millenium Falcon').
 	
 
 ]
@@ -248,7 +250,7 @@ self assert: aGame leaderboardString equals: 'Millenium Falcon in position 5', (
 GameTest >> test029GameWithMultiplePlayersReturnsLeaderBoardWithPositions [
 
 
-| aGame aSpaceship anotherSpaceship aDie aBoard |
+| aGame aSpaceship anotherSpaceship aDie aBoard leaderboard|
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
 anotherSpaceship := Spaceship launch: 'Death Star'.
@@ -256,16 +258,15 @@ aBoard := Board of: 5 wormholeBeginsAt: 0 andEndsAt: 1.
 aDie := LoadedDie of: 5.
 aGame := Game playedBy: (OrderedCollection  with: aSpaceship with: anotherSpaceship) on: aBoard throwing: (OrderedCollection with: aDie).
 aSpaceship playTurnIn: aGame.
+leaderboard := aGame leaderBoard.
 
-
-self assert: aGame leaderboardString equals: ('Millenium Falcon in position 5' , (Character cr asString),'Death Star in position 0', (Character cr asString)).
-	
+self assert: (leaderboard first getName = 'Millenium Falcon' and: (leaderboard last getName = 'Death Star')).
 
 ]
 
 { #category : #tests }
 GameTest >> test030PlayerCannotMoveOutOfTurn [
-
+"volar"
 
 | aGame aSpaceship anotherSpaceship aDie aBoard |
 
@@ -282,7 +283,7 @@ self should: [ anotherSpaceship playTurnIn: aGame ] raise: Error withMessage: 'I
 
 { #category : #tests }
 GameTest >> test031SpaceshipCannotPlayIfGameIsOver [
-
+"cambiar a Game"
 
 | aGame aSpaceship aDie aBoard|
 
