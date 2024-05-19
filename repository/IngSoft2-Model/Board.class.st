@@ -82,21 +82,27 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
-
-	"validar que no se pase del ultimo"
-	^ (boardOfSquares at: aSquare) land. 
+	
+	|aux|
+	aux  :=	self validateWithinBounds: aSquare.
+	^ (boardOfSquares at: aux) land. 
 ]
 
 { #category : #'instance creation' }
 Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	
-
+	numberOfSquares := aNumberOfSquares.
+	boardOfSquares := OrderedCollection new.
+	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
+	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect goesTo: endPoint)).
+	boardOfSquares at: endPoint put: (Square with: (WormholeEffect goesTo: startingPoint)).
+	 
+"
 	| i |
 	i := 1.
 	numberOfSquares := aNumberOfSquares.
-	"wormholeStartPoint := startingPoint.
-	wormholeEndPoint := endPoint."
+	wormholeStartPoint := startingPoint.
+	wormholeEndPoint := endPoint.
 	boardOfSquares := OrderedCollection new.
 	[ i <= numberOfSquares ] whileTrue: [
 		i = startingPoint ifTrue: [
@@ -107,7 +113,7 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 			boardOfSquares add: (NormalSquare isIn: i) ]. 
 		
 		i := i + 1. 
-		]
+		]"
 	
 	
 	
@@ -119,4 +125,11 @@ Board >> squares [
 
 
 ^ boardOfSquares size.
+]
+
+{ #category : #analyze }
+Board >> validateWithinBounds: aSquare [
+
+	aSquare >= (self squares) ifTrue: [ ^ self squares ].
+	^ aSquare
 ]

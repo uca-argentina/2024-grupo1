@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""I am a square in a grid""
+For the Class part:  Squares with this effect do nothing
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -24,25 +24,28 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #NormalSquare,
-	#superclass : #Object,
+	#name : #NullEffect,
+	#superclass : #Effect,
 	#instVars : [
 		'myPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-NormalSquare class >> isIn: position [
-^ self new initializeIn: position.
-]
+{ #category : #'instance creation' }
+NullEffect class >> isIn: aPosition [
 
-{ #category : #initialization }
-NormalSquare >> initializeIn: position [
-myPosition := position.
+ ^self new initializeIn: aPosition 
 ]
 
 { #category : #action }
-NormalSquare >> land [
-^ myPosition.
+NullEffect >> apply [
+
+^myPosition 
+]
+
+{ #category : #initialization }
+NullEffect >> initializeIn: aPosition [ 
+
+myPosition := aPosition.
 ]

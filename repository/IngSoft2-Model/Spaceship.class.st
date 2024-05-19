@@ -19,34 +19,8 @@ Spaceship >> getName [
 ^ myName.
 ]
 
-{ #category : #accessing }
-Spaceship >> getPosition [
-
-	^position 
-]
-
 { #category : #initialize }
 Spaceship >> initializeLaunch: aName [ 
 
-position := 0.
 myName := aName.
-]
-
-{ #category : #action }
-Spaceship >> move: squares [
-position := position + squares.
-]
-
-{ #category : #action }
-Spaceship >> playTurnIn: aGame [
-
-	| squaresToMove |
-	aGame canIPlay: self.
-
-	squaresToMove := 0.
-	aGame dice do: [ :aDie |
-		squaresToMove := squaresToMove + aDie throw ].
-	self move: squaresToMove.
-	aGame finalPositionFor: self.
-	aGame nextTurn
 ]

@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""I can teleport!""
+For the Class part:  Abstract class to create effects for squares
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,32 +17,17 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
-    Instance Variables
-	otherSide:		<Object>
-
 
     Implementation Points
 "
 Class {
-	#name : #WormholeSquare,
+	#name : #Effect,
 	#superclass : #Object,
-	#instVars : [
-		'otherSide'
-	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-WormholeSquare class >> of: otherSquare [
-^ self new initializeOf: otherSquare.
-]
-
-{ #category : #initialization }
-WormholeSquare >> initializeOf: otherSquare [
-otherSide := otherSquare.
-]
-
 { #category : #action }
-WormholeSquare >> land [
-^ otherSide.
+Effect >> apply [ 
+
+self subclassResponsibility.
 ]

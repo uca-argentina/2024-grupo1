@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""State when the game is ongoing""
+For the Class part:  Squares with this effect teleport spaceships to the other side of the wormhole
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,28 +17,35 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
+    Instance Variables
+	otherSide:		<Object>
+
 
     Implementation Points
 "
 Class {
-	#name : #GameOngoingState,
-	#superclass : #Object,
+	#name : #WormholeEffect,
+	#superclass : #Effect,
+	#instVars : [
+		'otherSide'
+	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-GameOngoingState >> isOngoing [ 
+{ #category : #'instance creation' }
+WormholeEffect class >> goesTo: anotherPosition [
 
-^ true
+^self new initializeGoesTo: anotherPosition.
 ]
 
-{ #category : #analyzing }
-GameOngoingState >> validateTurn [
-	^0
+{ #category : #action }
+WormholeEffect >> apply [ 
+
+^otherSide.
 ]
 
-{ #category : #accessing }
-GameOngoingState >> winnerOf: spaceships playingIn: aBoard [
+{ #category : #initialization }
+WormholeEffect >> initializeGoesTo: anotherPosition [
 
-	^ nil
+otherSide := anotherPosition.
 ]
