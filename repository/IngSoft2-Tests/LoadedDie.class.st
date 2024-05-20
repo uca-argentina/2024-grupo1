@@ -31,6 +31,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+LoadedDie class >> arrayOf: values [ 
+	^self new initializeArrayOf: values 
+]
+
+{ #category : #'instance creation' }
 LoadedDie class >> of: anAmountOfFaces [
 
 	self validateNumberOf: anAmountOfFaces.
