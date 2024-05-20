@@ -33,6 +33,15 @@ self assert:  aDie throw equals: 3.
 ]
 
 { #category : #tests }
+LoadedDieTest >> testWhenDieIsThrownTwiceValueChanges [
+|aDie|
+
+aDie := LoadedDie  arrayOf: (OrderedCollection with: 1 with: 2).
+
+self assert:  (aDie throw = 1 and: (aDie throw = 2)).
+]
+
+{ #category : #tests }
 LoadedDieTest >> testWhenDieIsThrownValueIsAmountOfFaces [
 
 |aDie|

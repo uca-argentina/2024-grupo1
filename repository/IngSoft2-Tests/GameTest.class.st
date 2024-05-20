@@ -226,7 +226,7 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 		         with: anotherSpaceship
 		         with: yetAnotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 1 andEndsAt: 2.
-	aLoadedDie := LoadedDie of: 4.
+	aLoadedDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 3 with: 1).
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	[ aGame isOngoing ] whileTrue: [ aGame playTurn ].
@@ -235,8 +235,8 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 		assert: aGame leaderBoard asOrderedCollection
 		equals: (OrderedCollection
 				 with: aSpaceship 
-				 with: yetAnotherSpaceship 
-				 with: anotherSpaceship)
+				 with: anotherSpaceship
+				 with: yetAnotherSpaceship )
 ]
 
 { #category : #tests }

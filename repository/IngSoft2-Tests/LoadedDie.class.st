@@ -24,7 +24,8 @@ Class {
 	#name : #LoadedDie,
 	#superclass : #Object,
 	#instVars : [
-		'faces'
+		'faces',
+		'myValues'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -45,6 +46,12 @@ LoadedDie class >> validateNumberOf: anAmountOfFaces [
 ]
 
 { #category : #initialization }
+LoadedDie >> initializeArrayOf: values [ 
+	myValues := values .
+	faces := 0.
+]
+
+{ #category : #initialization }
 LoadedDie >> initializeOf: anAmountOfFaces [
 
 faces := anAmountOfFaces.
@@ -53,5 +60,10 @@ faces := anAmountOfFaces.
 { #category : #action }
 LoadedDie >> throw [
 
-	^ faces 
+	| result |
+	result := faces.
+	faces = 0 ifTrue: [
+		result := myValues removeFirst.
+		myValues addLast: result ].
+	^ result
 ]
