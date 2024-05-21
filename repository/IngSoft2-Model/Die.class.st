@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""I am an instance of playing dice""
+For the Class part:  ""A die with n faces. When thrown, returns a random number between 1 and the amount of faces""
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,58 +17,46 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
+    Instance Variables
+	faces:		<Object>
+
 
     Implementation Points
 "
 Class {
-	#name : #LoadedDie,
+	#name : #Die,
 	#superclass : #Object,
 	#instVars : [
-		'faces',
-		'myValues'
+		'faces'
 	],
-	#category : #'IngSoft2-Tests'
+	#classInstVars : [
+		'faces'
+	],
+	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-LoadedDie class >> arrayOf: values [ 
-	^self new initializeArrayOf: values 
-]
-
-{ #category : #'instance creation' }
-LoadedDie class >> of: anAmountOfFaces [
+Die class >> of: anAmountOfFaces [
 
 	self validateNumberOf: anAmountOfFaces.
-
 	^ self new initializeOf: anAmountOfFaces
 ]
 
 { #category : #validation }
-LoadedDie class >> validateNumberOf: anAmountOfFaces [
+Die class >> validateNumberOf: anAmountOfFaces [
 
 	anAmountOfFaces < 3 ifTrue: [
 		Error signal: 'Faces should be more than 2' ]
 ]
 
 { #category : #initialization }
-LoadedDie >> initializeArrayOf: values [ 
-	myValues := values .
-	faces := 0.
-]
-
-{ #category : #initialization }
-LoadedDie >> initializeOf: anAmountOfFaces [
+Die >> initializeOf: anAmountOfFaces [
 
 faces := anAmountOfFaces.
 ]
 
 { #category : #action }
-LoadedDie >> throw [
+Die >> throw [
 
-	| result |
-	result := faces.
-	faces = 0 ifTrue: [
-		result := myValues removeFirst.
-		myValues addLast: result ].
-	^ result
+	^ faces atRandom 
 ]

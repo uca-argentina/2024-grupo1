@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""A die with n faces. When thrown, returns a random number between 1 and the amount of faces""
+For the Class part:  Abstract class to create effects for squares
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,39 +17,17 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
-    Instance Variables
-	faces:		<Object>
-
 
     Implementation Points
 "
 Class {
-	#name : #RealDie,
+	#name : #Effect,
 	#superclass : #Object,
-	#instVars : [
-		'faces'
-	],
-	#classInstVars : [
-		'faces'
-	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-RealDie class >> of: anAmountOfFaces [
-	
-	anAmountOfFaces < 3 ifTrue: [ Error signal: 'Faces should be more than 2' ].
-	^ self new initializeOf: anAmountOfFaces 
-]
-
-{ #category : #initialization }
-RealDie >> initializeOf: anAmountOfFaces [
-
-faces := anAmountOfFaces.
-]
-
 { #category : #action }
-RealDie >> throw [
+Effect >> apply [ 
 
-	^ faces atRandom 
+self subclassResponsibility.
 ]

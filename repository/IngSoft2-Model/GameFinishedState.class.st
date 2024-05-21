@@ -32,11 +32,14 @@ GameFinishedState >> isOngoing [
 ^ false
 ]
 
+{ #category : #analyzing }
+GameFinishedState >> validateTurn [ 
+
+	Error signal: 'Game has already ended'.
+]
+
 { #category : #accessing }
-GameFinishedState >> whoWon: players with: aBoard [
+GameFinishedState >> winnerOf: spaceshipsPositions playingIn: aBoard [
 
-"players getPosition = aBoard squares ifTrue: [ ^players ] ifFalse: [ ^nil ]." 
-^ (players detect: [ :aSpaceship | aSpaceship getPosition = aBoard squares]).
- 
-
+	^ spaceshipsPositions keyAtValue: (aBoard squares)
 ]

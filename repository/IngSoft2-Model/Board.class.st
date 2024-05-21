@@ -25,8 +25,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSquares',
-		'wormholeStartPoint',
-		'wormholeEndPoint',
 		'boardOfSquares'
 	],
 	#category : #'IngSoft2-Model'
@@ -35,41 +33,65 @@ Class {
 { #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
+	self
+		validate: aNumberOfSquares
+		and: endPoint
+		and: startingPoint.
+		
+	^ self new
+		  initializeOf: aNumberOfSquares
+		  wormholeBeginsAt: startingPoint
+		  andEndsAt: endPoint
+]
+
+{ #category : #'argument validation' }
+Board class >> validate: aNumberOfSquares and: endPoint and: startingPoint [
+
+	self validateSizeOf: aNumberOfSquares.
+	self validate: endPoint isNotEqualTo: startingPoint.
+	self
+		validateWormholeEndpointsOf: startingPoint
+		and: endPoint
+		areWithin: aNumberOfSquares
+]
+
+{ #category : #'argument validation' }
+Board class >> validate: endPoint isNotEqualTo: startingPoint [
+
+	startingPoint = endPoint ifTrue: [
+		Error signal: 'Wormhole endpoints cannot be in the same square' ]
+]
+
+{ #category : #'argument validation' }
+Board class >> validateSizeOf: aNumberOfSquares [
 	aNumberOfSquares <= 0 ifTrue: [ Error signal: 'Board must have at least 1 square' ].
-	((((startingPoint > aNumberOfSquares) or: (endPoint > aNumberOfSquares ))) or: ((startingPoint < 0) or: (endPoint < 0))) ifTrue: [ Error signal: 'Wormhole out of bounds' ].
-	startingPoint = endPoint ifTrue: [ Error signal: 'Wormhole endpoints cannot be in the same square'].
-	^ self new of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint  
+	
+]
+
+{ #category : #'argument validation' }
+Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithin: aNumberOfSquares [
+
+	(startingPoint >= 0 and: (endPoint >= 0 and:
+			  (startingPoint < aNumberOfSquares and:
+				   endPoint <= aNumberOfSquares))) ifFalse: [
+		Error signal: 'Wormhole out of bounds' ].
+	
 ]
 
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
-
-	"aSquare = wormholeStartPoint ifTrue: [ ^ wormholeEndPoint  ].
-	aSquare = wormholeEndPoint ifTrue: [ ^ wormholeStartPoint  ].
 	
-	^ aSquare 
-	"
-	^ (boardOfSquares at: aSquare) land. 
+	^ (boardOfSquares at: (self validateWithinBounds: aSquare)) land.
 ]
 
 { #category : #'instance creation' }
-Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
+Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	| i |
-	i := 1.
 	numberOfSquares := aNumberOfSquares.
-	wormholeStartPoint := startingPoint.
-	wormholeEndPoint := endPoint.
 	boardOfSquares := OrderedCollection new.
-	[ i <= numberOfSquares ] whileTrue: [
-		i = startingPoint ifTrue: [
-			boardOfSquares add: (WormholeSquare of: endPoint) ].
-		i = endPoint ifTrue: [
-			boardOfSquares add: (WormholeSquare of: startingPoint) ].
-		(i ~= startingPoint and: i ~= endPoint) ifTrue: [
-			boardOfSquares add: (NormalSquare isIn: i) ]. 
-		i := i + 1. 
-		]
+	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
+	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect goesTo: endPoint)).
+	boardOfSquares at: endPoint put: (Square with: (WormholeEffect goesTo: startingPoint)).
 	
 	
 	
@@ -79,6 +101,13 @@ Board >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoin
 { #category : #accessing }
 Board >> squares [ 
 
-"^numberOfSquares" 
+
 ^ boardOfSquares size.
+]
+
+{ #category : #analyze }
+Board >> validateWithinBounds: aSquare [
+
+	aSquare >= (self squares) ifTrue: [ ^ self squares ].
+	^ aSquare
 ]

@@ -15,12 +15,12 @@ self
 ]
 
 { #category : #tests }
-BoardTest >> test007BoardCreatedWithOneSquare [
+BoardTest >> test007BoardCreatedWithTwoSquares [
 
 	| aBoard |
 
-	aBoard := Board of: 1 wormholeBeginsAt: 0 andEndsAt: 1.
-	self assert: aBoard squares equals: 1
+	aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 2.
+	self assert: aBoard squares equals: 2
 ]
 
 { #category : #tests }
@@ -28,7 +28,7 @@ BoardTest >> test010BoardCreatedWithNSquares [
 
 | aBoard |
 
-aBoard := Board of: 2 wormholeBeginsAt: 0 andEndsAt: 1.
+aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 2.
 self assert: aBoard squares equals: 2.
 ]
 
@@ -37,15 +37,15 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
-	stack := OrderedCollection with: aSpaceship .
+	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 3.
-	someDice:=OrderedCollection with: aLoadedDie.
-	aGame := Game begin: stack with: aBoard with: someDice .
-	aSpaceship playTurnIn: aGame.
+	someDice := OrderedCollection with: aLoadedDie.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	aGame playTurn.
 
 
-	self assert: aSpaceship getPosition equals: 5
+	self assert: (aGame positionOf: aSpaceship ) equals: 5
 ]
 
 { #category : #tests }
@@ -57,12 +57,12 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 3.
 	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 
-	aSpaceship playTurnIn: aGame.
+	aGame playTurn.
 
 
-	self assert: aSpaceship getPosition equals: 7
+	self assert: (aGame positionOf: aSpaceship ) equals: 7
 ]
 
 { #category : #tests }
@@ -74,25 +74,25 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 	aLoadedDie := LoadedDie of: 7.
 	stack:= OrderedCollection with: aSpaceship .
 	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 
-	aSpaceship playTurnIn: aGame.
+	aGame playTurn.
 
 
-	self assert: aSpaceship getPosition equals: 3
+	self assert: (aGame positionOf: aSpaceship ) equals: 3
 ]
 
 { #category : #tests }
 BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
 
 	| aBoard aSpaceship aGame stack aLoadedDie someDice |
-	aBoard := Board of: 8 wormholeBeginsAt: 0 andEndsAt: 1.
+	aBoard := Board of: 8 wormholeBeginsAt: 1 andEndsAt: 2.
 	aSpaceship := Spaceship launch: ''.
 	aLoadedDie := LoadedDie of: 8.
 	stack := OrderedCollection with: aSpaceship.
 	someDice := OrderedCollection with: aLoadedDie .
-	aGame := Game begin: stack with: aBoard with: someDice.
-	aSpaceship playTurnIn: aGame.
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	aGame playTurn .
 
 	self deny: aGame isOngoing
 ]
@@ -119,7 +119,7 @@ BoardTest >> test034BoardCannotBeCreatedIfWormholeEndpointsAreNegative [
 	| aBoard |
 	
 
-	self should: [ aBoard := Board of: 1 wormholeBeginsAt: -1 andEndsAt: -1. ] raise: Error withMessage: 'Wormhole out of bounds'.  
+	self should: [ aBoard := Board of: 1 wormholeBeginsAt: -1 andEndsAt: -2. ] raise: Error withMessage: 'Wormhole out of bounds'.  
 ]
 
 { #category : #tests }

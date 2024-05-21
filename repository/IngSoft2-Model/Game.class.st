@@ -5,32 +5,26 @@ Class {
 		'spaceships',
 		'board',
 		'state',
-		'index',
-		'dice'
+		'dice',
+		'spaceshipPositions'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> begin: aSpaceship with: aBoard with: someDice [
+Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
 
-	^ self new begin: aSpaceship with: aBoard with: someDice.
+	^ self new initializePlayedBy: someSpaceships on: aBoard throwing: someDice
 ]
 
-{ #category : #initialization }
-Game >> begin: spaceship with: aBoard with: someDice [
-spaceships := spaceship.  
-state := GameOngoingState new.
-board := aBoard.
-index := 1.
-dice := someDice.
+{ #category : #accessing }
+Game >> checkForWinnerIn: aSquare [ 
+	aSquare = board squares ifTrue: [ self end  ].
 ]
 
-{ #category : #testing }
-Game >> canIPlay: aSpaceship [	
-	
-	self whoseTurn = aSpaceship ifFalse: [ Error signal: 'It is not your turn!' ].
-	self isOngoing ifFalse: [ Error signal: 'Game has already ended' ].
+{ #category : #accessing }
+Game >> dice [
+^ dice.
 ]
 
 { #category : #adding }
@@ -38,20 +32,29 @@ Game >> end [
 	state := GameFinishedState new.
 ]
 
-{ #category : #action }
-Game >> finalPositionFor: aSpaceship [ 
+{ #category : #initialization }
+Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice [
 
-	| currentPosition finalPosition |
-	currentPosition := 	aSpaceship getPosition.
-	finalPosition := board finalSquareAfterLandingIn: currentPosition.
-	
-	aSpaceship move: (finalPosition - currentPosition).
-	finalPosition = board squares ifTrue: [ self end . ]
+spaceships := someSpaceships.  
+self initializePositions.
+state := GameOngoingState new.
+board := aBoard.
+dice := someDice.
+
+
 ]
 
-{ #category : #accessing }
-Game >> getDice [
-^ dice.
+{ #category : #initialization }
+Game >> initializePositions [
+
+|numberOfPlayers startingPositions|
+
+
+numberOfPlayers := spaceships size.
+startingPositions := OrderedCollection new.
+numberOfPlayers timesRepeat: [ startingPositions add: 0 ] .
+
+spaceshipPositions := Dictionary newFromKeys: spaceships andValues:  (startingPositions ).
 ]
 
 { #category : #testing }
@@ -63,26 +66,40 @@ Game >> isOngoing [
 { #category : #accessing }
 Game >> leaderBoard [
 	
-	^ spaceships asSortedCollection: [ :sp1 :sp2 | sp1 getPosition >= sp2 getPosition ].  
+	^ spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipPositions at: sp1) >= (spaceshipPositions at: sp2 ) ].  
 	
 ]
 
 { #category : #accessing }
-Game >> leaderboardString [
-
-	| string leaderboard |
-	string := ''.
-	leaderboard := self leaderBoard.
-	leaderboard do: [ :spaceship | string := string , spaceship getName , ' in position ', spaceship getPosition asString, (Character cr asString) ].
-	^ string
+Game >> nextSpaceshipToPlay [
+	^ spaceships first.
 ]
 
-{ #category : #accessing }
+{ #category : #adding }
 Game >> nextTurn [
-	| numberOfPlayers |
-	numberOfPlayers := spaceships size.
-	numberOfPlayers = index ifTrue: [index:=1]  ifFalse: [index := index + 1].  
+
+	|aSpaceship|
+	aSpaceship := spaceships removeFirst.
+	spaceships addLast: aSpaceship.
 	
+]
+
+{ #category : #action }
+Game >> playTurn [
+
+	| aSpaceship diceResult finalPosition | 
+	state validateTurn.
+	aSpaceship := self nextSpaceshipToPlay.
+	diceResult := self throwDice.
+
+
+	finalPosition := diceResult + (self positionOf: aSpaceship).
+	finalPosition := board finalSquareAfterLandingIn: finalPosition.
+	self updatePositionOf: aSpaceship to: finalPosition.
+
+	self checkForWinnerIn: finalPosition.
+	self nextTurn
+
 ]
 
 { #category : #accessing }
@@ -91,12 +108,29 @@ Game >> players [
 ]
 
 { #category : #accessing }
-Game >> whoseTurn [
-	^ spaceships at: index.
+Game >> positionOf: aSpaceship [ 
+
+
+ ^ spaceshipPositions at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game'].
+]
+
+{ #category : #action }
+Game >> throwDice [
+
+	|result|
+	result :=0.
+	dice do: [ :aDie | result := result + aDie throw ].
+ 	^ result 
+]
+
+{ #category : #action }
+Game >> updatePositionOf: aSpaceship to: newPosition [ 
+
+	spaceshipPositions at: aSpaceship put: newPosition.
 ]
 
 { #category : #accessing }
 Game >> winner [
 
-	^ state whoWon:  spaceships with: board 
+	^ state winnerOf: spaceshipPositions playingIn: board 
 ]

@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  ""I can teleport!""
+For the Class part:  Squares with this effect do nothing
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -18,31 +18,34 @@ Public API and Key Messages
 Internal Representation and Key Implementation Points.
 
     Instance Variables
-	otherSide:		<Object>
+	myPosition:		<Object>
 
 
     Implementation Points
 "
 Class {
-	#name : #WormholeSquare,
-	#superclass : #Object,
+	#name : #NullEffect,
+	#superclass : #Effect,
 	#instVars : [
-		'otherSide'
+		'myPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-WormholeSquare class >> of: otherSquare [
-^ self new of: otherSquare.
+NullEffect class >> isIn: aPosition [
+
+ ^self new initializeIn: aPosition 
 ]
 
-{ #category : #'instance creation' }
-WormholeSquare >> land [
-^ otherSide.
+{ #category : #action }
+NullEffect >> apply [
+
+^myPosition 
 ]
 
-{ #category : #'instance creation' }
-WormholeSquare >> of: otherSquare [
-otherSide := otherSquare.
+{ #category : #initialization }
+NullEffect >> initializeIn: aPosition [ 
+
+myPosition := aPosition.
 ]
