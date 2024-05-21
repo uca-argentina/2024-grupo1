@@ -81,9 +81,7 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare [
 	
-	|aux|
-	aux  :=	self validateWithinBounds: aSquare.
-	^ (boardOfSquares at: aux) land. 
+	^ (boardOfSquares at: (self validateWithinBounds: aSquare)) land.
 ]
 
 { #category : #'instance creation' }
