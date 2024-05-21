@@ -6,7 +6,8 @@ Class {
 		'board',
 		'state',
 		'dice',
-		'spaceshipPositions'
+		'spaceshipPositions',
+		'spaceshipsData'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,6 +16,26 @@ Class {
 Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
 
 	^ self new initializePlayedBy: someSpaceships on: aBoard throwing: someDice
+]
+
+{ #category : #adding }
+Game >> addLap [
+	
+	|currentLaps currentPlayer|
+	
+	currentPlayer := spaceships first.
+	currentLaps := (spaceshipsData at: currentPlayer ) at: 'Laps' .
+	(spaceshipsData at: currentPlayer ) at: 'Laps' put: (currentLaps +1)
+]
+
+{ #category : #adding }
+Game >> addLaps: amountOfLaps [
+	
+	|currentLaps currentPlayer|
+	
+	currentPlayer := spaceships first.
+	currentLaps := (spaceshipsData at: currentPlayer ) at: 'Laps' .
+	(spaceshipsData at: currentPlayer ) at: 'Laps' put: (currentLaps +amountOfLaps)
 ]
 
 { #category : #accessing }
@@ -33,10 +54,24 @@ Game >> end [
 ]
 
 { #category : #initialization }
+Game >> initializeData [
+
+|numberOfPlayers data dataForOneSpaceship|
+
+
+numberOfPlayers := spaceships size.
+dataForOneSpaceship := Dictionary newFromKeys: #('Position' 'Laps') andValues: #(0 0).
+data := OrderedCollection new.
+numberOfPlayers timesRepeat: [ data add: dataForOneSpaceship ] .
+spaceshipsData := Dictionary newFromKeys: spaceships andValues:  (data).
+]
+
+{ #category : #initialization }
 Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice [
 
 spaceships := someSpaceships.  
 self initializePositions.
+self initializeData.
 state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
@@ -65,7 +100,7 @@ Game >> isOngoing [
 
 { #category : #accessing }
 Game >> lapsOf: aSpaceship [ 
- ^ 1
+ ^ (spaceshipsData at: aSpaceship ) at: 'Laps'
 ]
 
 { #category : #accessing }
@@ -99,7 +134,7 @@ Game >> playTurn [
 
 
 	finalPosition := diceResult + (self positionOf: aSpaceship).
-	finalPosition := board finalSquareAfterLandingIn: finalPosition.
+	finalPosition := board finalSquareAfterLandingIn: finalPosition whenPlaying: self.
 	self updatePositionOf: aSpaceship to: finalPosition.
 
 	self checkForWinnerIn: finalPosition.

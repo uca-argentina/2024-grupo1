@@ -324,3 +324,21 @@ self assert: (aGame lapsOf: aSpaceship) equals: 1
 
 
 ]
+
+{ #category : #tests }
+GameTest >> test40AfterSpaceshipCrossesTheFinishLineTwiceThenHasTwoLaps [
+
+
+| aGame aSpaceship aBoard aDie|
+
+aSpaceship := Spaceship launch: ''.
+aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
+aDie := LoadedDie of: 11.
+aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
+
+aGame playTurn.
+self assert: (aGame lapsOf: aSpaceship) equals: 2
+
+
+
+]

@@ -84,6 +84,13 @@ Board >> finalSquareAfterLandingIn: aSquare [
 	^ (boardOfSquares at: (self validateWithinBounds: aSquare)) land.
 ]
 
+{ #category : #accessing }
+Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
+	
+	
+	^ (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) land.
+]
+
 { #category : #'instance creation' }
 Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
@@ -110,6 +117,18 @@ Board >> validateWithinBounds: aSquare [
 
 	"aSquare >= (self squares) ifTrue: [ ^ self squares ].
 	^ aSquare"
-	aSquare > (self squares) ifTrue: [ ^ aSquare -(self squares ) ].
+	aSquare > (self squares) ifTrue: [ ^ aSquare % self squares ].
 	^aSquare
+	
+
+]
+
+{ #category : #analyze }
+Board >> validateWithinBounds: aSquare whenPlaying: aGame [
+
+	aSquare > self squares ifTrue: [
+		aGame addLaps: (aSquare // self squares ).
+		^ aSquare % self squares ].
+
+	^ aSquare
 ]
