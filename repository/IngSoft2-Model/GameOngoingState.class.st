@@ -40,5 +40,5 @@ GameOngoingState >> validateTurn [
 { #category : #accessing }
 GameOngoingState >> winnerOf: spaceships playingIn: aBoard [
 
-	^ nil
+	Error signal: 'The game is not over - there is no winner yet.'
 ]

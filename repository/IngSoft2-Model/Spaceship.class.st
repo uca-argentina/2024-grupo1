@@ -2,7 +2,6 @@ Class {
 	#name : #Spaceship,
 	#superclass : #Object,
 	#instVars : [
-		'position',
 		'myName'
 	],
 	#category : #'IngSoft2-Model'

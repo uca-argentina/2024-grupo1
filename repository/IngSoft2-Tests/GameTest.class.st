@@ -85,9 +85,9 @@ GameTest >> test008WhenGameIsOngoingThereIsNoWinner [
 	aSpaceship := Spaceship launch: ''.
 	aGame := Game playedBy: #(aSpaceship) on: aBoard throwing: nil.
 
-	self assert: aGame winner equals: nil
+	self should: [ aGame winner ] raise: Error withMessage: 'The game is not over - there is no winner yet.'
 	
-"poner excepcion"
+
 ]
 
 { #category : #tests }
@@ -273,57 +273,6 @@ GameTest >> test025GameCanUseMultipleDice [
 ]
 
 { #category : #tests }
-GameTest >> test028GameWithOnePlayerReturnsLeaderboardWithPositions [
-
-	| aGame aSpaceship aDie aBoard |
-	self
-		deprecated: 'Use #test021WhenGameIsOverLeaderboardIsShown instead'
-		on: '19 May 2024'
-		in:
-		'Pharo-11.0.0+build.726.sha.aece1b5473acf3830a0e082c1bc3a15d4ff3522b (64 Bit)'.
-
-	aSpaceship := Spaceship launch: 'Millenium Falcon'.
-	aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
-	aDie := LoadedDie of: 5.
-	aGame := Game
-		         playedBy: (OrderedCollection with: aSpaceship)
-		         on: aBoard
-		         throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
-
-	self
-		assert: aGame leaderBoard first getName
-		equals: 'Millenium Falcon'
-]
-
-{ #category : #tests }
-GameTest >> test029GameWithMultiplePlayersReturnsLeaderBoardWithPositions [
-
-	| aGame aSpaceship anotherSpaceship aDie aBoard leaderboard |
-	self
-		deprecated:
-		'Use #test023GameWithMultiplePlayersShowsLeaderBoard instead'
-		on: '19 May 2024'
-		in:
-		'Pharo-11.0.0+build.726.sha.aece1b5473acf3830a0e082c1bc3a15d4ff3522b (64 Bit)'.
-
-	aSpaceship := Spaceship launch: 'Millenium Falcon'.
-	anotherSpaceship := Spaceship launch: 'Death Star'.
-	aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
-	aDie := LoadedDie of: 5.
-	aGame := Game
-		         playedBy:
-		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
-		         on: aBoard
-		         throwing: (OrderedCollection with: aDie).
-	aGame playTurn.
-	leaderboard := aGame leaderBoard.
-
-	self assert: (leaderboard first getName = 'Millenium Falcon' and:
-			 leaderboard last getName = 'Death Star')
-]
-
-{ #category : #tests }
 GameTest >> test031TurnCannotBePlayedIfGameIsOver [
 
 | aGame aSpaceship aDie aBoard|
@@ -342,15 +291,18 @@ self should: [ aGame playTurn ] raise: Error withMessage: 'Game has already ende
 { #category : #tests }
 GameTest >> test036GameCannotShowPositionOfSpaceshipsThatArentPlaying [
 
-| aGame aSpaceship anotherSpaceship aDie aBoard|
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'Millenium Falcon'.
+	anotherSpaceship := Spaceship launch: 'Death Star'.
+	aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie of: 5.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
 
-aSpaceship := Spaceship launch: 'Millenium Falcon'.
-anotherSpaceship := Spaceship launch: 'Death Star'.
-aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
-aDie := LoadedDie of: 5.
-aGame := Game playedBy: (OrderedCollection  with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-
-self should: [ aGame positionOf: anotherSpaceship  ] raise: Error withMessage: 'That spaceship is not a player in this game'.
-	
-
+	self
+		should: [ aGame positionOf: anotherSpaceship ]
+		raise: Error
+		withMessage: 'That spaceship is not a player in this game'
 ]

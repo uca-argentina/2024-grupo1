@@ -25,8 +25,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSquares',
-		'wormholeStartPoint',
-		'wormholeEndPoint',
 		'boardOfSquares'
 	],
 	#category : #'IngSoft2-Model'
@@ -96,24 +94,6 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
 	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect goesTo: endPoint)).
 	boardOfSquares at: endPoint put: (Square with: (WormholeEffect goesTo: startingPoint)).
-	 
-"
-	| i |
-	i := 1.
-	numberOfSquares := aNumberOfSquares.
-	wormholeStartPoint := startingPoint.
-	wormholeEndPoint := endPoint.
-	boardOfSquares := OrderedCollection new.
-	[ i <= numberOfSquares ] whileTrue: [
-		i = startingPoint ifTrue: [
-			boardOfSquares add: (WormholeSquare of: endPoint) ].
-		i = endPoint ifTrue: [
-			boardOfSquares add: (WormholeSquare of: startingPoint) ].
-		(i ~= startingPoint and: i ~= endPoint) ifTrue: [
-			boardOfSquares add: (NormalSquare isIn: i) ]. 
-		
-		i := i + 1. 
-		]"
 	
 	
 	
