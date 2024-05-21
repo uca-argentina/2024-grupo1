@@ -217,7 +217,7 @@ GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 { #category : #tests }
 GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 
-	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship stack aBoard aLoadedDie someDice |
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship stack aBoard aLoadedDie someDice leaderboard|
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
@@ -225,14 +225,14 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 		         with: aSpaceship
 		         with: anotherSpaceship
 		         with: yetAnotherSpaceship.
-	aBoard := Board of: 6 wormholeBeginsAt: 1 andEndsAt: 2.
-	aLoadedDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 3 with: 1).
+	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
+	aLoadedDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 2 with: 1).
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	[ aGame isOngoing ] whileTrue: [ aGame playTurn ].
-
+	leaderboard := aGame leaderBoard.
 	self
-		assert: aGame leaderBoard asOrderedCollection
+		assert: leaderboard asOrderedCollection
 		equals: (OrderedCollection
 				 with: aSpaceship 
 				 with: anotherSpaceship
@@ -305,4 +305,22 @@ GameTest >> test036GameCannotShowPositionOfSpaceshipsThatArentPlaying [
 		should: [ aGame positionOf: anotherSpaceship ]
 		raise: Error
 		withMessage: 'That spaceship is not a player in this game'
+]
+
+{ #category : #tests }
+GameTest >> test39AfterSpaceshipPassesLastSquareForTheFirstTimeThenNumberOfLapsIsOne [
+
+
+| aGame aSpaceship aBoard aDie|
+
+aSpaceship := Spaceship launch: ''.
+aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
+aDie := LoadedDie of: 8.
+aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
+
+aGame playTurn.
+self assert: (aGame lapsOf: aSpaceship) equals: 1
+
+
+
 ]

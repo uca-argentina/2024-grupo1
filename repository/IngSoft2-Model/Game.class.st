@@ -64,6 +64,11 @@ Game >> isOngoing [
 ]
 
 { #category : #accessing }
+Game >> lapsOf: aSpaceship [ 
+ ^ 1
+]
+
+{ #category : #accessing }
 Game >> leaderBoard [
 	
 	^ spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipPositions at: sp1) >= (spaceshipPositions at: sp2 ) ].  

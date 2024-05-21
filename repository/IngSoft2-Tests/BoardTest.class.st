@@ -129,3 +129,39 @@ BoardTest >> test035BoardCannotBeCreatedIfWormholeEndpointsAreInTheSameSquare [
 
 	self should: [ aBoard := Board of: 3 wormholeBeginsAt: 1 andEndsAt: 1. ] raise: Error withMessage: 'Wormhole endpoints cannot be in the same square'.  
 ]
+
+{ #category : #tests }
+BoardTest >> test37WhenSpaceshipPassesFinalSquareThenGoesBackToBeginning [
+
+
+| aGame aSpaceship aBoard aDie|
+
+aSpaceship := Spaceship launch: ''.
+aBoard := Board of: 7 wormholeBeginsAt: 1 andEndsAt: 2.
+aDie := LoadedDie of: 10.
+aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
+
+aGame playTurn.
+self assert: (aGame positionOf: aSpaceship) equals: 3
+
+
+
+]
+
+{ #category : #tests }
+BoardTest >> test38WhenSpaceshipMovesTenInBoardOfEightThenGoesToSquareTwo [
+
+
+| aGame aSpaceship aBoard aDie|
+
+aSpaceship := Spaceship launch: ''.
+aBoard := Board of: 8 wormholeBeginsAt: 3 andEndsAt: 4.
+aDie := LoadedDie of: 10.
+aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
+
+aGame playTurn.
+self assert: (aGame positionOf: aSpaceship) equals: 2
+
+
+
+]

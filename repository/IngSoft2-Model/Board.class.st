@@ -108,6 +108,8 @@ Board >> squares [
 { #category : #analyze }
 Board >> validateWithinBounds: aSquare [
 
-	aSquare >= (self squares) ifTrue: [ ^ self squares ].
-	^ aSquare
+	"aSquare >= (self squares) ifTrue: [ ^ self squares ].
+	^ aSquare"
+	aSquare > (self squares) ifTrue: [ ^ aSquare -(self squares ) ].
+	^aSquare
 ]
