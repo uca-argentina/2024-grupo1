@@ -49,7 +49,7 @@ GameTest >> test004SpaceshipChangedPositionByOneWhenMoved [
 
 	| aSpaceship aGame |
 	aSpaceship := Spaceship launch: ''.
-	aGame := Game playedBy: #(aSpaceship ) on: nil throwing: nil.
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: nil throwing: nil.
 	aGame updatePositionOf: aSpaceship  to: 1.
 	self assert: (aGame positionOf: aSpaceship ) equals: 1
 ]
@@ -72,6 +72,7 @@ GameTest >> test006WhenGameHasOnlyOnePlayerThenThatPlayerWins [
 	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 2 wormholeBeginsAt: 1 andEndsAt: 2.
 	aGame := Game playedBy: stack on: aBoard throwing: nil.
+	aGame positionOf: aSpaceship .
 	aGame updatePositionOf: aSpaceship  to: 2.
 	aGame end.
 	self assert: aGame winner equals: aSpaceship
@@ -183,8 +184,8 @@ GameTest >> test019GameResetsTurnsForNextRound [
 GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
-	aSpaceship := Spaceship launch: ''.
-	anotherSpaceship := Spaceship launch: ''.
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
 	aLoadedDie := LoadedDie of: 3.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	someDice:= OrderedCollection with: aLoadedDie.
@@ -192,7 +193,9 @@ GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn.
 	aGame end.
+	
 	self assert: aGame winner equals: aSpaceship
+
 ]
 
 { #category : #tests }
@@ -217,7 +220,7 @@ GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 { #category : #tests }
 GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 
-	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship stack aBoard aLoadedDie someDice leaderboard|
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship stack aBoard aLoadedDie someDice leaderboard |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
@@ -226,7 +229,8 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 		         with: anotherSpaceship
 		         with: yetAnotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
-	aLoadedDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 2 with: 1).
+	aLoadedDie := LoadedDie arrayOf:
+		              (OrderedCollection with: 3 with: 2 with: 1).
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	[ aGame isOngoing ] whileTrue: [ aGame playTurn ].
@@ -234,9 +238,9 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 	self
 		assert: leaderboard asOrderedCollection
 		equals: (OrderedCollection
-				 with: aSpaceship 
+				 with: aSpaceship
 				 with: anotherSpaceship
-				 with: yetAnotherSpaceship )
+				 with: yetAnotherSpaceship)
 ]
 
 { #category : #tests }
@@ -338,6 +342,24 @@ aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwin
 
 aGame playTurn.
 self assert: (aGame lapsOf: aSpaceship) equals: 2
+
+
+
+]
+
+{ #category : #tests }
+GameTest >> test41GameHasTheInformationForASpaceship [
+
+
+| aGame aSpaceship aBoard aDie|
+
+aSpaceship := Spaceship launch: ''.
+aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
+aDie := LoadedDie of: 3.
+aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
+
+aGame playTurn.
+self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps') andValues: #(3 0))
 
 
 

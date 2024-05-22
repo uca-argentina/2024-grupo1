@@ -79,12 +79,6 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 ]
 
 { #category : #accessing }
-Board >> finalSquareAfterLandingIn: aSquare [
-	
-	^ (boardOfSquares at: (self validateWithinBounds: aSquare)) land.
-]
-
-{ #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
 	
 	
@@ -110,17 +104,6 @@ Board >> squares [
 
 
 ^ boardOfSquares size.
-]
-
-{ #category : #analyze }
-Board >> validateWithinBounds: aSquare [
-
-	"aSquare >= (self squares) ifTrue: [ ^ self squares ].
-	^ aSquare"
-	aSquare > (self squares) ifTrue: [ ^ aSquare % self squares ].
-	^aSquare
-	
-
 ]
 
 { #category : #analyze }

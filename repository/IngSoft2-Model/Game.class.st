@@ -6,7 +6,6 @@ Class {
 		'board',
 		'state',
 		'dice',
-		'spaceshipPositions',
 		'spaceshipsData'
 	],
 	#category : #'IngSoft2-Model'
@@ -43,6 +42,12 @@ Game >> checkForWinnerIn: aSquare [
 	aSquare = board squares ifTrue: [ self end  ].
 ]
 
+{ #category : #testing }
+Game >> dataFor: aSpaceship [
+
+^spaceshipsData at: aSpaceship 
+]
+
 { #category : #accessing }
 Game >> dice [
 ^ dice.
@@ -56,13 +61,13 @@ Game >> end [
 { #category : #initialization }
 Game >> initializeData [
 
-|numberOfPlayers data dataForOneSpaceship|
+|numberOfPlayers data |
 
 
 numberOfPlayers := spaceships size.
-dataForOneSpaceship := Dictionary newFromKeys: #('Position' 'Laps') andValues: #(0 0).
+
 data := OrderedCollection new.
-numberOfPlayers timesRepeat: [ data add: dataForOneSpaceship ] .
+numberOfPlayers timesRepeat: [ data add: (Dictionary newFromKeys: (OrderedCollection with: 'Position' with: 'Laps') andValues: (OrderedCollection with: 0 with: 0) )] .
 spaceshipsData := Dictionary newFromKeys: spaceships andValues:  (data).
 ]
 
@@ -70,26 +75,12 @@ spaceshipsData := Dictionary newFromKeys: spaceships andValues:  (data).
 Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice [
 
 spaceships := someSpaceships.  
-self initializePositions.
 self initializeData.
 state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
 
 
-]
-
-{ #category : #initialization }
-Game >> initializePositions [
-
-|numberOfPlayers startingPositions|
-
-
-numberOfPlayers := spaceships size.
-startingPositions := OrderedCollection new.
-numberOfPlayers timesRepeat: [ startingPositions add: 0 ] .
-
-spaceshipPositions := Dictionary newFromKeys: spaceships andValues:  (startingPositions ).
 ]
 
 { #category : #testing }
@@ -106,7 +97,9 @@ Game >> lapsOf: aSpaceship [
 { #category : #accessing }
 Game >> leaderBoard [
 	
-	^ spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipPositions at: sp1) >= (spaceshipPositions at: sp2 ) ].  
+	"^ spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipPositions at: sp1) >= (spaceshipPositions at: sp2 ) ].  "
+	
+	^spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipsData at: sp1 at: 'Position') >= (spaceshipsData at: sp2 at: 'Position') ]
 	
 ]
 
@@ -139,7 +132,7 @@ Game >> playTurn [
 
 	self checkForWinnerIn: finalPosition.
 	self nextTurn
-
+ 
 ]
 
 { #category : #accessing }
@@ -151,7 +144,8 @@ Game >> players [
 Game >> positionOf: aSpaceship [ 
 
 
- ^ spaceshipPositions at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game'].
+ "^ spaceshipPositions at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']."
+	^(spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']) at: 'Position'
 ]
 
 { #category : #action }
@@ -166,11 +160,14 @@ Game >> throwDice [
 { #category : #action }
 Game >> updatePositionOf: aSpaceship to: newPosition [ 
 
-	spaceshipPositions at: aSpaceship put: newPosition.
+	"spaceshipPositions at: aSpaceship put: newPosition."
+	(spaceshipsData at: aSpaceship) at: 'Position' put: newPosition .
+	
+
 ]
 
 { #category : #accessing }
 Game >> winner [
 
-	^ state winnerOf: spaceshipPositions playingIn: board 
+	^ state winnerOf: spaceshipsData  playingIn: board 
 ]
