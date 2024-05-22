@@ -149,8 +149,18 @@ Game >> positionOf: aSpaceship [
 ]
 
 { #category : #action }
-Game >> processBattleBetween: aSpaceship and: aSpaceship2 [ 
-	spaceshipsData at: aSpaceship at: 'Shields' put: 2
+Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
+
+	| loser resultForFirstPlayer resultForSecondPlayer |
+	resultForFirstPlayer := self throwDice.
+	resultForSecondPlayer := self throwDice.
+	loser := resultForFirstPlayer > resultForSecondPlayer
+		         ifTrue: [ aSpaceship2 ]
+		         ifFalse: [ aSpaceship ].
+
+	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1]
+	
+
 ]
 
 { #category : #accessing }
