@@ -37,6 +37,19 @@ Game >> addLaps: amountOfLaps [
 	(spaceshipsData at: currentPlayer ) at: 'Laps' put: (currentLaps +amountOfLaps)
 ]
 
+{ #category : #action }
+Game >> calculateFinalPositionFor: aSpaceship [
+
+	| diceResult finalPosition |
+	diceResult := self throwDice.
+	finalPosition := diceResult + (self positionOf: aSpaceship).
+	finalPosition := board
+		                 finalSquareAfterLandingIn: finalPosition
+		                 whenPlaying: self.
+
+	^ finalPosition
+]
+
 { #category : #accessing }
 Game >> checkForWinnerIn: aSquare [ 
 	aSquare = board squares ifTrue: [ self end  ].
@@ -120,21 +133,17 @@ Game >> nextTurn [
 { #category : #action }
 Game >> playTurn [
 
-	| aSpaceship diceResult finalPosition rival| 
+	| aSpaceship finalPosition |
 	state validateTurn.
 	aSpaceship := self nextSpaceshipToPlay.
-	diceResult := self throwDice.
-
-
-	finalPosition := diceResult + (self positionOf: aSpaceship).
-	finalPosition := board finalSquareAfterLandingIn: finalPosition whenPlaying: self.
-	rival := spaceshipsData 	detect: [ :spaceship| (spaceship at: 'Position') = finalPosition ] ifNone:  [ 0 ].
+	finalPosition := self calculateFinalPositionFor: aSpaceship.
 	self updatePositionOf: aSpaceship to: finalPosition.
-	rival =0 ifFalse: [ self processBattleBetween: aSpaceship  and: rival ].
+	spaceships allButFirstDo: [ :spaceship |
+		((spaceshipsData at: spaceship) at: 'Position') = finalPosition
+			ifTrue: [ self processBattleBetween: aSpaceship and: spaceship ] ].
 
 	self checkForWinnerIn: finalPosition.
 	self nextTurn
- 
 ]
 
 { #category : #accessing }
@@ -169,6 +178,11 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 { #category : #accessing }
 Game >> shieldsOf: aSpaceship [ 
 	^spaceshipsData at: aSpaceship at: 'Shields'.
+]
+
+{ #category : #action }
+Game >> skipTurn [
+	self nextTurn.
 ]
 
 { #category : #action }

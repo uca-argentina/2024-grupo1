@@ -466,5 +466,43 @@ GameTest >> test47WhenTwoSpaceshipsLandOnTheSameSquareTheyBattle [
 
 	self assert: (aGame positionOf: anotherSpaceship ) equals: 1
 	
-"first to throw is spaceship on turn"
+
+]
+
+{ #category : #tests }
+GameTest >> test48IfBattleEndsOnADrawThenLastSpaceshipToArriveLoses [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame positionOf: anotherSpaceship ) equals: 1
+	
+
+]
+
+{ #category : #tests }
+GameTest >> test49SpaceshipCanSkipTurn [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame skipTurn.
+		
+	self assert: (aGame nextSpaceshipToPlay ) equals: anotherSpaceship.
+
 ]
