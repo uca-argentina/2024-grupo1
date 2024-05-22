@@ -120,7 +120,7 @@ Game >> nextTurn [
 { #category : #action }
 Game >> playTurn [
 
-	| aSpaceship diceResult finalPosition | 
+	| aSpaceship diceResult finalPosition rival| 
 	state validateTurn.
 	aSpaceship := self nextSpaceshipToPlay.
 	diceResult := self throwDice.
@@ -128,7 +128,9 @@ Game >> playTurn [
 
 	finalPosition := diceResult + (self positionOf: aSpaceship).
 	finalPosition := board finalSquareAfterLandingIn: finalPosition whenPlaying: self.
+	rival := spaceshipsData 	detect: [ :spaceship| (spaceship at: 'Position') = finalPosition ] ifNone:  [ 0 ].
 	self updatePositionOf: aSpaceship to: finalPosition.
+	rival =0 ifFalse: [ self processBattleBetween: aSpaceship  and: rival ].
 
 	self checkForWinnerIn: finalPosition.
 	self nextTurn
@@ -158,7 +160,8 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
 
-	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1]
+	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1].
+	(spaceshipsData at: loser) at: 'Position' put: 1.
 	
 
 ]
