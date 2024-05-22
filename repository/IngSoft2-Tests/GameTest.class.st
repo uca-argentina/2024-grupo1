@@ -359,8 +359,39 @@ aDie := LoadedDie of: 3.
 aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
 
 aGame playTurn.
-self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps') andValues: #(3 0))
+self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields') andValues: #(3 0 3))
 
 
 
+]
+
+{ #category : #tests }
+GameTest >> test42ASpaceshipStartsWithThreeShields [
+
+	| aGame aSpaceship aDie aBoard|
+	aSpaceship := Spaceship launch: ''.
+	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie of: 3.
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie ).
+	self assert: (aGame shieldsOf: aSpaceship) equals: 3
+
+
+
+]
+
+{ #category : #tests }
+GameTest >> test43AfterLosingABattleSpaceshipLosesAShield [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 3 with: 1).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+
+	self assert: (aGame shieldsOf: aSpaceship) equals: 2
 ]

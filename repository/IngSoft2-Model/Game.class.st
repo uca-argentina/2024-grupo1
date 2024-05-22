@@ -67,7 +67,7 @@ Game >> initializeData [
 numberOfPlayers := spaceships size.
 
 data := OrderedCollection new.
-numberOfPlayers timesRepeat: [ data add: (Dictionary newFromKeys: (OrderedCollection with: 'Position' with: 'Laps') andValues: (OrderedCollection with: 0 with: 0) )] .
+numberOfPlayers timesRepeat: [ data add: (Dictionary newFromKeys: (OrderedCollection with: 'Position' with: 'Laps' with: 'Shields') andValues: (OrderedCollection with: 0 with: 0 with: 3) )] .
 spaceshipsData := Dictionary newFromKeys: spaceships andValues:  (data).
 ]
 
@@ -146,6 +146,16 @@ Game >> positionOf: aSpaceship [
 
  "^ spaceshipPositions at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']."
 	^(spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']) at: 'Position'
+]
+
+{ #category : #action }
+Game >> processBattleBetween: aSpaceship and: aSpaceship2 [ 
+	spaceshipsData at: aSpaceship at: 'Shields' put: 2
+]
+
+{ #category : #accessing }
+Game >> shieldsOf: aSpaceship [ 
+	^spaceshipsData at: aSpaceship at: 'Shields'.
 ]
 
 { #category : #action }
