@@ -506,3 +506,40 @@ GameTest >> test49SpaceshipCanSkipTurn [
 	self assert: (aGame nextSpaceshipToPlay ) equals: anotherSpaceship.
 
 ]
+
+{ #category : #tests }
+GameTest >> test50SkippingATurnRechargesShields [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 1 with: 2).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame skipTurn.
+		
+	self assert: (aGame shieldsOf: aSpaceship ) equals: 3.
+
+]
+
+{ #category : #tests }
+GameTest >> test51FirstSquareIsASafeZone [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 2 andEndsAt: 3.
+	aDie := LoadedDie of: 5.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame playTurn.
+	aGame playTurn.		
+	self assert: (aGame shieldsOf: anotherSpaceship ) equals: 3.
+
+]
