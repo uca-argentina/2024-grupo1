@@ -86,7 +86,7 @@ GameTest >> test008WhenGameIsOngoingThereIsNoWinner [
 	aSpaceship := Spaceship launch: ''.
 	aGame := Game playedBy: #(aSpaceship) on: aBoard throwing: nil.
 
-	self should: [ aGame winner ] raise: Error withMessage: 'The game is not over - there is no winner yet.'
+	self should: [ aGame winner ] raise: Error withMessage: 'The game is not over - there is no winner yet.' 
 	
 
 ]
