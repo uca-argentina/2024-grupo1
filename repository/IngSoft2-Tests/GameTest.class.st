@@ -40,8 +40,8 @@ GameTest >> test003GameBeginsWithAPlayer [
 
 	| aGame aSpaceship |
 	aSpaceship := Spaceship launch: ''.
-	aGame := Game playedBy: #(aSpaceship) on: nil throwing: nil.
-	self assert: aGame players equals: #(aSpaceship)
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: nil throwing: nil.
+	self assert: aGame players equals: (OrderedCollection with: aSpaceship)
 ]
 
 { #category : #tests }

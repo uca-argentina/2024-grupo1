@@ -67,9 +67,15 @@ Game >> checkForWinnerIn: aSquare [
 ]
 
 { #category : #testing }
+Game >> data [ 
+
+^spaceshipsData 
+]
+
+{ #category : #accessing }
 Game >> dataFor: aSpaceship [
 
-^spaceshipsData at: aSpaceship 
+^spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']
 ]
 
 { #category : #accessing }
@@ -107,7 +113,7 @@ dice := someDice.
 
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 Game >> isOngoing [
 
 ^ state isOngoing.
@@ -115,7 +121,7 @@ Game >> isOngoing [
 
 { #category : #accessing }
 Game >> lapsOf: aSpaceship [ 
- ^ (spaceshipsData at: aSpaceship ) at: 'Laps'
+ ^ (self dataFor:  aSpaceship) at: 'Laps'
 ]
 
 { #category : #accessing }
@@ -163,9 +169,7 @@ Game >> players [
 { #category : #accessing }
 Game >> positionOf: aSpaceship [ 
 
-
- "^ spaceshipPositions at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']."
-	^(spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']) at: 'Position'
+	^(self dataFor: aSpaceship )  at: 'Position'
 ]
 
 { #category : #action }
@@ -191,7 +195,8 @@ Game >> rechargeShieldsOf: aSpaceship [
 
 { #category : #accessing }
 Game >> shieldsOf: aSpaceship [ 
-	^spaceshipsData at: aSpaceship at: 'Shields'.
+
+	^(self dataFor:  aSpaceship) at: 'Shields'.
 ]
 
 { #category : #action }
