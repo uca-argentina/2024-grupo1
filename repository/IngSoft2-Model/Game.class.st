@@ -18,23 +18,13 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
 ]
 
 { #category : #adding }
-Game >> addLap [
-	
-	|currentLaps currentPlayer|
-	
-	currentPlayer := spaceships first.
-	currentLaps := (spaceshipsData at: currentPlayer ) at: 'Laps' .
-	(spaceshipsData at: currentPlayer ) at: 'Laps' put: (currentLaps +1)
-]
-
-{ #category : #adding }
 Game >> addLaps: amountOfLaps [
 	
 	|currentLaps currentPlayer|
 	
 	currentPlayer := spaceships first.
-	currentLaps := (spaceshipsData at: currentPlayer ) at: 'Laps' .
-	(spaceshipsData at: currentPlayer ) at: 'Laps' put: (currentLaps +amountOfLaps)
+	currentLaps := (self dataFor: currentPlayer ) at: 'Laps' .
+	(self dataFor: currentPlayer ) at: 'Laps' put: (currentLaps +amountOfLaps)
 ]
 
 { #category : #action }
@@ -175,14 +165,16 @@ Game >> positionOf: aSpaceship [
 { #category : #action }
 Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
-	| loser resultForFirstPlayer resultForSecondPlayer |
+	| loser resultForFirstPlayer resultForSecondPlayer currentShields |
 	resultForFirstPlayer := self throwDice.
 	resultForSecondPlayer := self throwDice.
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
 
-	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1].
+"	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1]."
+	currentShields :=	(spaceshipsData at: loser) at: 'Shields'.
+	(spaceshipsData at: loser) at: 'Shields' put: (currentShields -1).
 	(spaceshipsData at: loser) at: 'Position' put: 1.
 	
 
@@ -196,7 +188,7 @@ Game >> rechargeShieldsOf: aSpaceship [
 { #category : #accessing }
 Game >> shieldsOf: aSpaceship [ 
 
-	^(self dataFor:  aSpaceship) at: 'Shields'.
+	^(self dataFor: aSpaceship) at: 'Shields'.
 ]
 
 { #category : #action }
