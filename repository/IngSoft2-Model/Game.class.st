@@ -87,7 +87,7 @@ Game >> initializeData [
 numberOfPlayers := spaceships size.
 
 data := OrderedCollection new.
-numberOfPlayers timesRepeat: [ data add: (Dictionary newFromKeys: (OrderedCollection with: 'Position' with: 'Laps' with: 'Shields') andValues: (OrderedCollection with: 1 with: 0 with: 3) )] .
+numberOfPlayers timesRepeat: [ data add: (Dictionary newFromKeys: (OrderedCollection with: 'Position' with: 'Laps' with: 'Shields' with: 'State') andValues: (OrderedCollection with: 1 with: 0 with: 3 with: 0) )] .
 spaceshipsData := Dictionary newFromKeys: spaceships andValues:  (data).
 ]
 
@@ -143,17 +143,20 @@ Game >> playTurn [
 	| aSpaceship finalPosition |
 	state validateTurn.
 	aSpaceship := self nextSpaceshipToPlay.
-	((self dataFor: aSpaceship) at: 'Shields') = 0 ifFalse: [
+	((self dataFor: aSpaceship) at: 'State') = 0 ifTrue: [
 		finalPosition := self calculateFinalPositionFor: aSpaceship.
 		self updatePositionOf: aSpaceship to: finalPosition.
 		self checkForBattleIn: finalPosition.
 
-		self checkForWinnerIn: finalPosition.
-		self nextTurn .
-		 ]
-	ifTrue: [ self nextTurn  ]
+		self checkForWinnerIn: finalPosition ].
 
-	
+	((self dataFor: aSpaceship) at: 'State') = 1 ifTrue: [
+		self rechargeShieldsOf: aSpaceship.
+		(self dataFor: aSpaceship) at: 'State' put: 0 ].
+	((self dataFor: aSpaceship) at: 'State') = 2 ifTrue: [
+		(self dataFor: aSpaceship) at: 'State' put: 1 ].
+
+	self nextTurn
 ]
 
 { #category : #accessing }
@@ -180,7 +183,9 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 "	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1]."
 	currentShields :=	(spaceshipsData at: loser) at: 'Shields'.
 	(spaceshipsData at: loser) at: 'Shields' put: (currentShields -1).
+	((spaceshipsData at: loser) at: 'Shields') = 0 ifTrue: [ (spaceshipsData at: loser) at: 'State' put: 2 ].
 	(spaceshipsData at: loser) at: 'Position' put: 1.
+	
 	
 
 ]

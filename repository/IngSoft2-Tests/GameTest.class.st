@@ -373,7 +373,7 @@ aDie := LoadedDie of: 3.
 aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
 
 aGame playTurn.
-self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields') andValues: #(4 0 3))
+self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields' 'State') andValues: #(4 0 3 0))
 
 
 
@@ -594,5 +594,24 @@ GameTest >> test53AfterLosingAllShieldsSpaceshipCannotPlayForTwoTurns [
 	aGame playTurn.
 	
 	self assert: (aGame positionOf: aSpaceship  ) equals: 1.
+
+]
+
+{ #category : #tests }
+GameTest >> test54AfterLosingTwoTurnsSpaceshipCanPlayAgain [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 8 wormholeBeginsAt: 6 andEndsAt: 7.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 2 with: 3).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	3 timesRepeat: [ aGame processBattleBetween: aSpaceship  and: anotherSpaceship ].
+	5 timesRepeat: [ aGame playTurn  ].
+	
+	self assert: (aGame positionOf: aSpaceship  ) equals: 3.
 
 ]
