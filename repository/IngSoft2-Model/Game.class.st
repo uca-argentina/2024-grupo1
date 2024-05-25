@@ -74,6 +74,16 @@ Game >> dataFor: aSpaceship [
 ^spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']
 ]
 
+{ #category : #adding }
+Game >> decreaseShieldByOne [
+
+	| currentShield aSpaceship |
+	aSpaceship := self nextSpaceshipToPlay.
+	currentShield := (self dataFor: self nextSpaceshipToPlay) at:
+		                 'Shields'.
+	(self dataFor: aSpaceship) at: 'Shields' put: currentShield - 1
+]
+
 { #category : #accessing }
 Game >> dice [
 ^ dice.
@@ -136,6 +146,15 @@ Game >> leaderBoard [
 	
 	^spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipsData at: sp1 at: 'Position') >= (spaceshipsData at: sp2 at: 'Position') ]
 	
+]
+
+{ #category : #action }
+Game >> moveAllButCurrentBack: n [
+
+	| currentPosition |
+	spaceships allButFirstDo: [ :spaceship |
+		currentPosition := (self dataFor: spaceship) at: 'Position'.
+		(self dataFor: spaceship) at: 'Position' put: currentPosition - n ]
 ]
 
 { #category : #accessing }

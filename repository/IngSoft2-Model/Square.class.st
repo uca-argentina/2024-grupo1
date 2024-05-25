@@ -45,7 +45,7 @@ effect := anEffect.
 ]
 
 { #category : #action }
-Square >> land [ 
+Square >> landIn: aGame [ 
 
-^ effect apply.
+^ effect applyIn: aGame .
 ]

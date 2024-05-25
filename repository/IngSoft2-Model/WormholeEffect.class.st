@@ -39,7 +39,7 @@ WormholeEffect class >> goesTo: anotherPosition [
 ]
 
 { #category : #action }
-WormholeEffect >> apply [ 
+WormholeEffect >> applyIn: aGame [ 
 
 ^otherSide.
 ]

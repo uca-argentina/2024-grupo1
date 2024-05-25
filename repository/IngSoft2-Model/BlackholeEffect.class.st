@@ -14,7 +14,7 @@ BlackholeEffect class >> isIn: aPosition [
 ]
 
 { #category : #action }
-BlackholeEffect >> apply [
+BlackholeEffect >> applyIn: aGame [
 	^(myPosition ) -4.
 ]
 

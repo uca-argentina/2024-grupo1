@@ -14,8 +14,8 @@ HyperSpaceJumpEffect class >> isIn: aPosition [
 ]
 
 { #category : #action }
-HyperSpaceJumpEffect >> apply [ 
-
+HyperSpaceJumpEffect >> applyIn: aGame [ 
+	aGame decreaseShieldByOne.
 	^myPosition +4
 ]
 

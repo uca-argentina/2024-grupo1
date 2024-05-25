@@ -87,7 +87,7 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
 	
 	
-	^ (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) land.
+	^ (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) landIn: aGame .
 ]
 
 { #category : #initialization }

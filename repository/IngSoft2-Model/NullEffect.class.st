@@ -39,7 +39,7 @@ NullEffect class >> isIn: aPosition [
 ]
 
 { #category : #action }
-NullEffect >> apply [
+NullEffect >> applyIn: aGame [
 
 ^myPosition 
 ]

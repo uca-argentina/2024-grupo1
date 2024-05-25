@@ -178,3 +178,33 @@ BoardTest >> test56IfSpaceshipLandsOnHyperSpaceJumpSquareThenAdvancesFourSquares
 	aGame playTurn .
 	self assert: (aGame positionOf: aSpaceship) equals: 10
 ]
+
+{ #category : #tests }
+BoardTest >> test57IfSpaceshipLandsOnHyperSpaceJumpSquareThenLosesAShield [
+
+	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect|
+	aSpaceship := Spaceship launch: 'One'.
+	hyperSpaceJumpEffect  := HyperSpaceJumpEffect isIn: 6.
+	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: hyperSpaceJumpEffect).
+	aBoard := Board of: 11 with: (specialSquares) .
+	aDie := LoadedDie of: 5.
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
+	aGame playTurn .
+	self assert: (aGame shieldsOf:  aSpaceship) equals: 2
+]
+
+{ #category : #tests }
+BoardTest >> test58WhenSpaceshipLandsOnMoonWalkSquareThenOtherSpaceshipsGetSentBackN [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonWalkEffect|
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	moonWalkEffect   := MoonWalkEffect isIn: 6 moves: 3.
+	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: moonWalkEffect ).
+	aBoard := Board of: 11 with: (specialSquares) .
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 5).
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
+	aGame playTurn .
+	aGame playTurn .
+	self assert: (aGame positionOf:  aSpaceship ) equals: 1
+]

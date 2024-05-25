@@ -27,7 +27,7 @@ Class {
 }
 
 { #category : #action }
-Effect >> apply [ 
+Effect >> applyIn: aGame [ 
 
 self subclassResponsibility.
 ]
