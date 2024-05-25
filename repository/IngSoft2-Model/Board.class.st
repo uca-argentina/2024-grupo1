@@ -31,6 +31,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+Board class >> of: squares with: someEffects [ 
+	^self new initializeOf: squares with: someEffects 
+]
+
+{ #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	self
@@ -85,7 +90,15 @@ Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
 	^ (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) land.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #initialization }
+Board >> initializeOf: squares with: someEffects [ 
+	numberOfSquares := squares.
+	boardOfSquares := OrderedCollection new.
+	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
+	someEffects keysDo:  [ :index | boardOfSquares at: index put: (Square with: (someEffects at: index )) ] 
+]
+
+{ #category : #initialization }
 Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	numberOfSquares := aNumberOfSquares.

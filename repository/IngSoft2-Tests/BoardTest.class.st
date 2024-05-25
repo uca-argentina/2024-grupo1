@@ -150,3 +150,31 @@ self assert: (aGame positionOf: aSpaceship) equals: 3
 
 
 ]
+
+{ #category : #tests }
+BoardTest >> test55WhenLandingInABlackholeSpaceshipGoesBackFourSquares [
+
+	| aGame aSpaceship aBoard aDie specialSquares blackholeEffect|
+	aSpaceship := Spaceship launch: 'One'.
+	blackholeEffect := BlackholeEffect isIn: 6.
+	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: blackholeEffect).
+	aBoard := Board of: 10 with: (specialSquares) .
+	aDie := LoadedDie of: 5.
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
+	aGame playTurn .
+	self assert: (aGame positionOf: aSpaceship) equals: 2
+]
+
+{ #category : #tests }
+BoardTest >> test56IfSpaceshipLandsOnHyperSpaceJumpSquareThenAdvancesFourSquares [
+
+	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect|
+	aSpaceship := Spaceship launch: 'One'.
+	hyperSpaceJumpEffect  := HyperSpaceJumpEffect isIn: 6.
+	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: hyperSpaceJumpEffect).
+	aBoard := Board of: 11 with: (specialSquares) .
+	aDie := LoadedDie of: 5.
+	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
+	aGame playTurn .
+	self assert: (aGame positionOf: aSpaceship) equals: 10
+]
