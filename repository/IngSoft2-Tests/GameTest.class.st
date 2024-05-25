@@ -55,13 +55,13 @@ GameTest >> test004SpaceshipChangedPositionByOneWhenMoved [
 ]
 
 { #category : #tests }
-GameTest >> test005SpaceshipIsCreatedAtStartPoint0 [
+GameTest >> test005SpaceshipIsCreatedAtStartPoint [
 
 	| aSpaceship aGame |
 	aSpaceship := Spaceship launch: ''.
 	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: nil throwing: nil.
 
-	self assert: (aGame positionOf: aSpaceship ) equals: 0
+	self assert: (aGame positionOf: aSpaceship ) equals: 1
 ]
 
 { #category : #tests }
@@ -112,11 +112,11 @@ GameTest >> test011ASpaceshipMovesFiveSquaresWhenLoadedDieIsThrown [
 	aSpaceship := Spaceship launch: ''.
 	aLoadedDie := LoadedDie of: 5.
 	someDice:=OrderedCollection with: aLoadedDie .
-	aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 7.
+	aBoard := Board of: 10 wormholeBeginsAt: 2 andEndsAt: 7.
 	stack:=OrderedCollection with: aSpaceship .
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn .
-	self assert: (aGame positionOf: aSpaceship ) equals: 5
+	self assert: (aGame positionOf: aSpaceship ) equals: 6
 ]
 
 { #category : #tests }
@@ -127,10 +127,10 @@ GameTest >> test012ASpaceshipMovesSevenSquaresWhenLoadedDieIsThrown [
 	stack:=OrderedCollection with: aSpaceship .
 	aLoadedDie := LoadedDie of: 7.
 	someDice:= OrderedCollection with: aLoadedDie .
-	aBoard := Board of: 10 wormholeBeginsAt: 6 andEndsAt: 8.
+	aBoard := Board of: 10 wormholeBeginsAt: 2 andEndsAt: 3.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn .
-	self assert: (aGame positionOf: aSpaceship ) equals: 7
+	self assert: (aGame positionOf: aSpaceship ) equals: 8
 ]
 
 { #category : #tests }
@@ -186,10 +186,10 @@ GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	aLoadedDie := LoadedDie of: 3.
+	aLoadedDie := LoadedDie of: 9.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	someDice:= OrderedCollection with: aLoadedDie.
-	aBoard := Board of: 3 wormholeBeginsAt: 1 andEndsAt: 2.
+	aBoard := Board of: 10 wormholeBeginsAt: 2 andEndsAt: 3.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn.
 	aGame end.
@@ -206,7 +206,7 @@ GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	stack := OrderedCollection with: aSpaceship with: anotherSpaceship.
 	aBoard := Board of: 6 wormholeBeginsAt: 1 andEndsAt: 2.
-	aLoadedDie := LoadedDie of: 5.
+	aLoadedDie := LoadedDie of: 4.
 	someDice:= OrderedCollection with: aLoadedDie .
 	aGame := Game playedBy: stack on: aBoard throwing: someDice .
 	aGame playTurn .
@@ -215,6 +215,21 @@ GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 	self
 		assert: aGame leaderBoard asOrderedCollection
 		equals: (OrderedCollection with: aSpaceship with: anotherSpaceship )
+]
+
+{ #category : #tests }
+GameTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
+
+	| aBoard aSpaceship aGame stack aLoadedDie someDice |
+	aBoard := Board of: 8 wormholeBeginsAt: 1 andEndsAt: 2.
+	aSpaceship := Spaceship launch: ''.
+	aLoadedDie := LoadedDie of: 7.
+	stack := OrderedCollection with: aSpaceship.
+	someDice := OrderedCollection with: aLoadedDie .
+	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	aGame playTurn .
+
+	self deny: aGame isOngoing
 ]
 
 { #category : #tests }
@@ -228,7 +243,7 @@ GameTest >> test023GameWithMultiplePlayersShowsLeaderBoard [
 		         with: aSpaceship
 		         with: anotherSpaceship
 		         with: yetAnotherSpaceship.
-	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
+	aBoard := Board of: 10 wormholeBeginsAt: 5 andEndsAt: 6.
 	aLoadedDie := LoadedDie arrayOf:
 		              (OrderedCollection with: 3 with: 2 with: 1).
 	someDice := OrderedCollection with: aLoadedDie.
@@ -254,8 +269,7 @@ GameTest >> test024GameStoresADie [
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn.
-	self assert: (aGame positionOf: aSpaceship ) equals: 6.  	
-	
+	self assert: (aGame positionOf: aSpaceship ) equals: 7.	
 
 ]
 
@@ -271,7 +285,7 @@ GameTest >> test025GameCanUseMultipleDice [
 	someDice := OrderedCollection with: aLoadedDie with: anotherLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
 	aGame playTurn .
-	self assert: (aGame positionOf: aSpaceship ) equals: 10.  	 
+	self assert: (aGame positionOf: aSpaceship ) equals: 11.
 	
 
 ]
@@ -283,7 +297,7 @@ GameTest >> test031TurnCannotBePlayedIfGameIsOver [
 
 aSpaceship := Spaceship launch: 'Millenium Falcon'.
 aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
-aDie := LoadedDie of: 5.
+aDie := LoadedDie of: 4.
 aGame := Game playedBy: (OrderedCollection  with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
 aGame playTurn.
 
@@ -359,7 +373,7 @@ aDie := LoadedDie of: 3.
 aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
 
 aGame playTurn.
-self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields') andValues: #(3 0 3))
+self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields') andValues: #(4 0 3))
 
 
 
@@ -455,7 +469,7 @@ GameTest >> test47WhenTwoSpaceshipsLandOnTheSameSquareTheyBattle [
 	| aGame aSpaceship anotherSpaceship aDie aBoard |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aBoard := Board of: 6 wormholeBeginsAt: 1 andEndsAt: 2.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 3 with: 2).
 	aGame := Game
 		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
@@ -475,7 +489,7 @@ GameTest >> test48IfBattleEndsOnADrawThenLastSpaceshipToArriveLoses [
 	| aGame aSpaceship anotherSpaceship aDie aBoard |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	aBoard := Board of: 4 wormholeBeginsAt: 1 andEndsAt: 2.
+	aBoard := Board of: 6 wormholeBeginsAt: 1 andEndsAt: 2.
 	aDie := LoadedDie of: 3.
 	aGame := Game
 		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
@@ -483,7 +497,7 @@ GameTest >> test48IfBattleEndsOnADrawThenLastSpaceshipToArriveLoses [
 		         throwing: (OrderedCollection with: aDie).
 	aGame playTurn.
 	aGame playTurn.
-	self assert: ((aGame positionOf: anotherSpaceship) = 1 and: ((aGame positionOf: aSpaceship) = 3) )
+	self assert: ((aGame positionOf: anotherSpaceship) = 1 and: ((aGame positionOf: aSpaceship) = 4) )
 	
 	
 
@@ -533,7 +547,7 @@ GameTest >> test51FirstSquareIsASafeZone [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	aBoard := Board of: 4 wormholeBeginsAt: 2 andEndsAt: 3.
-	aDie := LoadedDie of: 5.
+	aDie := LoadedDie of: 4.
 	aGame := Game
 		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
 		         on: aBoard
@@ -541,5 +555,44 @@ GameTest >> test51FirstSquareIsASafeZone [
 	aGame playTurn.
 	aGame playTurn.		
 	self assert: (aGame shieldsOf: anotherSpaceship ) equals: 3.
+
+]
+
+{ #category : #tests }
+GameTest >> test52IfSpaceshipLosesAllShieldsThenTheirTurnGetsSkipped [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 2 andEndsAt: 3.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 2 with: 3).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	3 timesRepeat: [ aGame processBattleBetween: aSpaceship  and: anotherSpaceship ].
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship ) equals: 1.
+
+]
+
+{ #category : #tests }
+GameTest >> test53AfterLosingAllShieldsSpaceshipCannotPlayForTwoTurns [
+
+	| aGame aSpaceship anotherSpaceship aDie aBoard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aBoard := Board of: 4 wormholeBeginsAt: 2 andEndsAt: 3.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 2 with: 3).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	3 timesRepeat: [ aGame processBattleBetween: aSpaceship  and: anotherSpaceship ].
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: (aGame positionOf: aSpaceship  ) equals: 1.
 
 ]

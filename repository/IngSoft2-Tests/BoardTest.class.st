@@ -38,7 +38,7 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 5.
+	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 3.
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
@@ -54,7 +54,7 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship .
-	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
+	aBoard := Board of: 10 wormholeBeginsAt: 4 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 3.
 	someDice:= OrderedCollection with: aLoadedDie .
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
@@ -71,7 +71,7 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
-	aLoadedDie := LoadedDie of: 7.
+	aLoadedDie := LoadedDie of: 6.
 	stack:= OrderedCollection with: aSpaceship .
 	someDice:= OrderedCollection with: aLoadedDie .
 	aGame := Game playedBy: stack on: aBoard throwing: someDice.
@@ -80,21 +80,6 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 
 
 	self assert: (aGame positionOf: aSpaceship ) equals: 3
-]
-
-{ #category : #tests }
-BoardTest >> test022GameEndsAutomaticallyWhenSpaceshipLandsInLastSquare [
-
-	| aBoard aSpaceship aGame stack aLoadedDie someDice |
-	aBoard := Board of: 8 wormholeBeginsAt: 1 andEndsAt: 2.
-	aSpaceship := Spaceship launch: ''.
-	aLoadedDie := LoadedDie of: 8.
-	stack := OrderedCollection with: aSpaceship.
-	someDice := OrderedCollection with: aLoadedDie .
-	aGame := Game playedBy: stack on: aBoard throwing: someDice.
-	aGame playTurn .
-
-	self deny: aGame isOngoing
 ]
 
 { #category : #tests }
@@ -142,25 +127,25 @@ aDie := LoadedDie of: 10.
 aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
 
 aGame playTurn.
-self assert: (aGame positionOf: aSpaceship) equals: 3
+self assert: (aGame positionOf: aSpaceship) equals: 4
 
 
 
 ]
 
 { #category : #tests }
-BoardTest >> test38WhenSpaceshipMovesTenInBoardOfEightThenGoesToSquareTwo [
+BoardTest >> test38WhenSpaceshipMovesTenInBoardOfEightThenGoesToSquareThree [
 
 
 | aGame aSpaceship aBoard aDie|
 
 aSpaceship := Spaceship launch: ''.
-aBoard := Board of: 8 wormholeBeginsAt: 3 andEndsAt: 4.
+aBoard := Board of: 8 wormholeBeginsAt: 2 andEndsAt: 4.
 aDie := LoadedDie of: 10.
 aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
 
 aGame playTurn.
-self assert: (aGame positionOf: aSpaceship) equals: 2
+self assert: (aGame positionOf: aSpaceship) equals: 3
 
 
 
