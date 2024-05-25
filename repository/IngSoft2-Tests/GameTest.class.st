@@ -362,24 +362,6 @@ self assert: (aGame lapsOf: aSpaceship) equals: 2
 ]
 
 { #category : #tests }
-GameTest >> test41GameHasTheInformationForASpaceship [
-
-
-| aGame aSpaceship aBoard aDie|
-
-aSpaceship := Spaceship launch: ''.
-aBoard := Board of: 5 wormholeBeginsAt: 1 andEndsAt: 2.
-aDie := LoadedDie of: 3.
-aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
-
-aGame playTurn.
-self assert: (aGame dataFor: aSpaceship ) equals: (Dictionary newFromKeys: #('Position' 'Laps' 'Shields' 'State') andValues: #(4 0 3 0))
-
-
-
-]
-
-{ #category : #tests }
 GameTest >> test42ASpaceshipStartsWithThreeShields [
 
 	| aGame aSpaceship aDie aBoard|
