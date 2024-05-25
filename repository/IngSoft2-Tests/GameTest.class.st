@@ -483,8 +483,8 @@ GameTest >> test48IfBattleEndsOnADrawThenLastSpaceshipToArriveLoses [
 		         throwing: (OrderedCollection with: aDie).
 	aGame playTurn.
 	aGame playTurn.
-
-	self assert: (aGame positionOf: anotherSpaceship ) equals: 1
+	self assert: ((aGame positionOf: anotherSpaceship) = 1 and: ((aGame positionOf: aSpaceship) = 3) )
+	
 	
 
 ]
