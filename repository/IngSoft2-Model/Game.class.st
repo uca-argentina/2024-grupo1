@@ -6,15 +6,15 @@ Class {
 		'board',
 		'state',
 		'dice',
-		'spaceshipsData'
+		'spaceshipsData',
+		'laps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> playedBy: someSpaceships on: aBoard throwing: someDice [
-
-	^ self new initializePlayedBy: someSpaceships on: aBoard throwing: someDice
+Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: aNumberOfLaps [ 
+	^self new initializePlayedBy: someSpaceships  on: aBoard  throwing: someDice wonAfter: aNumberOfLaps .
 ]
 
 { #category : #adding }
@@ -57,9 +57,12 @@ Game >> checkForBattleIn: finalPosition [
 				ifTrue: [ self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
 
-{ #category : #accessing }
-Game >> checkForWinnerIn: aSquare [ 
-	aSquare = board squares ifTrue: [ self end  ].
+{ #category : #action }
+Game >> checkForWinner [ 
+	|currentSpaceship|
+	
+	currentSpaceship := self nextSpaceshipToPlay .
+	(((self dataFor: currentSpaceship ) at: 'Laps') = laps) ifTrue: [ self end  ]
 ]
 
 { #category : #testing }
@@ -126,15 +129,14 @@ Game >> initializeData [
 ]
 
 { #category : #initialization }
-Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice [
+Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice wonAfter: aNumberOfLaps [ 
 
 spaceships := someSpaceships.  
 self initializeData.
 state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
-
-
+laps := aNumberOfLaps .
 ]
 
 { #category : #accessing }
@@ -150,11 +152,17 @@ Game >> lapsOf: aSpaceship [
 
 { #category : #accessing }
 Game >> leaderBoard [
-	
-	"^ spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipPositions at: sp1) >= (spaceshipPositions at: sp2 ) ].  "
-	
-	^spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipsData at: sp1 at: 'Position') >= (spaceshipsData at: sp2 at: 'Position') ]
-	
+	"^spaceships asSortedCollection: [ :sp1 :sp2 | (spaceshipsData at: sp1 at: 'Position') >= (spaceshipsData at: sp2 at: 'Position') ]"
+
+	^ spaceships asSortedCollection: [ :sp1 :sp2 |
+		  (spaceshipsData at: sp1 at: 'Laps')
+		  = (spaceshipsData at: sp2 at: 'Laps')
+			  ifFalse: [
+				  (spaceshipsData at: sp1 at: 'Laps')
+				  >= (spaceshipsData at: sp2 at: 'Laps') ]
+			  ifTrue: [
+				  (spaceshipsData at: sp1 at: 'Position')
+				  >= (spaceshipsData at: sp2 at: 'Position') ] ]
 ]
 
 { #category : #action }
@@ -195,7 +203,8 @@ Game >> normalTurn [
 	self updatePositionOf: aSpaceship to: finalPosition.
 	self checkForBattleIn: finalPosition.
 
-	self checkForWinnerIn: finalPosition
+"	self checkForWinnerIn: finalPosition"
+	self checkForWinner.
 ]
 
 { #category : #action }
@@ -280,5 +289,5 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 { #category : #accessing }
 Game >> winner [
 
-	^ state winnerOf: spaceshipsData  playingIn: board 
+	^ state winnerOf: spaceshipsData inAGameOf: laps 
 ]

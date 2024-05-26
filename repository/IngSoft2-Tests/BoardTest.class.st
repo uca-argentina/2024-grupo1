@@ -41,11 +41,15 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 3.
 	someDice := OrderedCollection with: aLoadedDie.
-	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	aGame := Game
+		         playedBy: stack
+		         on: aBoard
+		         throwing: someDice
+		         wonAfter: 1.
 	aGame playTurn.
 
 
-	self assert: (aGame positionOf: aSpaceship ) equals: 5
+	self assert: (aGame positionOf: aSpaceship) equals: 5
 ]
 
 { #category : #tests }
@@ -53,16 +57,20 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 
 	| aSpaceship aLoadedDie aGame aBoard stack someDice |
 	aSpaceship := Spaceship launch: ''.
-	stack := OrderedCollection with: aSpaceship .
+	stack := OrderedCollection with: aSpaceship.
 	aBoard := Board of: 10 wormholeBeginsAt: 4 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 3.
-	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	someDice := OrderedCollection with: aLoadedDie.
+	aGame := Game
+		         playedBy: stack
+		         on: aBoard
+		         throwing: someDice
+		         wonAfter: 1.
 
 	aGame playTurn.
 
 
-	self assert: (aGame positionOf: aSpaceship ) equals: 7
+	self assert: (aGame positionOf: aSpaceship) equals: 7
 ]
 
 { #category : #tests }
@@ -72,14 +80,18 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 	aSpaceship := Spaceship launch: ''.
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 6.
-	stack:= OrderedCollection with: aSpaceship .
-	someDice:= OrderedCollection with: aLoadedDie .
-	aGame := Game playedBy: stack on: aBoard throwing: someDice.
+	stack := OrderedCollection with: aSpaceship.
+	someDice := OrderedCollection with: aLoadedDie.
+	aGame := Game
+		         playedBy: stack
+		         on: aBoard
+		         throwing: someDice
+		         wonAfter: 1.
 
 	aGame playTurn.
 
 
-	self assert: (aGame positionOf: aSpaceship ) equals: 3
+	self assert: (aGame positionOf: aSpaceship) equals: 3
 ]
 
 { #category : #tests }
@@ -118,127 +130,168 @@ BoardTest >> test035BoardCannotBeCreatedIfWormholeEndpointsAreInTheSameSquare [
 { #category : #tests }
 BoardTest >> test37WhenSpaceshipPassesFinalSquareThenGoesBackToBeginning [
 
+	| aGame aSpaceship aBoard aDie |
+	aSpaceship := Spaceship launch: ''.
+	aBoard := Board of: 7 wormholeBeginsAt: 1 andEndsAt: 2.
+	aDie := LoadedDie of: 10.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
 
-| aGame aSpaceship aBoard aDie|
-
-aSpaceship := Spaceship launch: ''.
-aBoard := Board of: 7 wormholeBeginsAt: 1 andEndsAt: 2.
-aDie := LoadedDie of: 10.
-aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
-
-aGame playTurn.
-self assert: (aGame positionOf: aSpaceship) equals: 4
-
-
-
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 4
 ]
 
 { #category : #tests }
 BoardTest >> test38WhenSpaceshipMovesTenInBoardOfEightThenGoesToSquareThree [
 
+	| aGame aSpaceship aBoard aDie |
+	aSpaceship := Spaceship launch: ''.
+	aBoard := Board of: 8 wormholeBeginsAt: 2 andEndsAt: 4.
+	aDie := LoadedDie of: 10.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
 
-| aGame aSpaceship aBoard aDie|
-
-aSpaceship := Spaceship launch: ''.
-aBoard := Board of: 8 wormholeBeginsAt: 2 andEndsAt: 4.
-aDie := LoadedDie of: 10.
-aGame := Game playedBy: (OrderedCollection with: aSpaceship) on: aBoard  throwing: (OrderedCollection with: aDie ).
-
-aGame playTurn.
-self assert: (aGame positionOf: aSpaceship) equals: 3
-
-
-
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 3
 ]
 
 { #category : #tests }
 BoardTest >> test55WhenLandingInABlackholeSpaceshipGoesBackFourSquares [
 
-	| aGame aSpaceship aBoard aDie specialSquares blackholeEffect|
+	| aGame aSpaceship aBoard aDie specialSquares blackholeEffect |
 	aSpaceship := Spaceship launch: 'One'.
 	blackholeEffect := BlackholeEffect isIn: 6.
-	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: blackholeEffect).
-	aBoard := Board of: 10 with: (specialSquares) .
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: blackholeEffect).
+	aBoard := Board of: 10 with: specialSquares.
 	aDie := LoadedDie of: 5.
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 2
 ]
 
 { #category : #tests }
 BoardTest >> test56IfSpaceshipLandsOnHyperSpaceJumpSquareThenAdvancesFourSquares [
 
-	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect|
+	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect |
 	aSpaceship := Spaceship launch: 'One'.
-	hyperSpaceJumpEffect  := HyperSpaceJumpEffect isIn: 6.
-	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: hyperSpaceJumpEffect).
-	aBoard := Board of: 11 with: (specialSquares) .
+	hyperSpaceJumpEffect := HyperSpaceJumpEffect isIn: 6.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: hyperSpaceJumpEffect).
+	aBoard := Board of: 11 with: specialSquares.
 	aDie := LoadedDie of: 5.
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 10
 ]
 
 { #category : #tests }
 BoardTest >> test57IfSpaceshipLandsOnHyperSpaceJumpSquareThenLosesAShield [
 
-	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect|
+	| aGame aSpaceship aBoard aDie specialSquares hyperSpaceJumpEffect |
 	aSpaceship := Spaceship launch: 'One'.
-	hyperSpaceJumpEffect  := HyperSpaceJumpEffect isIn: 6.
-	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: hyperSpaceJumpEffect).
-	aBoard := Board of: 11 with: (specialSquares) .
+	hyperSpaceJumpEffect := HyperSpaceJumpEffect isIn: 6.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: hyperSpaceJumpEffect).
+	aBoard := Board of: 11 with: specialSquares.
 	aDie := LoadedDie of: 5.
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
-	self assert: (aGame shieldsOf:  aSpaceship) equals: 2
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	self assert: (aGame shieldsOf: aSpaceship) equals: 2
 ]
 
 { #category : #tests }
 BoardTest >> test58WhenSpaceshipLandsOnMoonWalkSquareThenOtherSpaceshipsGetSentBackN [
 
-	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonWalkEffect|
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonWalkEffect |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	moonWalkEffect   := MoonWalkEffect isIn: 6 moves: 3.
-	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: moonWalkEffect ).
-	aBoard := Board of: 11 with: (specialSquares) .
+	moonWalkEffect := MoonWalkEffect isIn: 6 moves: 3.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: moonWalkEffect).
+	aBoard := Board of: 11 with: specialSquares.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 5).
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
-	aGame playTurn .
-	self assert: (aGame positionOf:  aSpaceship ) equals: 1
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 1
 ]
 
 { #category : #tests }
 BoardTest >> test59WhenSpaceshipLandsOnMoonwalkSquareThenItDoesntMove [
 
-	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonWalkEffect|
-	aSpaceship := Spaceship launch: 'One'. 
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonWalkEffect |
+	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	moonWalkEffect   := MoonWalkEffect isIn: 6 moves: 3.
-	specialSquares := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: moonWalkEffect ).
-	aBoard := Board of: 11 with: (specialSquares) .
+	moonWalkEffect := MoonWalkEffect isIn: 6 moves: 3.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: moonWalkEffect).
+	aBoard := Board of: 11 with: specialSquares.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 5).
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie).
-	aGame playTurn .
-	aGame playTurn .
-	self assert: (aGame positionOf:  anotherSpaceship ) equals: 6
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame positionOf: anotherSpaceship) equals: 6
 ]
 
 { #category : #tests }
-BoardTest >> test60WhenSpaceshipLandsOnAtomicBombSquareThenGetsSentBackToBeginning [ 
+BoardTest >> test60WhenSpaceshipLandsOnAtomicBombSquareThenGetsSentBackToBeginning [
 
-	|aGame aSpaceship aDie aBoard atomicBombEffect specialSquare|
-	
+	| aGame aSpaceship aDie aBoard atomicBombEffect specialSquare |
 	aSpaceship := Spaceship launch: 'One'.
 	aDie := LoadedDie of: 5.
 	atomicBombEffect := AtomicBombEffect new.
-	specialSquare := Dictionary newFromKeys: (OrderedCollection with: 6 ) andValues:  (OrderedCollection with: atomicBombEffect  ).
-	aBoard := Board of: 10 with: (specialSquare ).
-	aGame := Game playedBy: (OrderedCollection with: aSpaceship ) on: aBoard  throwing: (OrderedCollection with: aDie ).
-	aGame playTurn .
-	
-	self assert:( aGame positionOf: aSpaceship)  equals: 1
+	specialSquare := Dictionary
+		                 newFromKeys: (OrderedCollection with: 6)
+		                 andValues:
+		                 (OrderedCollection with: atomicBombEffect).
+	aBoard := Board of: 10 with: specialSquare.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+
+	self assert: (aGame positionOf: aSpaceship) equals: 1
 ]
 
 { #category : #tests }
@@ -258,11 +311,13 @@ BoardTest >> test61WhenSpaceshipLandsOnAtomicBombEffectThenEveryoneGetsSentToSqu
 		         playedBy:
 		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
 		         on: aBoard
-		         throwing: (OrderedCollection with: aDie).
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
 	aGame playTurn.
-	aGame playTurn .
+	aGame playTurn.
 
-	self assert: (((aGame positionOf: anotherSpaceship) = 1 and: (aGame positionOf: aSpaceship ) = 1))
+	self assert: ((aGame positionOf: anotherSpaceship) = 1 and:
+			 (aGame positionOf: aSpaceship) = 1)
 ]
 
 { #category : #tests }
@@ -282,11 +337,13 @@ BoardTest >> test62WhenSpaceshipLandsOnAtomicBombAllShieldsGetReducedByOne [
 		         playedBy:
 		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
 		         on: aBoard
-		         throwing: (OrderedCollection with: aDie).
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
 	aGame playTurn.
-	aGame playTurn .
+	aGame playTurn.
 
-	self assert: (((aGame shieldsOf: anotherSpaceship) = 2 and: (aGame shieldsOf: aSpaceship ) = 2))
+	self assert: ((aGame shieldsOf: anotherSpaceship) = 2 and:
+			 (aGame shieldsOf: aSpaceship) = 2)
 ]
 
 { #category : #tests }
@@ -306,10 +363,62 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 		         playedBy:
 		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
 		         on: aBoard
-		         throwing: (OrderedCollection with: aDie).
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
 	aGame playTurn.
-	aGame decreaseShieldByOne .
-	aGame playTurn .
+	aGame decreaseShieldByOne.
+	aGame playTurn.
 
-	self assert: (((aGame shieldsOf: anotherSpaceship) = 1 and: (aGame shieldsOf: aSpaceship ) = 2))
+	self assert: ((aGame shieldsOf: anotherSpaceship) = 1 and:
+			 (aGame shieldsOf: aSpaceship) = 2)
+]
+
+{ #category : #tests }
+BoardTest >> test64WhenTwoSpaceshipOnAnEffectSquareThenTheEffectsHappensBeforeBattle [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares moonwalk |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	moonwalk := MoonWalkEffect isIn: 6 moves: 3.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues: (OrderedCollection with: moonwalk).
+	aBoard := Board of: 11 with: specialSquares.
+	aDie := LoadedDie arrayOf:
+		        (OrderedCollection with: 3 with: 5 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	3 timesRepeat: [ aGame playTurn ].
+
+
+	self assert: (aGame shieldsOf: aSpaceship) equals: 3
+]
+
+{ #category : #tests }
+BoardTest >> test65WhenSpaceshipLandsOnSquareWithEffectAndGetsMovedToASquareWithAnotherSpaceshipThenTheyBattle [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares blackholeEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	blackholeEffect := BlackholeEffect isIn: 6.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: blackholeEffect).
+	aBoard := Board of: 11 with: specialSquares.
+	aDie := LoadedDie arrayOf:
+		        (OrderedCollection with: 1 with: 5 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	2 timesRepeat: [ aGame playTurn ].
+
+	self assert: (aGame shieldsOf: aSpaceship) equals: 2
 ]

@@ -39,10 +39,7 @@ GameFinishedState >> validateTurn [
 ]
 
 { #category : #accessing }
-GameFinishedState >> winnerOf: spaceshipsData playingIn: aBoard [
-	"^ spaceshipsPosition keyAtValue: (aBoard squares)"
-
-	"spaceshipsData { spaceships { 'Position' 'Laps' } }."
-
-	^ spaceshipsData keyAtValue: (spaceshipsData  detect: [ :spaceship | (spaceship at: 'Position') = aBoard squares ])
+GameFinishedState >> winnerOf: spaceshipsData inAGameOf: nLaps [
+	
+	^ spaceshipsData keyAtValue: (spaceshipsData  detect: [ :spaceship | (spaceship at: 'Laps') = nLaps  ])
 ]
