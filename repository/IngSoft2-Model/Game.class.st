@@ -149,6 +149,12 @@ Game >> leaderBoard [
 ]
 
 { #category : #action }
+Game >> moveAllBackToBeginning [
+	
+	spaceshipsData do: [ :dataForASpaceship | dataForASpaceship at: 'Position' put: 1 ]
+]
+
+{ #category : #action }
 Game >> moveAllButCurrentBack: n [
 
 	| currentPosition |
