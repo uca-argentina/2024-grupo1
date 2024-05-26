@@ -264,3 +264,52 @@ BoardTest >> test61WhenSpaceshipLandsOnAtomicBombEffectThenEveryoneGetsSentToSqu
 
 	self assert: (((aGame positionOf: anotherSpaceship) = 1 and: (aGame positionOf: aSpaceship ) = 1))
 ]
+
+{ #category : #tests }
+BoardTest >> test62WhenSpaceshipLandsOnAtomicBombAllShieldsGetReducedByOne [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares atomicBombEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	atomicBombEffect := AtomicBombEffect new.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: atomicBombEffect).
+	aBoard := Board of: 11 with: specialSquares.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame playTurn.
+	aGame playTurn .
+
+	self assert: (((aGame shieldsOf: anotherSpaceship) = 2 and: (aGame shieldsOf: aSpaceship ) = 2))
+]
+
+{ #category : #tests }
+BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares atomicBombEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	atomicBombEffect := AtomicBombEffect new.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: atomicBombEffect).
+	aBoard := Board of: 11 with: specialSquares.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie).
+	aGame playTurn.
+	aGame decreaseShieldByOne .
+	aGame playTurn .
+
+	self assert: (((aGame shieldsOf: anotherSpaceship) = 1 and: (aGame shieldsOf: aSpaceship ) = 2))
+]

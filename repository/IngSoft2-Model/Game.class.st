@@ -75,6 +75,15 @@ Game >> dataFor: aSpaceship [
 ]
 
 { #category : #adding }
+Game >> decreaseAllShieldsByOne [
+
+	| currentShields |
+	spaceshipsData do: [ :dataForASpaceship |
+		currentShields := dataForASpaceship at: 'Shields'.
+		dataForASpaceship at: 'Shields' put: currentShields - 1 ]
+]
+
+{ #category : #adding }
 Game >> decreaseShieldByOne [
 
 	| currentShield aSpaceship |
@@ -231,7 +240,7 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
 ]
 
-{ #category : #action }
+{ #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
 	spaceshipsData at: aSpaceship at: 'Shields' put: 3.
 ]
@@ -263,8 +272,7 @@ Game >> throwDice [
 { #category : #action }
 Game >> updatePositionOf: aSpaceship to: newPosition [ 
 
-	"spaceshipPositions at: aSpaceship put: newPosition."
-	(spaceshipsData at: aSpaceship) at: 'Position' put: newPosition .
+	(self dataFor: aSpaceship) at: 'Position' put: newPosition .
 	
 
 ]
