@@ -48,3 +48,9 @@ BlackholeEffect >> initializeIsIn: aPosition [
 
 	myPosition := aPosition  
 ]
+
+{ #category : #accessing }
+BlackholeEffect >> position [
+
+^myPosition 
+]

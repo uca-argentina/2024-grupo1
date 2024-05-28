@@ -56,6 +56,21 @@ Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: e
 		  andEndsAt: endPoint
 ]
 
+{ #category : #'instance creation' }
+Board class >> randomOf: aNumberOfSquares parsecs: aNumberOfParsecs wormholeBeginsAt: startingPoint andEndsAt: endPoint [ 
+
+	self
+		validate: aNumberOfSquares
+		and: endPoint
+		and: startingPoint.
+		
+	^ self new
+		  initializeRandomOf: aNumberOfSquares
+			parsecs: aNumberOfParsecs 
+		  wormholeBeginsAt: startingPoint
+		  andEndsAt: endPoint
+]
+
 { #category : #'argument validation' }
 Board class >> validate: aNumberOfSquares and: endPoint and: startingPoint [
 
@@ -91,15 +106,44 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 ]
 
 { #category : #accessing }
-Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
+Board >> checkLapsIn: aGame AfterMoving: squaresMoved [
+
+	aGame updateLaps: squaresMoved // self squares.
+	squaresMoved <= 0 ifTrue: [ aGame updateLaps: -1 ].
+	aGame players 
+]
+
+{ #category : #initialization }
+Board >> createHyperJumpIn: aSquare [
+
+	|hyperJumpEffect parsecsToMove randomAmount|
 	
-	|aux squaresMoved finalSquare|
-	aux:=  (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) landIn: aGame.
+	parsecsToMove := OrderedCollection new.
+	randomAmount := 7 atRandom .
+	randomAmount timesRepeat: [ parsecsToMove add: (parsecs atRandom ) ].
 	
-	squaresMoved  := aSquare +aux.
-	aGame addLaps: (squaresMoved  // self squares ).
-	finalSquare:= self validateWithinBounds: squaresMoved whenPlaying: aGame .
-	^finalSquare 
+	hyperJumpEffect := HyperJumpEffect isIn: aSquare  movesParsecs: parsecsToMove  SquaresPerParsec: parsec .
+
+	^hyperJumpEffect 
+]
+
+{ #category : #accessing }
+Board >> finalSquareFor: aSpaceship afterLandingIn: aSquare whenPlaying: aGame [
+
+	| aux squaresMoved finalSquare aux1 |
+	aux1 := boardOfSquares at:
+		        (self
+			         validateThat: aSpaceship 
+			         isWithinBounds: aSquare
+			         whenPlaying: aGame).
+	aux := aux1 landIn: aGame.
+	squaresMoved := aux1 position + aux.
+	"	self checkLapsIn: aGame AfterMoving: squaresMoved."
+	finalSquare := self
+		               validateThat: aSpaceship 
+		               isWithinBounds: squaresMoved
+		               whenPlaying: aGame.
+	^ finalSquare
 ]
 
 { #category : #initialization }
@@ -157,11 +201,26 @@ Board >> squaresPerParsec [
 ]
 
 { #category : #analyze }
-Board >> validateWithinBounds: aSquare whenPlaying: aGame [
+Board >> validateThat: aSpaceship isWithinBounds: aSquare whenPlaying: aGame [
 
-	aSquare > self squares ifTrue: [
-"		aGame addLaps: (aSquare // self squares )."
-		^ aSquare % self squares ].
-
+	|res|
+	aSquare > self squares ifTrue: [ 
+		aGame updateLaps: (aSquare //(self squares +1)) of: aSpaceship .
+		res := aSquare % self squares .
+		res = 0 ifTrue: [ ^self squares  ] ifFalse: [ ^res  ]
+		  ].
+	aSquare <= 0 ifTrue: [
+		(aGame lapsOf: aSpaceship ) = 0
+			ifTrue: [ ^ 1 ]
+			ifFalse: [
+				aGame updateLaps:(( aSquare //self squares) -1) of: aSpaceship .
+				^ aSquare + self squares   ] ].
+		
+	
 	^ aSquare
+	
+"
+aGame updateLaps: squaresMoved // self squares.
+	squaresMoved <= 0 ifTrue: [ aGame updateLaps: -1 ].
+	aGame players "
 ]

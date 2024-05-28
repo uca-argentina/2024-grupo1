@@ -17,25 +17,16 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 	^self new initializePlayedBy: someSpaceships  on: aBoard  throwing: someDice wonAfter: aNumberOfLaps .
 ]
 
-{ #category : #adding }
-Game >> addLaps: amountOfLaps [
-	
-	|currentLaps currentPlayer|
-	
-	currentPlayer := spaceships first.
-	currentLaps := (self dataFor: currentPlayer ) at: 'Laps' .
-	(self dataFor: currentPlayer ) at: 'Laps' put: (currentLaps +amountOfLaps)
-]
-
 { #category : #action }
 Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult finalPosition |
 	diceResult := self throwDice.
 	finalPosition := diceResult + (self positionOf: aSpaceship).
-	
+
 	finalPosition := board
-		                 finalSquareAfterLandingIn: finalPosition
+		                 finalSquareFor: aSpaceship 
+		                 afterLandingIn: finalPosition
 		                 whenPlaying: self.
 
 	^ finalPosition
@@ -175,10 +166,15 @@ Game >> moveAllBackToBeginning [
 { #category : #action }
 Game >> moveAllButCurrentBack: n [
 
-	| currentPosition |
+	| currentPosition finalPosition |
 	spaceships allButFirstDo: [ :spaceship |
 		currentPosition := (self dataFor: spaceship) at: 'Position'.
-		(self dataFor: spaceship) at: 'Position' put: currentPosition - n ]
+		finalPosition := board
+			                 validateThat: spaceship 
+			                 isWithinBounds: currentPosition - n
+			                 whenPlaying: self.
+
+		(self dataFor: spaceship) at: 'Position' put: finalPosition ]
 ]
 
 { #category : #accessing }
@@ -276,6 +272,26 @@ Game >> throwDice [
 	result :=0.
 	dice do: [ :aDie | result := result + aDie throw ].
  	^ result 
+]
+
+{ #category : #adding }
+Game >> updateLaps: amountOfLaps [
+
+	| currentLaps currentPlayer totalLaps |
+	currentPlayer := spaceships first.
+	currentLaps := (self dataFor: currentPlayer) at: 'Laps'.
+	totalLaps := (currentLaps + amountOfLaps) max: 0 "min: 0.".
+	(self dataFor: currentPlayer) at: 'Laps' put: totalLaps
+]
+
+{ #category : #adding }
+Game >> updateLaps: amountOfLaps of: aSpaceship [
+
+	| currentLaps  totalLaps |
+
+	currentLaps := (self dataFor: aSpaceship ) at: 'Laps'.
+	totalLaps := (currentLaps + amountOfLaps) max: 0 .
+	(self dataFor: aSpaceship ) at: 'Laps' put: totalLaps
 ]
 
 { #category : #action }

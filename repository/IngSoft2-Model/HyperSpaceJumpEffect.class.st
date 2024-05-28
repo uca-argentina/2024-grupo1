@@ -48,3 +48,9 @@ HyperSpaceJumpEffect >> applyIn: aGame [
 HyperSpaceJumpEffect >> initializeIsIn: aPosition [ 
 	myPosition := aPosition 
 ]
+
+{ #category : #accessing }
+HyperSpaceJumpEffect >> position [
+
+^myPosition 
+]

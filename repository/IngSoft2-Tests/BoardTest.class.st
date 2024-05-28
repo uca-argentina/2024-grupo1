@@ -533,7 +533,7 @@ BoardTest >> test73SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 ]
 
 { #category : #tests }
-BoardTest >> test74 [
+BoardTest >> test74SpaceshipLosesALapIfItGetsSentBackPastTheFirstSquare [
 
 	| aGame aSpaceship aBoard aDie  blackholeEffect someEffects|
 	aSpaceship := Spaceship launch: 'One'.
@@ -549,5 +549,66 @@ BoardTest >> test74 [
 		         wonAfter: 1.
 	aGame playTurn.
 	
+	self assert: (aGame lapsOf:  aSpaceship ) equals: 0
+]
+
+{ #category : #tests }
+BoardTest >> test75SpaceshipCantGoBackFurtherThanTheFirstSquareOnTheFirstLap [
+
+	| aGame aSpaceship aBoard aDie  blackholeEffect someEffects|
+	aSpaceship := Spaceship launch: 'One'.
+	blackholeEffect := BlackholeEffect isIn: 4.
+	someEffects := Dictionary newFromKeys: (OrderedCollection with: 4) andValues: (OrderedCollection with: blackholeEffect ).
+	aBoard := Board of: 5 parsecs: 20 with: (someEffects ).
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	
+	self assert: (aGame positionOf:  aSpaceship ) equals: 1
+]
+
+{ #category : #tests }
+BoardTest >> test76IfSpaceshipCompletesALapsAndGoesBackBeyondTheFirstSquareThenItLosesTheLap [
+
+	| aGame aSpaceship aBoard aDie  blackholeEffect someEffects|
+	aSpaceship := Spaceship launch: 'One'.
+	blackholeEffect := BlackholeEffect isIn: 4.
+	someEffects := Dictionary newFromKeys: (OrderedCollection with: 4) andValues: (OrderedCollection with: blackholeEffect ).
+	aBoard := Board of: 5 parsecs: 20 with: (someEffects ).
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 3).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 2.
+	aGame playTurn.
+	aGame playTurn.	
+	self assert: (aGame lapsOf:  aSpaceship ) equals: 0
+]
+
+{ #category : #tests }
+BoardTest >> test77WhenSpaceshipGoesBackMultipleLapsWithMoonwalkEffectThenLosesThoseLaps [
+
+	| aGame aSpaceship anotherSpaceship aBoard aDie  moonwalkEffect someEffects|
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	moonwalkEffect  := MoonWalkEffect  isIn: 4 moves: 10.
+	someEffects := Dictionary newFromKeys: (OrderedCollection with: 4) andValues: (OrderedCollection with: moonwalkEffect  ).
+	aBoard := Board of: 5 parsecs: 5 with: (someEffects ).
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 11 with: 3).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aGame playTurn.
+	aGame playTurn.	
 	self assert: (aGame lapsOf:  aSpaceship ) equals: 0
 ]

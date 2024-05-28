@@ -49,3 +49,9 @@ Square >> landIn: aGame [
 
 ^ effect applyIn: aGame .
 ]
+
+{ #category : #accessing }
+Square >> position [ 
+
+^effect position
+]

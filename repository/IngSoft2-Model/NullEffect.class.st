@@ -49,3 +49,9 @@ NullEffect >> initializeIn: aPosition [
 
 myPosition := aPosition.
 ]
+
+{ #category : #accessing }
+NullEffect >> position [
+
+^myPosition 
+]

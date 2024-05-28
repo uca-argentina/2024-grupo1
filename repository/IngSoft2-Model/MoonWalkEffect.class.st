@@ -51,3 +51,9 @@ MoonWalkEffect >> initializeIsIn: aPosition moves: aNumberOfSquares [
 	myPosition := aPosition .
 	n := aNumberOfSquares 
 ]
+
+{ #category : #accessing }
+MoonWalkEffect >> position [
+
+^myPosition 
+]

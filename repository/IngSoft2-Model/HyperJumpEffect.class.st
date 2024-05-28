@@ -64,3 +64,9 @@ HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerP
 	parsecsToMove := someParsecs.
 	parsecRatio := aParsec 
 ]
+
+{ #category : #accessing }
+HyperJumpEffect >> position [
+
+^myPosition 
+]

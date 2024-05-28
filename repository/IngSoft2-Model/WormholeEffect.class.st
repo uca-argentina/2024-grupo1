@@ -54,3 +54,9 @@ WormholeEffect >> initializeIsIn: aPosition goesTo: anotherPosition [
 otherSide := anotherPosition.
 myPosition:= aPosition .
 ]
+
+{ #category : #accessing }
+WormholeEffect >> position [
+
+^myPosition 
+]

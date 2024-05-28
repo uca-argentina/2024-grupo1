@@ -47,3 +47,9 @@ AtomicBombEffect >> initializeIsIn: aSquare [
 
 	myPosition:= aSquare .
 ]
+
+{ #category : #accessing }
+AtomicBombEffect >> position [
+
+^myPosition 
+]
