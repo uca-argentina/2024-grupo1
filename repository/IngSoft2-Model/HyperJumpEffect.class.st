@@ -29,8 +29,8 @@ Class {
 	#superclass : #Effect,
 	#instVars : [
 		'myPosition',
-		'parsecs',
-		'squaresPerParsec'
+		'parsecsToMove',
+		'parsecRatio'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -48,19 +48,19 @@ HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParse
 HyperJumpEffect >> applyIn: aGame [ 
 
 	|currentParsec squaresToMove|
-	currentParsec :=parsecs removeFirst .
-	parsecs addLast: currentParsec .
-	squaresToMove := currentParsec * ( squaresPerParsec ).
-^myPosition + squaresToMove  
+	currentParsec :=parsecsToMove  removeFirst .
+	parsecsToMove  addLast: currentParsec .
+	squaresToMove := (currentParsec * ( parsecRatio squaresPerParsec  ))//1.
+	^myPosition + squaresToMove  
 
 
 
 ]
 
 { #category : #initialization }
-HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: squaresToParsecsRatio [
+HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: aParsec [
 
 	myPosition := aSquare.
-	parsecs := someParsecs.
-	squaresPerParsec  := squaresToParsecsRatio
+	parsecsToMove := someParsecs.
+	parsecRatio := aParsec 
 ]
