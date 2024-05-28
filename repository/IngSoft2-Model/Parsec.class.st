@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  I am a square in the board with one or more effects.
+For the Class part:  A parsec
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -18,40 +18,34 @@ Public API and Key Messages
 Internal Representation and Key Implementation Points.
 
     Instance Variables
-	effects:		<Object>
+	squaresPerParsec:		<Object>
 
 
     Implementation Points
 "
 Class {
-	#name : #Square,
+	#name : #Parsec,
 	#superclass : #Object,
 	#instVars : [
-		'effect'
+		'squaresPerParsec'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Square class >> with: anEffect [
+Parsec class >> of: squaresToParsecsRatio [
 
-^ self new initializeWith: anEffect  
+^self new initializeOf: squaresToParsecsRatio 
 ]
 
 { #category : #initialization }
-Square >> initializeWith: anEffect [
+Parsec >> initializeOf: squaresToParsecsRatio [ 
 
-effect := anEffect.
-]
-
-{ #category : #action }
-Square >> landIn: aGame [ 
-
-^ effect applyIn: aGame .
+	squaresPerParsec := squaresToParsecsRatio 
 ]
 
 { #category : #accessing }
-Square >> position [ 
+Parsec >> squaresPerParsec [ 
 
-^effect position
+^squaresPerParsec
 ]

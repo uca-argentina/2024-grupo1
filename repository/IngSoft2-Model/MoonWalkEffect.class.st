@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  I am a square in the board with one or more effects.
+For the Class part:  If you land here, everyone else goes back N squares
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -18,40 +18,42 @@ Public API and Key Messages
 Internal Representation and Key Implementation Points.
 
     Instance Variables
-	effects:		<Object>
+	myPosition:		<Object>
+	n:		<Object>
 
 
     Implementation Points
 "
 Class {
-	#name : #Square,
-	#superclass : #Object,
+	#name : #MoonWalkEffect,
+	#superclass : #Effect,
 	#instVars : [
-		'effect'
+		'myPosition',
+		'n'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-Square class >> with: anEffect [
-
-^ self new initializeWith: anEffect  
-]
-
-{ #category : #initialization }
-Square >> initializeWith: anEffect [
-
-effect := anEffect.
+{ #category : #testing }
+MoonWalkEffect class >> isIn: aPosition moves: aNumberOfSquares [ 
+	^self new initializeIsIn: aPosition moves: aNumberOfSquares 
 ]
 
 { #category : #action }
-Square >> landIn: aGame [ 
+MoonWalkEffect >> applyIn: aGame [ 
+	
+	aGame moveAllButCurrentBack: n.
+	^0
+]
 
-^ effect applyIn: aGame .
+{ #category : #initialization }
+MoonWalkEffect >> initializeIsIn: aPosition moves: aNumberOfSquares [ 
+	myPosition := aPosition .
+	n := aNumberOfSquares 
 ]
 
 { #category : #accessing }
-Square >> position [ 
+MoonWalkEffect >> position [
 
-^effect position
+^myPosition 
 ]

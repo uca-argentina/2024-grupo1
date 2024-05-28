@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  I am a square in the board with one or more effects.
+For the Class part:  Boom!
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -17,41 +17,39 @@ Public API and Key Messages
 
 Internal Representation and Key Implementation Points.
 
-    Instance Variables
-	effects:		<Object>
-
 
     Implementation Points
 "
 Class {
-	#name : #Square,
-	#superclass : #Object,
+	#name : #AtomicBombEffect,
+	#superclass : #Effect,
 	#instVars : [
-		'effect'
+		'myPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-Square class >> with: anEffect [
+AtomicBombEffect class >> isIn: aSquare [
 
-^ self new initializeWith: anEffect  
-]
-
-{ #category : #initialization }
-Square >> initializeWith: anEffect [
-
-effect := anEffect.
+^self new initializeIsIn: aSquare 
 ]
 
 { #category : #action }
-Square >> landIn: aGame [ 
+AtomicBombEffect >> applyIn: aGame [ 
+	aGame moveAllBackToBeginning.
+	aGame decreaseAllShieldsByOne .
+	^(myPosition -1) negated.
+]
 
-^ effect applyIn: aGame .
+{ #category : #initialization }
+AtomicBombEffect >> initializeIsIn: aSquare [
+
+	myPosition:= aSquare .
 ]
 
 { #category : #accessing }
-Square >> position [ 
+AtomicBombEffect >> position [
 
-^effect position
+^myPosition 
 ]
