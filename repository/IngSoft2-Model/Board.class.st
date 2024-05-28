@@ -25,14 +25,15 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfSquares',
-		'boardOfSquares'
+		'boardOfSquares',
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
 Board class >> of: squares parsecs: someParsecs with: someEffects [ 
-	^self new initializeOf: squares with: someEffects 
+	^self new initializeOf: squares parsecs: someParsecs  with: someEffects 
 ]
 
 { #category : #'instance creation' }
@@ -91,6 +92,15 @@ Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
 ]
 
 { #category : #initialization }
+Board >> initializeOf: squares parsecs: someParsecs with: someEffects [ 
+	numberOfSquares := squares.
+	boardOfSquares := OrderedCollection new.
+	parsecs := someParsecs .
+	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
+	someEffects keysDo:  [ :index | boardOfSquares at: index put: (Square with: (someEffects at: index )) ] 
+]
+
+{ #category : #initialization }
 Board >> initializeOf: squares with: someEffects [ 
 	numberOfSquares := squares.
 	boardOfSquares := OrderedCollection new.
@@ -117,6 +127,12 @@ Board >> squares [
 
 
 ^ boardOfSquares size.
+]
+
+{ #category : #accessing }
+Board >> squaresPerParsec [
+
+^(self squares )//parsecs
 ]
 
 { #category : #analyze }

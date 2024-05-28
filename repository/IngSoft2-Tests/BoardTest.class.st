@@ -428,17 +428,19 @@ BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 
 	| aGame aSpaceship aBoard aDie specialSquares hyperJumpEffect |
 	aSpaceship := Spaceship launch: 'One'.
-	
-	hyperJumpEffect  := HyperJumpEffect isIn: 6 movesParsecs: 1.
+
+	hyperJumpEffect := HyperJumpEffect
+		                   isIn: 6
+		                   movesParsecs: (OrderedCollection with: 1)
+		                   SquaresPerParsec: 1.
 	specialSquares := Dictionary
 		                  newFromKeys: (OrderedCollection with: 6)
 		                  andValues:
-		                  (OrderedCollection with: hyperJumpEffect ).
+		                  (OrderedCollection with: hyperJumpEffect).
 	aBoard := Board of: 11 parsecs: 11 with: specialSquares.
 	aDie := LoadedDie of: 5.
 	aGame := Game
-		         playedBy:
-		         (OrderedCollection with: aSpaceship)
+		         playedBy: (OrderedCollection with: aSpaceship)
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
@@ -448,25 +450,59 @@ BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 ]
 
 { #category : #tests }
-BoardTest >> test69 [
+BoardTest >> test70HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 
-	| aGame aSpaceship aBoard aDie specialSquares hyperJumpEffect |
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie specialSquares hyperJumpEffect |
 	aSpaceship := Spaceship launch: 'One'.
-	
-	hyperJumpEffect  := HyperJumpEffect isIn: 7 movesParsecs: 1.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Three'.
+	hyperJumpEffect := HyperJumpEffect
+		                   isIn: 6
+		                   movesParsecs:
+		                   (OrderedCollection with: -1 with: 2)
+		                   SquaresPerParsec: 1.
 	specialSquares := Dictionary
-		                  newFromKeys: (OrderedCollection with: 7)
+		                  newFromKeys: (OrderedCollection with: 6)
 		                  andValues:
-		                  (OrderedCollection with: hyperJumpEffect ).
+		                  (OrderedCollection with: hyperJumpEffect).
 	aBoard := Board of: 11 parsecs: 11 with: specialSquares.
-	aDie := LoadedDie of: 6.
+	aDie := LoadedDie of: 5.
 	aGame := Game
-		         playedBy:
-		         (OrderedCollection with: aSpaceship)
+		         playedBy: (OrderedCollection
+				          with: aSpaceship
+				          with: anotherSpaceship
+				          with: yetAnotherSpaceship)
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((aGame positionOf: aSpaceship) = 5 and:
+			 ((aGame positionOf: anotherSpaceship) = 8 and:
+				  (aGame positionOf: yetAnotherSpaceship) = 1))
+]
 
-	self assert: (aGame positionOf: aSpaceship) equals: 8
+{ #category : #tests }
+BoardTest >> test71WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFourSquares [
+
+	| aGame aSpaceship aBoard aDie specialSquares hyperJumpEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	
+	hyperJumpEffect  := HyperJumpEffect isIn: 6 movesParsecs: (OrderedCollection with: 1) SquaresPerParsec: 4.
+	specialSquares := Dictionary
+		                  newFromKeys: (OrderedCollection with: 6)
+		                  andValues:
+		                  (OrderedCollection with: hyperJumpEffect ).
+	aBoard := Board of: 20 parsecs: 5 with: specialSquares.
+	aDie := LoadedDie of: 5.
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	
+	self assert: (aGame positionOf: aSpaceship ) equals: 10
 ]
