@@ -702,15 +702,35 @@ GameTest >> test54AfterLosingTwoTurnsSpaceshipCanPlayAgain [
 { #category : #tests }
 GameTest >> test66GameIsWonAfterOneLap [
 
+	| aGame aSpaceship aBoard aDie aNumberOfLaps |
+	aSpaceship := Spaceship launch: ''.
+	aBoard := Board of: 3 parsecs: 1 with: Dictionary new.
+	aDie := LoadedDie of: 3.
+	aNumberOfLaps := 1.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: aNumberOfLaps.
+	aGame playTurn.
+
+	self assert: aGame winner equals: aSpaceship
+]
+
+{ #category : #tests }
+GameTest >> test67GameIsWonAfterANumberOfLaps [
 
 	| aGame aSpaceship aBoard aDie aNumberOfLaps |
 	aSpaceship := Spaceship launch: ''.
-	aBoard:= Board of: 3 with: (Dictionary  new).
-	aDie:= LoadedDie of: 3.
-	aNumberOfLaps := 1.
-	aGame := Game  playedBy: (OrderedCollection with: aSpaceship ) on: aBoard throwing: (OrderedCollection with: aDie) wonAfter: aNumberOfLaps.
-	aGame playTurn .
-	
-	self assert: aGame winner equals: aSpaceship
+	aBoard := Board of: 3 parsecs: 1 with: Dictionary new.
+	aDie := LoadedDie of: 3.
+	aNumberOfLaps := 10.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: aNumberOfLaps.
+	aNumberOfLaps timesRepeat: [ aGame playTurn ].
 
+	self assert: aGame winner equals: aSpaceship
 ]

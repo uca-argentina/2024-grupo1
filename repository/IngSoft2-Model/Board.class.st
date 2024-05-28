@@ -31,7 +31,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> of: squares with: someEffects [ 
+Board class >> of: squares parsecs: someParsecs with: someEffects [ 
 	^self new initializeOf: squares with: someEffects 
 ]
 
