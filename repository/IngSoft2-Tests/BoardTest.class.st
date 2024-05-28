@@ -278,7 +278,7 @@ BoardTest >> test60WhenSpaceshipLandsOnAtomicBombSquareThenGetsSentBackToBeginni
 	| aGame aSpaceship aDie aBoard atomicBombEffect specialSquare |
 	aSpaceship := Spaceship launch: 'One'.
 	aDie := LoadedDie of: 5.
-	atomicBombEffect := AtomicBombEffect new.
+	atomicBombEffect := AtomicBombEffect isIn: 6.
 	specialSquare := Dictionary
 		                 newFromKeys: (OrderedCollection with: 6)
 		                 andValues:
@@ -300,7 +300,7 @@ BoardTest >> test61WhenSpaceshipLandsOnAtomicBombEffectThenEveryoneGetsSentToSqu
 	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares atomicBombEffect |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	atomicBombEffect := AtomicBombEffect new.
+	atomicBombEffect := AtomicBombEffect isIn: 6.
 	specialSquares := Dictionary
 		                  newFromKeys: (OrderedCollection with: 6)
 		                  andValues:
@@ -326,7 +326,7 @@ BoardTest >> test62WhenSpaceshipLandsOnAtomicBombAllShieldsGetReducedByOne [
 	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares atomicBombEffect |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	atomicBombEffect := AtomicBombEffect new.
+	atomicBombEffect := AtomicBombEffect isIn: 6.
 	specialSquares := Dictionary
 		                  newFromKeys: (OrderedCollection with: 6)
 		                  andValues:
@@ -352,7 +352,7 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 	| aGame aSpaceship anotherSpaceship aBoard aDie specialSquares atomicBombEffect |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	atomicBombEffect := AtomicBombEffect new.
+	atomicBombEffect := AtomicBombEffect isIn: 6.
 	specialSquares := Dictionary
 		                  newFromKeys: (OrderedCollection with: 6)
 		                  andValues:
@@ -452,19 +452,11 @@ BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 { #category : #tests }
 BoardTest >> test70HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 
-	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie "specialSquares hyperJumpEffect" |
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	"hyperJumpEffect := HyperJumpEffect
-		                   isIn: 6
-		                   movesParsecs:
-		                   (OrderedCollection with: -1 with: 2)
-		                   SquaresPerParsec: 1.
-	specialSquares := Dictionary
-		                  newFromKeys: (OrderedCollection with: 6)
-		                  andValues:
-		                  (OrderedCollection with: hyperJumpEffect)."
+	
 	aBoard := Board of: 11 parsecs: 11 withHyperJumpIn: 6 movesParsecs: (OrderedCollection with: -1 with: 2).
 	aDie := LoadedDie of: 5.
 	aGame := Game
@@ -538,4 +530,24 @@ BoardTest >> test73SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 	aGame playTurn.
 	
 	self assert: (aGame positionOf: aSpaceship ) equals: 7
+]
+
+{ #category : #tests }
+BoardTest >> test74 [
+
+	| aGame aSpaceship aBoard aDie  blackholeEffect someEffects|
+	aSpaceship := Spaceship launch: 'One'.
+	blackholeEffect := BlackholeEffect isIn: 2.
+	someEffects := Dictionary newFromKeys: (OrderedCollection with: 2) andValues: (OrderedCollection with: blackholeEffect ).
+	aBoard := Board of: 5 parsecs: 20 with: (someEffects ).
+	aDie := LoadedDie of: 6.
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aGame playTurn.
+	
+	self assert: (aGame lapsOf:  aSpaceship ) equals: 0
 ]

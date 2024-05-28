@@ -33,6 +33,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 	| diceResult finalPosition |
 	diceResult := self throwDice.
 	finalPosition := diceResult + (self positionOf: aSpaceship).
+	
 	finalPosition := board
 		                 finalSquareAfterLandingIn: finalPosition
 		                 whenPlaying: self.
@@ -203,7 +204,6 @@ Game >> normalTurn [
 	self updatePositionOf: aSpaceship to: finalPosition.
 	self checkForBattleIn: finalPosition.
 
-"	self checkForWinnerIn: finalPosition"
 	self checkForWinner.
 ]
 

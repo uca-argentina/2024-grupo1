@@ -51,7 +51,7 @@ HyperJumpEffect >> applyIn: aGame [
 	currentParsec :=parsecsToMove  removeFirst .
 	parsecsToMove  addLast: currentParsec .
 	squaresToMove := (currentParsec * ( parsecRatio squaresPerParsec  ))//1.
-	^myPosition + squaresToMove  
+	^ squaresToMove  
 
 
 

@@ -92,8 +92,8 @@ GameTest >> test006WhenGameHasOnlyOnePlayerThenThatPlayerWins [
 	| aGame aSpaceship aBoard stack aDie |
 	aSpaceship := Spaceship launch: ''.
 	stack := OrderedCollection with: aSpaceship.
-	aBoard := Board of: 3 wormholeBeginsAt: 1 andEndsAt: 2.
-	aDie := LoadedDie of: 3.
+	aBoard := Board of: 6 wormholeBeginsAt: 3 andEndsAt: 4.
+	aDie := LoadedDie of: 6.
 	aGame := Game
 		         playedBy: stack
 		         on: aBoard

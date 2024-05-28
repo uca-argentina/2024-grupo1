@@ -23,12 +23,27 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #AtomicBombEffect,
 	#superclass : #Effect,
+	#instVars : [
+		'myPosition'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'instance creation' }
+AtomicBombEffect class >> isIn: aSquare [
+
+^self new initializeIsIn: aSquare 
+]
 
 { #category : #action }
 AtomicBombEffect >> applyIn: aGame [ 
 	aGame moveAllBackToBeginning.
 	aGame decreaseAllShieldsByOne .
-	^1
+	^(myPosition -1) negated.
+]
+
+{ #category : #initialization }
+AtomicBombEffect >> initializeIsIn: aSquare [
+
+	myPosition:= aSquare .
 ]

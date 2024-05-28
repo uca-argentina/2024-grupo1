@@ -41,7 +41,7 @@ NullEffect class >> isIn: aPosition [
 { #category : #action }
 NullEffect >> applyIn: aGame [
 
-^myPosition 
+^0 
 ]
 
 { #category : #initialization }

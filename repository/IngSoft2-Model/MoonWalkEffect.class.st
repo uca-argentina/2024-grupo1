@@ -43,7 +43,7 @@ MoonWalkEffect class >> isIn: aPosition moves: aNumberOfSquares [
 MoonWalkEffect >> applyIn: aGame [ 
 	
 	aGame moveAllButCurrentBack: n.
-	^myPosition 
+	^0
 ]
 
 { #category : #initialization }

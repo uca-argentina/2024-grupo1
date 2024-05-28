@@ -27,25 +27,30 @@ Class {
 	#name : #WormholeEffect,
 	#superclass : #Effect,
 	#instVars : [
-		'otherSide'
+		'otherSide',
+		'myPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-WormholeEffect class >> goesTo: anotherPosition [
+WormholeEffect class >> isIn: aPosition goesTo: anotherPosition [
 
-^self new initializeGoesTo: anotherPosition.
+^self new initializeIsIn: aPosition goesTo: anotherPosition.
 ]
 
 { #category : #action }
 WormholeEffect >> applyIn: aGame [ 
 
-^otherSide.
+^(otherSide  - myPosition ).
+
+
+
 ]
 
 { #category : #initialization }
-WormholeEffect >> initializeGoesTo: anotherPosition [
+WormholeEffect >> initializeIsIn: aPosition goesTo: anotherPosition [
 
 otherSide := anotherPosition.
+myPosition:= aPosition .
 ]

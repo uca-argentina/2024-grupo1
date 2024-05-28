@@ -93,8 +93,13 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 { #category : #accessing }
 Board >> finalSquareAfterLandingIn: aSquare whenPlaying: aGame [
 	
+	|aux squaresMoved finalSquare|
+	aux:=  (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) landIn: aGame.
 	
-	^ (boardOfSquares at: (self validateWithinBounds: aSquare whenPlaying: aGame )) landIn: aGame .
+	squaresMoved  := aSquare +aux.
+	aGame addLaps: (squaresMoved  // self squares ).
+	finalSquare:= self validateWithinBounds: squaresMoved whenPlaying: aGame .
+	^finalSquare 
 ]
 
 { #category : #initialization }
@@ -130,8 +135,8 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 	numberOfSquares := aNumberOfSquares.
 	boardOfSquares := OrderedCollection new.
 	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
-	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect goesTo: endPoint)).
-	boardOfSquares at: endPoint put: (Square with: (WormholeEffect goesTo: startingPoint)).
+	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect isIn: startingPoint  goesTo: endPoint)).
+	boardOfSquares at: endPoint put: (Square with: (WormholeEffect isIn: endPoint  goesTo: startingPoint)).
 	
 	
 	
@@ -155,7 +160,7 @@ Board >> squaresPerParsec [
 Board >> validateWithinBounds: aSquare whenPlaying: aGame [
 
 	aSquare > self squares ifTrue: [
-		aGame addLaps: (aSquare // self squares ).
+"		aGame addLaps: (aSquare // self squares )."
 		^ aSquare % self squares ].
 
 	^ aSquare
