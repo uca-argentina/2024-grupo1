@@ -39,7 +39,7 @@ AtomicBombEffect class >> isIn: aSquare [
 AtomicBombEffect >> applyIn: aGame [ 
 	aGame moveAllBackToBeginning.
 	aGame decreaseAllShieldsByOne .
-	^(myPosition -1) negated.
+	^0.
 ]
 
 { #category : #initialization }

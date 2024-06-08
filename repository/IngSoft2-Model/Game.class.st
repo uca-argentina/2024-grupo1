@@ -20,16 +20,17 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 { #category : #action }
 Game >> calculateFinalPositionFor: aSpaceship [
 
-	| diceResult finalPosition |
+	| diceResult finalPosition squaresMoved totalPosition originalPosition|
 	diceResult := self throwDice.
 	finalPosition := diceResult + (self positionOf: aSpaceship).
-
-	finalPosition := board
+	originalPosition:= (self positionOf: aSpaceship).
+	squaresMoved := board
 		                 finalSquareFor: aSpaceship 
 		                 afterLandingIn: finalPosition
 		                 whenPlaying: self.
-
-	^ finalPosition
+	totalPosition:= squaresMoved + originalPosition.
+	squaresMoved > board squares ifTrue: [ self updateLaps: (totalPosition   //(board  squares +1)) of: aSpaceship . ].
+	squaresMoved  <= 0 ifTrue: [ self updateLaps:(( totalPosition   //board  squares) -1) of: aSpaceship . ].
 ]
 
 { #category : #action }
@@ -194,11 +195,10 @@ Game >> nextTurn [
 { #category : #action }
 Game >> normalTurn [
 
-	| finalPosition aSpaceship|
+	| aSpaceship|
 	aSpaceship := self nextSpaceshipToPlay .
-	finalPosition := self calculateFinalPositionFor: aSpaceship.
-	self updatePositionOf: aSpaceship to: finalPosition.
-	self checkForBattleIn: finalPosition.
+	self calculateFinalPositionFor: aSpaceship.
+	self checkForBattleIn: (self positionOf: aSpaceship) .
 
 	self checkForWinner.
 ]

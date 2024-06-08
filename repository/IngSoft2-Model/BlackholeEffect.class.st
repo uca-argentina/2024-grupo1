@@ -40,6 +40,7 @@ BlackholeEffect class >> isIn: aPosition [
 
 { #category : #action }
 BlackholeEffect >> applyIn: aGame [
+	aGame updatePositionOf: aGame nextSpaceshipToPlay  to: myPosition -4. 
 	^ -4.
 ]
 

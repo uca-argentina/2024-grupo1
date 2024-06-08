@@ -205,7 +205,6 @@ Board >> validateThat: aSpaceship isWithinBounds: aSquare whenPlaying: aGame [
 
 	|res|
 	aSquare > self squares ifTrue: [ 
-		aGame updateLaps: (aSquare //(self squares +1)) of: aSpaceship .
 		res := aSquare % self squares .
 		res = 0 ifTrue: [ ^self squares  ] ifFalse: [ ^res  ]
 		  ].
@@ -213,14 +212,8 @@ Board >> validateThat: aSpaceship isWithinBounds: aSquare whenPlaying: aGame [
 		(aGame lapsOf: aSpaceship ) = 0
 			ifTrue: [ ^ 1 ]
 			ifFalse: [
-				aGame updateLaps:(( aSquare //self squares) -1) of: aSpaceship .
 				^ aSquare + self squares   ] ].
 		
 	
 	^ aSquare
-	
-"
-aGame updateLaps: squaresMoved // self squares.
-	squaresMoved <= 0 ifTrue: [ aGame updateLaps: -1 ].
-	aGame players "
 ]
