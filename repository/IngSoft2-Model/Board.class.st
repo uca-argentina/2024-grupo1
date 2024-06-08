@@ -34,12 +34,7 @@ Class {
 
 { #category : #'instance creation' }
 Board class >> of: squares parsecs: someParsecs with: someEffects [ 
-	^self new initializeOf: squares parsecs: someParsecs  with: someEffects 
-]
-
-{ #category : #'instance creation' }
-Board class >> of: aNumberOfSquares parsecs: aNumberOfParsecs withHyperJumpIn: aSquare movesParsecs: someParsecs [ 
-^self new initializeOf: aNumberOfSquares  parsecs: aNumberOfParsecs  withHyperJumpIn: aSquare movesParsecs: someParsecs 
+	^self new initializeOf: squares parsecs: someParsecs  having: someEffects 
 ]
 
 { #category : #'instance creation' }
@@ -105,14 +100,6 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 	
 ]
 
-{ #category : #accessing }
-Board >> checkLapsIn: aGame AfterMoving: squaresMoved [
-
-	aGame updateLaps: squaresMoved // self squares.
-	squaresMoved <= 0 ifTrue: [ aGame updateLaps: -1 ].
-	aGame players 
-]
-
 { #category : #initialization }
 Board >> createHyperJumpIn: aSquare [
 
@@ -130,47 +117,35 @@ Board >> createHyperJumpIn: aSquare [
 { #category : #accessing }
 Board >> finalSquareFor: aSpaceship afterLandingIn: aSquare whenPlaying: aGame [
 
-	| aux squaresMoved finalSquare aux1 |
-	aux1 := boardOfSquares at:
-		        (self
-			         validateThat: aSpaceship 
-			         isWithinBounds: aSquare
-			         whenPlaying: aGame).
-	aux := aux1 landIn: aGame.
-	squaresMoved := aux1 position + aux.
-	"	self checkLapsIn: aGame AfterMoving: squaresMoved."
-	finalSquare := self
-		               validateThat: aSpaceship 
-		               isWithinBounds: squaresMoved
-		               whenPlaying: aGame.
-	^ finalSquare
+	| squaresMovedByEffect squaresMoved squareToLand |
+	squareToLand := boardOfSquares at: (self
+			                 validateThat: aSpaceship
+			                 isWithinBounds: aSquare
+			                 whenPlaying: aGame).
+	squaresMovedByEffect := squareToLand landIn: aGame.
+	squaresMoved := squareToLand position + squaresMovedByEffect.
+
+	^ self
+		  validateThat: aSpaceship
+		  isWithinBounds: squaresMoved
+		  whenPlaying: aGame
 ]
 
 { #category : #initialization }
-Board >> initializeOf: squares parsecs: someParsecs with: someEffects [ 
-	numberOfSquares := squares.
-	boardOfSquares := OrderedCollection new.
-	parsecs := someParsecs .
-	parsec := Parsec of: (self squares //someParsecs ).
-	
-	
-	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
-	
-	
-	someEffects keysDo:  [ :index | boardOfSquares at: index put: (Square with: (someEffects at: index )) ] 
-	
-]
+Board >> initializeOf: anAmountOfSquares parsecs: someParsecs having: someEffects [
 
-{ #category : #initialization }
-Board >> initializeOf: aNumberOfSquares  parsecs: aNumberOfParsecs  withHyperJumpIn: aSquare movesParsecs: someParsecs [ 
-
-	numberOfSquares := aNumberOfSquares .
+	numberOfSquares := anAmountOfSquares.
 	boardOfSquares := OrderedCollection new.
-	parsecs := aNumberOfParsecs  .
-	parsec := Parsec of: (numberOfSquares  / aNumberOfParsecs  ).
-	
-	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
-	boardOfSquares at: aSquare put: (Square with: (HyperJumpEffect isIn: aSquare  movesParsecs: someParsecs  SquaresPerParsec:  parsec )).
+	parsecs := someParsecs.
+	parsec := Parsec of: self squares // someParsecs.
+
+
+	1 to: numberOfSquares do: [ :square |
+		boardOfSquares add: (Square with: (NullEffect isIn: square)) ].
+
+
+	someEffects keysDo: [ :index |
+		boardOfSquares at: index put: (Square with: (someEffects at: index)) ]
 ]
 
 { #category : #initialization }
