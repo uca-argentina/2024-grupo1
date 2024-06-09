@@ -18,19 +18,20 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 ]
 
 { #category : #action }
-Game >> calculateFinalPositionFor: aSpaceship [
+Game >> calculateFinalPositionFor: aSpaceship [ 
 
-	| diceResult finalPosition squaresMoved totalPosition originalPosition|
+	| diceResult squaresMovedByEffect newPosition  totalPosition originalPosition  |
 	diceResult := self throwDice.
-	finalPosition := diceResult + (self positionOf: aSpaceship).
 	originalPosition:= (self positionOf: aSpaceship).
-	squaresMoved := board
+	newPosition  := diceResult + originalPosition .
+	squaresMovedByEffect := board
 		                 finalSquareFor: aSpaceship 
-		                 afterLandingIn: finalPosition
+		                 afterMoving: newPosition  
 		                 whenPlaying: self.
-	totalPosition:= squaresMoved + originalPosition.
-	squaresMoved > board squares ifTrue: [ self updateLaps: (totalPosition   //(board  squares +1)) of: aSpaceship . ].
-	squaresMoved  <= 0 ifTrue: [ self updateLaps:(( totalPosition   //board  squares) -1) of: aSpaceship . ].
+
+	totalPosition :=  originalPosition + diceResult + squaresMovedByEffect .
+	totalPosition   >= board squares ifTrue: [ self updateLaps: (totalPosition   //(board  squares )) of: aSpaceship . ].
+	totalPosition   <= 0 ifTrue: [ self updateLaps:(( totalPosition   //board  squares) -1) of: aSpaceship . ].
 ]
 
 { #category : #action }
@@ -44,7 +45,7 @@ Game >> checkForBattleIn: finalPosition [
 
 	| aSpaceship |
 	aSpaceship := self nextSpaceshipToPlay.
-	finalPosition = 1 ifFalse: [
+	finalPosition = 0 ifFalse: [
 		spaceships allButFirstDo: [ :spaceship |
 			((spaceshipsData at: spaceship) at: 'Position') = finalPosition
 				ifTrue: [ self processBattleBetween: aSpaceship and: spaceship ] ] ]
@@ -52,10 +53,10 @@ Game >> checkForBattleIn: finalPosition [
 
 { #category : #action }
 Game >> checkForWinner [ 
+
 	|currentSpaceship|
-	
 	currentSpaceship := self nextSpaceshipToPlay .
-	(((self dataFor: currentSpaceship ) at: 'Laps') = laps) ifTrue: [ self end  ]
+	(((self dataFor: currentSpaceship ) at: 'Laps') >= laps) ifTrue: [ self end  ]
 ]
 
 { #category : #testing }
@@ -114,7 +115,7 @@ Game >> initializeData [
 						  with: 'Shields'
 						  with: 'State')
 				 andValues: (OrderedCollection
-						  with: 1
+						  with: 0
 						  with: 0
 						  with: 3
 						  with: NormalState new)) ].
@@ -161,7 +162,7 @@ Game >> leaderBoard [
 { #category : #action }
 Game >> moveAllBackToBeginning [
 	
-	spaceshipsData do: [ :dataForASpaceship | dataForASpaceship at: 'Position' put: 1 ]
+	spaceshipsData do: [ :dataForASpaceship | dataForASpaceship at: 'Position' put: 0 ]
 ]
 
 { #category : #action }
@@ -176,6 +177,13 @@ Game >> moveAllButCurrentBack: n [
 			                 whenPlaying: self.
 
 		(self dataFor: spaceship) at: 'Position' put: finalPosition ]
+]
+
+{ #category : #action }
+Game >> moveCurrentTo: aPosition [ 
+	|aSpaceship|
+	aSpaceship := self nextSpaceshipToPlay .
+	(self dataFor: aSpaceship ) at: 'Position' put: aPosition 
 ]
 
 { #category : #accessing }
@@ -235,11 +243,10 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
 
-"	(spaceshipsData at: loser) at: 'Shields' update: [:shields | shields -1]."
 	currentShields :=	(spaceshipsData at: loser) at: 'Shields'.
 	(spaceshipsData at: loser) at: 'Shields' put: (currentShields -1).
 	((spaceshipsData at: loser) at: 'Shields') = 0 ifTrue: [ (spaceshipsData at: loser) at: 'State' put: (RechargingState2 new) ].
-	(spaceshipsData at: loser) at: 'Position' put: 1.
+	(spaceshipsData at: loser) at: 'Position' put: 0.
 	
 	
 

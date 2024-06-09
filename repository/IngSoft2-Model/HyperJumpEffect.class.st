@@ -47,10 +47,12 @@ HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParse
 { #category : #action }
 HyperJumpEffect >> applyIn: aGame [ 
 
-	|currentParsec squaresToMove|
+	|currentParsec squaresToMove finalPosition|
 	currentParsec :=parsecsToMove  removeFirst .
 	parsecsToMove  addLast: currentParsec .
 	squaresToMove := (currentParsec * ( parsecRatio squaresPerParsec  ))//1.
+	finalPosition := myPosition +squaresToMove .
+	aGame moveCurrentTo: (finalPosition ).
 	^ squaresToMove  
 
 

@@ -115,32 +115,28 @@ Board >> createHyperJumpIn: aSquare [
 ]
 
 { #category : #accessing }
-Board >> finalSquareFor: aSpaceship afterLandingIn: aSquare whenPlaying: aGame [
+Board >> finalSquareFor: aSpaceship afterMoving: aNumberOfSquares whenPlaying: aGame [
 
-	| squaresMovedByEffect squaresMoved squareToLand |
+	| squaresMovedByEffect squareToLand |
 	squareToLand := boardOfSquares at: (self
 			                 validateThat: aSpaceship
-			                 isWithinBounds: aSquare
+			                 isWithinBounds: aNumberOfSquares
 			                 whenPlaying: aGame).
 	squaresMovedByEffect := squareToLand landIn: aGame.
-	squaresMoved := squareToLand position + squaresMovedByEffect.
 
-	^ self
-		  validateThat: aSpaceship
-		  isWithinBounds: squaresMoved
-		  whenPlaying: aGame
+	^ squaresMovedByEffect
 ]
 
 { #category : #initialization }
-Board >> initializeOf: anAmountOfSquares parsecs: someParsecs having: someEffects [
+Board >> initializeOf: anAmountOfSquares parsecs: someParsecs having: someEffects [ 
 
 	numberOfSquares := anAmountOfSquares.
-	boardOfSquares := OrderedCollection new.
+	boardOfSquares := ZeroBasedArray newEmpty .
 	parsecs := someParsecs.
 	parsec := Parsec of: self squares // someParsecs.
 
 
-	1 to: numberOfSquares do: [ :square |
+	0 to: (numberOfSquares -1) do: [ :square |
 		boardOfSquares add: (Square with: (NullEffect isIn: square)) ].
 
 
@@ -152,8 +148,8 @@ Board >> initializeOf: anAmountOfSquares parsecs: someParsecs having: someEffect
 Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	numberOfSquares := aNumberOfSquares.
-	boardOfSquares := OrderedCollection new.
-	1 to: numberOfSquares do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
+	boardOfSquares := ZeroBasedArray newEmpty .
+	0 to: (numberOfSquares -1) do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
 	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect isIn: startingPoint  goesTo: endPoint)).
 	boardOfSquares at: endPoint put: (Square with: (WormholeEffect isIn: endPoint  goesTo: startingPoint)).
 	
@@ -162,16 +158,16 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 		
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 Board >> initializeRandomOf: aNumberOfSquares parsecs: aNumberOfParsecs wormholeBeginsAt: startingPoint  andEndsAt: endPoint [
 
 	|specialEffect random|
 	numberOfSquares := aNumberOfSquares .
-	boardOfSquares := OrderedCollection new.
+	boardOfSquares := ZeroBasedArray newEmpty .
 	parsecs := aNumberOfParsecs  .
 	parsec := Parsec of: (self squares //aNumberOfParsecs  ).
 	
-	1 to: numberOfSquares do: [:square |  
+	0 to: (numberOfSquares -1) do: [:square |  
 		random:=100 atRandom.
 		specialEffect := NullEffect isIn: square .
 		(random > 40 and: (random <=60)) ifTrue: [ specialEffect := BlackholeEffect isIn: square  ].
@@ -203,17 +199,12 @@ Board >> squaresPerParsec [
 { #category : #analyze }
 Board >> validateThat: aSpaceship isWithinBounds: aSquare whenPlaying: aGame [
 
-	|res|
-	aSquare > self squares ifTrue: [ 
-		res := aSquare % self squares .
-		res = 0 ifTrue: [ ^self squares  ] ifFalse: [ ^res  ]
-		  ].
+	aSquare >= self squares ifTrue: [ ^ aSquare % self squares ].
 	aSquare <= 0 ifTrue: [
-		(aGame lapsOf: aSpaceship ) = 0
+		(aGame lapsOf: aSpaceship) = 0
 			ifTrue: [ ^ 1 ]
-			ifFalse: [
-				^ aSquare + self squares   ] ].
-		
-	
+			ifFalse: [ ^ aSquare + self squares ] ].
+
+
 	^ aSquare
 ]

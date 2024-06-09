@@ -41,7 +41,7 @@ WormholeEffect class >> isIn: aPosition goesTo: anotherPosition [
 
 { #category : #action }
 WormholeEffect >> applyIn: aGame [ 
-
+	aGame moveCurrentTo: otherSide .
 ^(otherSide  - myPosition ).
 
 
