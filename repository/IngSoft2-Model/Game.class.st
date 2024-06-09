@@ -18,20 +18,24 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 ]
 
 { #category : #action }
-Game >> calculateFinalPositionFor: aSpaceship [ 
+Game >> calculateFinalPositionFor: aSpaceship [
 
-	| diceResult squaresMovedByEffect newPosition  totalPosition originalPosition  |
+	| diceResult squaresMovedByEffect newPosition totalPosition originalPosition |
 	diceResult := self throwDice.
-	originalPosition:= (self positionOf: aSpaceship).
-	newPosition  := diceResult + originalPosition .
+	originalPosition := self positionOf: aSpaceship.
+	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
-		                 finalSquareFor: aSpaceship 
-		                 afterMoving: newPosition  
-		                 whenPlaying: self.
+		                        finalSquareFor: aSpaceship
+		                        afterMovingTo: newPosition
+		                        whenPlaying: self.
 
-	totalPosition :=  originalPosition + diceResult + squaresMovedByEffect .
-	totalPosition   >= board squares ifTrue: [ self updateLaps: (totalPosition   //(board  squares )) of: aSpaceship . ].
-	totalPosition   <= 0 ifTrue: [ self updateLaps:(( totalPosition   //board  squares) -1) of: aSpaceship . ].
+	totalPosition := originalPosition + diceResult + squaresMovedByEffect.
+	totalPosition >= board squares ifTrue: [
+		self updateLaps: totalPosition // board squares of: aSpaceship ].
+	(totalPosition <= 0 and: ((self lapsOf: aSpaceship) >0)) ifTrue: [
+		self updateLaps: totalPosition // board squares - 1 of: aSpaceship ]
+	
+	 
 ]
 
 { #category : #action }
@@ -171,10 +175,7 @@ Game >> moveAllButCurrentBack: n [
 	| currentPosition finalPosition |
 	spaceships allButFirstDo: [ :spaceship |
 		currentPosition := (self dataFor: spaceship) at: 'Position'.
-		finalPosition := board
-			                 validateThat: spaceship 
-			                 isWithinBounds: currentPosition - n
-			                 whenPlaying: self.
+		finalPosition := board validateWithinBounds: currentPosition - n.
 
 		(self dataFor: spaceship) at: 'Position' put: finalPosition ]
 ]
@@ -183,6 +184,8 @@ Game >> moveAllButCurrentBack: n [
 Game >> moveCurrentTo: aPosition [ 
 	|aSpaceship|
 	aSpaceship := self nextSpaceshipToPlay .
+	board validateWithinBounds:  aPosition .
+
 	(self dataFor: aSpaceship ) at: 'Position' put: aPosition 
 ]
 

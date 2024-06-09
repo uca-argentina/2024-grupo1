@@ -115,13 +115,11 @@ Board >> createHyperJumpIn: aSquare [
 ]
 
 { #category : #accessing }
-Board >> finalSquareFor: aSpaceship afterMoving: aNumberOfSquares whenPlaying: aGame [
+Board >> finalSquareFor: aSpaceship afterMovingTo: aSquare whenPlaying: aGame [
 
 	| squaresMovedByEffect squareToLand |
-	squareToLand := boardOfSquares at: (self
-			                 validateThat: aSpaceship
-			                 isWithinBounds: aNumberOfSquares
-			                 whenPlaying: aGame).
+	squareToLand := boardOfSquares at:
+		                (self validateWithinBounds: aSquare).
 	squaresMovedByEffect := squareToLand landIn: aGame.
 
 	^ squaresMovedByEffect
@@ -197,14 +195,10 @@ Board >> squaresPerParsec [
 ]
 
 { #category : #analyze }
-Board >> validateThat: aSpaceship isWithinBounds: aSquare whenPlaying: aGame [
+Board >> validateWithinBounds: aSquare [
 
 	aSquare >= self squares ifTrue: [ ^ aSquare % self squares ].
-	aSquare <= 0 ifTrue: [
-		(aGame lapsOf: aSpaceship) = 0
-			ifTrue: [ ^ 1 ]
-			ifFalse: [ ^ aSquare + self squares ] ].
-
+	aSquare < 0 ifTrue: [ ^0 ].
 
 	^ aSquare
 ]

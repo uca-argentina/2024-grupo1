@@ -47,7 +47,7 @@ BlackholeEffect >> applyIn: aGame [
 { #category : #initialization }
 BlackholeEffect >> initializeIsIn: aPosition [
 
-	myPosition := aPosition  
+	myPosition := aPosition 
 ]
 
 { #category : #accessing }
