@@ -5,10 +5,33 @@ Class {
 }
 
 { #category : #tests }
-BoardDistributionCreatorTest >> test079 [
+BoardDistributionCreatorTest >> test079BoardDistributionCreatorMakesABoardOfIndicatedLength [
 
 	| aBoardDistributionCreator probabilites |
 	aBoardDistributionCreator := BoardDistributionCreator new.
-	probabilites := Dictionary newFromKeys: #(AtomicBombEffect ) andValues: #(100).
-	self assert: ((aBoardDistributionCreator createOf: 1 with: probabilites) size) equals: 1
+	probabilites := Dictionary
+		                newFromKeys: #( AtomicBombEffect )
+		                andValues: #( 100 ).
+	self
+		assert: (aBoardDistributionCreator
+				 createOf: 1
+				 with: probabilites
+				 withParsecs: 1) size
+		equals: 1
+]
+
+{ #category : #tests }
+BoardDistributionCreatorTest >> test080WhenProbabilityIs100ThenEffectIsCreated [
+
+	| aBoardDistributionCreator probabilites |
+	aBoardDistributionCreator := BoardDistributionCreator new.
+	probabilites := Dictionary
+		                newFromKeys: #( 'AtomicBomb' )
+		                andValues: #( 100 ).
+	self
+		assert: ((aBoardDistributionCreator
+				  createOf: 1
+				  with: probabilites
+				  withParsecs: 1) at: 0) effect class
+		equals: AtomicBombEffect
 ]

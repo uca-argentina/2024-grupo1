@@ -51,21 +51,6 @@ Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: e
 		  andEndsAt: endPoint
 ]
 
-{ #category : #'instance creation' }
-Board class >> randomOf: aNumberOfSquares parsecs: aNumberOfParsecs wormholeBeginsAt: startingPoint andEndsAt: endPoint [ 
-
-	self
-		validate: aNumberOfSquares
-		and: endPoint
-		and: startingPoint.
-		
-	^ self new
-		  initializeRandomOf: aNumberOfSquares
-			parsecs: aNumberOfParsecs 
-		  wormholeBeginsAt: startingPoint
-		  andEndsAt: endPoint
-]
-
 { #category : #'argument validation' }
 Board class >> validate: aNumberOfSquares and: endPoint and: startingPoint [
 
@@ -100,18 +85,10 @@ Board class >> validateWormholeEndpointsOf: startingPoint and: endPoint areWithi
 	
 ]
 
-{ #category : #initialization }
-Board >> createHyperJumpIn: aSquare [
+{ #category : #accessing }
+Board class >> with: theSquares parsecs: someParsecs wormholeBeginsAt: startPoint andEndsAt: endpoint [
 
-	|hyperJumpEffect parsecsToMove randomAmount|
-	
-	parsecsToMove := OrderedCollection new.
-	randomAmount := 7 atRandom .
-	randomAmount timesRepeat: [ parsecsToMove add: (parsecs atRandom ) ].
-	
-	hyperJumpEffect := HyperJumpEffect isIn: aSquare  movesParsecs: parsecsToMove  SquaresPerParsec: parsec .
-
-	^hyperJumpEffect 
+	^self new initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: startPoint andEndsAt: endpoint
 ]
 
 { #category : #accessing }
@@ -157,28 +134,18 @@ Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsA
 ]
 
 { #category : #initialization }
-Board >> initializeRandomOf: aNumberOfSquares parsecs: aNumberOfParsecs wormholeBeginsAt: startingPoint  andEndsAt: endPoint [
+Board >> initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	|specialEffect random|
-	numberOfSquares := aNumberOfSquares .
-	boardOfSquares := ZeroBasedArray newEmpty .
-	parsecs := aNumberOfParsecs  .
-	parsec := Parsec of: (self squares //aNumberOfParsecs  ).
-	
-	0 to: (numberOfSquares -1) do: [:square |  
-		random:=100 atRandom.
-		specialEffect := NullEffect isIn: square .
-		(random > 40 and: (random <=60)) ifTrue: [ specialEffect := BlackholeEffect isIn: square  ].
-		(random > 60 and: (random <=80)) ifTrue: [ specialEffect := HyperSpaceJumpEffect isIn: square  ].
-		(random > 80 and: (random <=90)) ifTrue: [ specialEffect :=  MoonWalkEffect isIn: square  moves: (numberOfSquares atRandom ) ].
-		(random > 90 and: (random <=98)) ifTrue: [ specialEffect := self createHyperJumpIn: square  ].
-		(random > 98 and: (random <=100)) ifTrue: [ specialEffect :=  AtomicBombEffect isIn: square ].
-		boardOfSquares add: (Square with: (specialEffect ) )].
-	
+	numberOfSquares := theSquares size.
+	boardOfSquares := ZeroBasedArray withAll: theSquares.
+	parsecs := someParsecs.
+	parsec := Parsec of: self squares // someParsecs.
+
 	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect isIn: startingPoint  goesTo: endPoint)).
 	boardOfSquares at: endPoint put: (Square with: (WormholeEffect isIn: endPoint  goesTo: startingPoint)).
-	
-	
+
+
+
 ]
 
 { #category : #accessing }
