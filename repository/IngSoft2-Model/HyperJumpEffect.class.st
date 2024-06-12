@@ -26,9 +26,8 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #HyperJumpEffect,
-	#superclass : #Effect,
+	#superclass : #NullEffect,
 	#instVars : [
-		'myPosition',
 		'parsecsToMove',
 		'parsecRatio'
 	],
@@ -65,10 +64,4 @@ HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerP
 	myPosition := aSquare.
 	parsecsToMove := someParsecs.
 	parsecRatio := aParsec 
-]
-
-{ #category : #accessing }
-HyperJumpEffect >> position [
-
-^myPosition 
 ]

@@ -25,10 +25,7 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #HyperSpaceJumpEffect,
-	#superclass : #Effect,
-	#instVars : [
-		'myPosition'
-	],
+	#superclass : #NullEffect,
 	#category : #'IngSoft2-Model'
 }
 
@@ -41,17 +38,6 @@ HyperSpaceJumpEffect class >> isIn: aPosition [
 { #category : #action }
 HyperSpaceJumpEffect >> applyIn: aGame [ 
 	aGame decreaseShieldByOne.
-	aGame updatePositionOf: aGame nextSpaceshipToPlay  to: myPosition +4. 
+	aGame moveCurrentTo:  myPosition +4. 
 	^4
-]
-
-{ #category : #initialization }
-HyperSpaceJumpEffect >> initializeIsIn: aPosition [ 
-	myPosition := aPosition 
-]
-
-{ #category : #accessing }
-HyperSpaceJumpEffect >> position [
-
-^myPosition 
 ]
