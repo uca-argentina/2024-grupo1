@@ -115,7 +115,7 @@ Board >> createHyperJumpIn: aSquare [
 ]
 
 { #category : #accessing }
-Board >> finalSquareFor: aSpaceship afterMovingTo: aSquare whenPlaying: aGame [
+Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame [
 
 	| squaresMovedByEffect squareToLand |
 	squareToLand := boardOfSquares at:

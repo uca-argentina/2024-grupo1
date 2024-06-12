@@ -25,17 +25,14 @@ Game >> calculateFinalPositionFor: aSpaceship [
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
-		                        finalSquareFor: aSpaceship
-		                        afterMovingTo: newPosition
+		                        finalSquareAfterMovingTo: newPosition
 		                        whenPlaying: self.
 
 	totalPosition := originalPosition + diceResult + squaresMovedByEffect.
 	totalPosition >= board squares ifTrue: [
 		self updateLaps: totalPosition // board squares of: aSpaceship ].
-	(totalPosition <= 0 ) ifTrue: [
+	totalPosition <= 0 ifTrue: [
 		self updateLaps: totalPosition // board squares - 1 of: aSpaceship ]
-	
-	 
 ]
 
 { #category : #action }
