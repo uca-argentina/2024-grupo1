@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  State where a spaceship can play normally
+For the Class part:  State after losing all shields and skipping one turn
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -21,13 +21,16 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #NormalState,
-	#superclass : #Object,
+	#name : #Turn2RechargeState,
+	#superclass : #NoPenaltyState,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
-NormalState >> playIn: aGame [
-
-	aGame normalTurn .
+Turn2RechargeState >> playIn: aGame [
+	
+	|aSpaceship|
+	aSpaceship := aGame nextSpaceshipToPlay .
+	aGame rechargeShieldsOf: aSpaceship .
+	aGame changeStateOf: aSpaceship  to: (NoPenaltyState new).
 ]

@@ -18,9 +18,20 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 ]
 
 { #category : #action }
+Game >> battleIn: position [
+
+	| aSpaceship |
+	aSpaceship := self nextSpaceshipToPlay.
+	position = 0 ifFalse: [
+		spaceships allButFirstDo: [ :spaceship |
+			(self dataFor: spaceship) position = position ifTrue: [
+				self processBattleBetween: aSpaceship and: spaceship ] ] ]
+]
+
+{ #category : #action }
 Game >> calculateFinalPositionFor: aSpaceship [
 
-	| diceResult squaresMovedByEffect newPosition totalPosition originalPosition |
+	| diceResult squaresMovedByEffect newPosition  originalPosition |
 	diceResult := self throwDice.
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
@@ -28,28 +39,22 @@ Game >> calculateFinalPositionFor: aSpaceship [
 		                        finalSquareAfterMovingTo: newPosition
 		                        whenPlaying: self.
 
-	totalPosition := originalPosition + diceResult + squaresMovedByEffect.
-	totalPosition >= board squares ifTrue: [
-		self updateLapsOf: aSpaceship by: totalPosition // board squares ].
+	self calculateLapsFor: aSpaceship in: originalPosition + diceResult + squaresMovedByEffect.
+]
+
+{ #category : #action }
+Game >> calculateLapsFor: aSpaceship in: totalPosition [
+
+	totalPosition >= board length ifTrue: [
+		self updateLapsOf: aSpaceship by: totalPosition // board length ].
 	totalPosition <= 0 ifTrue: [
-		self updateLapsOf: aSpaceship by: totalPosition // board squares - 1 ]
+		self updateLapsOf: aSpaceship by: totalPosition // board length - 1 ]
 ]
 
 { #category : #action }
 Game >> changeStateOf: aSpaceship to: aState [
 
 	(self dataFor: aSpaceship ) changeStateTo: aState 
-]
-
-{ #category : #action }
-Game >> checkForBattleIn: finalPosition [
-
-	| aSpaceship |
-	aSpaceship := self nextSpaceshipToPlay.
-	finalPosition = 0 ifFalse: [
-		spaceships allButFirstDo: [ :spaceship |
-			((self dataFor: spaceship ) position) = finalPosition
-				ifTrue: [ self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
 
 { #category : #action }
@@ -155,11 +160,11 @@ Game >> moveAllButCurrentBack: someSquares [
 	spaceships allButFirstDo: [ :spaceship |
 		currentPosition := (self dataFor: spaceship) position.
 		movesTo := currentPosition - someSquares.
-		finalPosition := board validateWithinBounds: movesTo.
+		finalPosition := board adjustBounds: movesTo.
 		currentLaps := (self dataFor: spaceship) laps.
 		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
 		movesTo < 0 ifTrue: [
-			self updateLapsOf: spaceship by: movesTo // board squares - 1 ].
+			self updateLapsOf: spaceship by: movesTo // board length - 1 ].
 		(self dataFor: spaceship) moveTo: finalPosition ]
 ]
 
@@ -168,7 +173,7 @@ Game >> moveCurrentTo: aPosition [
 
 	| aSpaceship currentLaps finalPosition |
 	aSpaceship := self nextSpaceshipToPlay.
-	finalPosition := board validateWithinBounds: aPosition.
+	finalPosition := board adjustBounds: aPosition.
 	currentLaps := (self dataFor: aSpaceship) laps .
 	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
 	(self dataFor: aSpaceship) moveTo: finalPosition 
@@ -194,7 +199,7 @@ Game >> normalTurn [
 	| aSpaceship|
 	aSpaceship := self nextSpaceshipToPlay .
 	self calculateFinalPositionFor: aSpaceship.
-	self checkForBattleIn: (self positionOf: aSpaceship) .
+	self battleIn: (self positionOf: aSpaceship) .
 
 	self checkForWinner.
 ]
@@ -246,7 +251,7 @@ Game >> reduceShieldsByOneOf: loser [
 	currentShields := (self dataFor: loser) shields.
 	(self dataFor: loser) changeShieldsTo: currentShields - 1.
 	(self dataFor: loser) shields = 0 ifTrue: [
-		(self dataFor: loser) changeStateTo: RechargingState2 new ].
+		(self dataFor: loser) changeStateTo: Turn1RechargeState new ].
 	(self dataFor: loser) moveTo: 0
 ]
 

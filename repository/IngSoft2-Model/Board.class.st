@@ -89,12 +89,21 @@ Board class >> with: theSquares parsecs: someParsecs wormholeBeginsAt: startPoin
 	^self new initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: startPoint andEndsAt: endpoint
 ]
 
+{ #category : #analyze }
+Board >> adjustBounds: aSquare [
+
+	aSquare >= self length ifTrue: [ ^ aSquare % self length ].
+	aSquare < 0 ifTrue: [ ^0 ].
+
+	^ aSquare
+]
+
 { #category : #accessing }
 Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame [
 
 	| squaresMovedByEffect squareToLand |
 	squareToLand := boardOfSquares at:
-		                (self validateWithinBounds: aSquare).
+		                (self adjustBounds: aSquare).
 	squaresMovedByEffect := squareToLand landIn: aGame.
 
 	^ squaresMovedByEffect
@@ -115,23 +124,8 @@ Board >> initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: start
 ]
 
 { #category : #accessing }
-Board >> squares [ 
+Board >> length [ 
 
 
 ^ boardOfSquares size.
-]
-
-{ #category : #accessing }
-Board >> squaresPerParsec [
-
-^(self squares )//parsecs
-]
-
-{ #category : #analyze }
-Board >> validateWithinBounds: aSquare [
-
-	aSquare >= self squares ifTrue: [ ^ aSquare % self squares ].
-	aSquare < 0 ifTrue: [ ^0 ].
-
-	^ aSquare
 ]

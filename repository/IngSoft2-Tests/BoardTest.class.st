@@ -36,7 +36,7 @@ BoardTest >> test007BoardCreatedWithTwoSquares [
 	| aBoard |
 
 	aBoard := Board of: 2 wormholeBeginsAt: 0 andEndsAt: 1.
-	self assert: aBoard squares equals: 2
+	self assert: aBoard length equals: 2
 ]
 
 { #category : #tests }
@@ -45,7 +45,7 @@ BoardTest >> test010BoardCreatedWithNSquares [
 | aBoard |
 
 aBoard := Board of: 20 wormholeBeginsAt: 1 andEndsAt: 2.
-self assert: aBoard squares equals: 20.
+self assert: aBoard length equals: 20.
 ]
 
 { #category : #tests }

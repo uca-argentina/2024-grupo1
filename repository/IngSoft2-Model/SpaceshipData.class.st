@@ -89,7 +89,7 @@ SpaceshipData >> initializeFor: aSpaceship [
 	spaceship := aSpaceship .
 	position := 0.
 	laps := 0.
-	state := NormalState new.
+	state := NoPenaltyState new.
 	shields := 3.
 ]
 
