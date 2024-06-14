@@ -45,6 +45,20 @@ SpaceshipData class >> for: aSpaceship [
 	^self new initializeFor: aSpaceship 
 ]
 
+{ #category : #comparing }
+SpaceshipData >> = anotherSpaceship [
+
+	^laps = anotherSpaceship laps and:  position = anotherSpaceship position 
+]
+
+{ #category : #comparing }
+SpaceshipData >> >= anotherSpaceship [
+
+	laps = anotherSpaceship laps
+		ifFalse: [ ^ laps >= anotherSpaceship laps ]
+		ifTrue: [ ^ position >= anotherSpaceship position ]
+]
+
 { #category : #accessing }
 SpaceshipData >> changeLapsTo: anAmountOfLaps [
 
@@ -61,6 +75,12 @@ shields := aShieldValue
 SpaceshipData >> changeStateTo: aState [ 
 
 state := aState 
+]
+
+{ #category : #comparing }
+SpaceshipData >> hash [ 
+
+^laps 
 ]
 
 { #category : #initialization }
