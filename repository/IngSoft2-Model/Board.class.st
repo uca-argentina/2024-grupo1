@@ -33,13 +33,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> of: squares parsecs: someParsecs [ 
-
-	
-	^self new initializeWith: squares parsecs: someParsecs  wormholeBeginsAt: 0 andEndsAt: 1
-]
-
-{ #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	| boardOfSquares |

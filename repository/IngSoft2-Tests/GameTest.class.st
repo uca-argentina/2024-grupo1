@@ -702,10 +702,14 @@ GameTest >> test54AfterLosingTwoTurnsSpaceshipCanPlayAgain [
 { #category : #tests }
 GameTest >> test66GameIsWonAfterOneLap [
 
-	| aGame aSpaceship aBoard aDie aNumberOfLaps boardDistributionCreator|
+	| aGame aSpaceship aBoard aDie aNumberOfLaps squares|
 	aSpaceship := Spaceship launch: ''.
-	boardDistributionCreator := BoardDistributionCreator new.
-	aBoard := Board of: (boardDistributionCreator createOf: 3 with: (Dictionary new) withParsecs: 1 maximumHyperJumpValues: 1) parsecs: 1.
+	
+	squares := ZeroBasedArray newEmpty .
+	0 to: 2 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt: 1 andEndsAt: 2.
+	
 	aDie := LoadedDie of: 3.
 	aNumberOfLaps := 1.
 	aGame := Game
@@ -721,10 +725,13 @@ GameTest >> test66GameIsWonAfterOneLap [
 { #category : #tests }
 GameTest >> test67GameIsWonAfterANumberOfLaps [
 
-	| aGame aSpaceship aBoard aDie aNumberOfLaps boardDistributionCreator|
+	| aGame aSpaceship aBoard aDie aNumberOfLaps squares|
 	aSpaceship := Spaceship launch: ''.
-	boardDistributionCreator := BoardDistributionCreator new.
-	aBoard := Board of: (boardDistributionCreator createOf: 3 with: (Dictionary new) withParsecs: 1 maximumHyperJumpValues: 1) parsecs: 1.
+	
+	squares := ZeroBasedArray newEmpty .
+	0 to: 2 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt: 1 andEndsAt: 2.
 	aDie := LoadedDie of: 3.
 	aNumberOfLaps := 10.
 	aGame := Game
