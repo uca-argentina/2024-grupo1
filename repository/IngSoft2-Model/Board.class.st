@@ -33,20 +33,25 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> of: squares parsecs: someParsecs with: someEffects [ 
-	^self new initializeOf: squares parsecs: someParsecs  having: someEffects 
+Board class >> of: squares parsecs: someParsecs [ 
+
+	
+	^self new initializeWith: squares parsecs: someParsecs  wormholeBeginsAt: 0 andEndsAt: 1
 ]
 
 { #category : #'instance creation' }
 Board class >> of: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	self
-		validate: aNumberOfSquares
-		and: endPoint
-		and: startingPoint.
-		
+	| boardOfSquares |
+	boardOfSquares := ZeroBasedArray newEmpty.
+	0 to: aNumberOfSquares - 1 do: [ :square |
+		boardOfSquares add: (Square with: (NullEffect isIn: square)) ].
+
+	self validate: aNumberOfSquares and: endPoint and: startingPoint.
+
 	^ self new
-		  initializeOf: aNumberOfSquares
+		  initializeWith: boardOfSquares
+		  parsecs: 1
 		  wormholeBeginsAt: startingPoint
 		  andEndsAt: endPoint
 ]

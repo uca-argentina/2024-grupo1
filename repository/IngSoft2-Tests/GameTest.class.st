@@ -702,9 +702,10 @@ GameTest >> test54AfterLosingTwoTurnsSpaceshipCanPlayAgain [
 { #category : #tests }
 GameTest >> test66GameIsWonAfterOneLap [
 
-	| aGame aSpaceship aBoard aDie aNumberOfLaps |
+	| aGame aSpaceship aBoard aDie aNumberOfLaps boardDistributionCreator|
 	aSpaceship := Spaceship launch: ''.
-	aBoard := Board of: 3 parsecs: 1 with: Dictionary new.
+	boardDistributionCreator := BoardDistributionCreator new.
+	aBoard := Board of: (boardDistributionCreator createOf: 3 with: (Dictionary new) withParsecs: 1 maximumHyperJumpValues: 1) parsecs: 1.
 	aDie := LoadedDie of: 3.
 	aNumberOfLaps := 1.
 	aGame := Game
@@ -720,9 +721,10 @@ GameTest >> test66GameIsWonAfterOneLap [
 { #category : #tests }
 GameTest >> test67GameIsWonAfterANumberOfLaps [
 
-	| aGame aSpaceship aBoard aDie aNumberOfLaps |
+	| aGame aSpaceship aBoard aDie aNumberOfLaps boardDistributionCreator|
 	aSpaceship := Spaceship launch: ''.
-	aBoard := Board of: 3 parsecs: 1 with: Dictionary new.
+	boardDistributionCreator := BoardDistributionCreator new.
+	aBoard := Board of: (boardDistributionCreator createOf: 3 with: (Dictionary new) withParsecs: 1 maximumHyperJumpValues: 1) parsecs: 1.
 	aDie := LoadedDie of: 3.
 	aNumberOfLaps := 10.
 	aGame := Game

@@ -16,7 +16,8 @@ BoardDistributionCreatorTest >> test079BoardDistributionCreatorMakesABoardOfIndi
 		assert: (aBoardDistributionCreator
 				 createOf: 1
 				 with: probabilites
-				 withParsecs: 1) size
+				 withParsecs: 1
+				 maximumHyperJumpValues: 1) size
 		equals: 1
 ]
 
@@ -32,6 +33,7 @@ BoardDistributionCreatorTest >> test080WhenProbabilityIs100ThenEffectIsCreated [
 		assert: ((aBoardDistributionCreator
 				  createOf: 1
 				  with: probabilites
-				  withParsecs: 1) at: 0) effect class
+				  withParsecs: 1
+				  maximumHyperJumpValues: 1) at: 0) effect class
 		equals: AtomicBombEffect
 ]
