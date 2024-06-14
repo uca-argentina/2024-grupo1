@@ -448,7 +448,7 @@ BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
 		                   movesParsecs: (OrderedCollection with: 1)
-		                   SquaresPerParsec: (Parsec of: 1)).
+		                   SquaresPerParsec: 1).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -477,7 +477,7 @@ BoardTest >> test70HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 		                   isIn: 6
 		                   movesParsecs:
 		                   (OrderedCollection with: -1 with: 2)
-		                   SquaresPerParsec: (Parsec of: 1)).
+		                   SquaresPerParsec: 1).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -509,7 +509,7 @@ BoardTest >> test71WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFourS
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
 		                   movesParsecs: (OrderedCollection with: 1)
-		                   SquaresPerParsec: (Parsec of: 20 / 5)).
+		                   SquaresPerParsec:  20 / 5).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -536,7 +536,7 @@ BoardTest >> test72WhenBoardHasMoreParsecsThanSquaresThenSpaceshipMovesTwoParsec
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
 		                   movesParsecs: (OrderedCollection with: 2)
-		                   SquaresPerParsec: (Parsec of: 20 / 40)).
+		                   SquaresPerParsec: 20 / 40).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -563,7 +563,7 @@ BoardTest >> test73SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
 		                   movesParsecs: (OrderedCollection with: 3)
-		                   SquaresPerParsec: (Parsec of: 20 / 40)).
+		                   SquaresPerParsec:  20 / 40).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .

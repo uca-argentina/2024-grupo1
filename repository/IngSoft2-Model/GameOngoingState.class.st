@@ -38,7 +38,7 @@ GameOngoingState >> validateTurn [
 ]
 
 { #category : #accessing }
-GameOngoingState >> winnerOf: spaceships inAGameOf: nLaps [
+GameOngoingState >> winnerOf: spaceships after: someLaps [
 
 	Error signal: 'The game is not over - there is no winner yet.'
 ]

@@ -101,43 +101,11 @@ Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame [
 ]
 
 { #category : #initialization }
-Board >> initializeOf: anAmountOfSquares parsecs: someParsecs having: someEffects [ 
-
-	numberOfSquares := anAmountOfSquares.
-	boardOfSquares := ZeroBasedArray newEmpty .
-	parsecs := someParsecs.
-	parsec := Parsec of: self squares // someParsecs.
-
-
-	0 to: (numberOfSquares -1) do: [ :square |
-		boardOfSquares add: (Square with: (NullEffect isIn: square)) ].
-
-
-	someEffects keysDo: [ :index |
-		boardOfSquares at: index put: (Square with: (someEffects at: index)) ]
-]
-
-{ #category : #initialization }
-Board >> initializeOf: aNumberOfSquares wormholeBeginsAt: startingPoint andEndsAt: endPoint [
-
-	numberOfSquares := aNumberOfSquares.
-	boardOfSquares := ZeroBasedArray newEmpty .
-	0 to: (numberOfSquares -1) do: [:square |  boardOfSquares add: (Square with: (NullEffect isIn: square) )].
-	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect isIn: startingPoint  goesTo: endPoint)).
-	boardOfSquares at: endPoint put: (Square with: (WormholeEffect isIn: endPoint  goesTo: startingPoint)).
-	
-	
-	
-		
-]
-
-{ #category : #initialization }
 Board >> initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
 	numberOfSquares := theSquares size.
 	boardOfSquares := ZeroBasedArray withAll: theSquares.
 	parsecs := someParsecs.
-	parsec := Parsec of: self squares // someParsecs.
 
 	boardOfSquares at: startingPoint put: (Square with: (WormholeEffect isIn: startingPoint  goesTo: endPoint)).
 	boardOfSquares at: endPoint put: (Square with: (WormholeEffect isIn: endPoint  goesTo: startingPoint)).

@@ -30,9 +30,9 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	totalPosition := originalPosition + diceResult + squaresMovedByEffect.
 	totalPosition >= board squares ifTrue: [
-		self updateLaps: totalPosition // board squares of: aSpaceship ].
+		self updateLapsOf: aSpaceship by: totalPosition // board squares ].
 	totalPosition <= 0 ifTrue: [
-		self updateLaps: totalPosition // board squares - 1 of: aSpaceship ]
+		self updateLapsOf: aSpaceship by: totalPosition // board squares - 1 ]
 ]
 
 { #category : #action }
@@ -149,17 +149,18 @@ Game >> moveAllBackToBeginning [
 ]
 
 { #category : #action }
-Game >> moveAllButCurrentBack: n [
+Game >> moveAllButCurrentBack: someSquares [
 
-	| currentPosition finalPosition movesTo currentLaps|
+	| currentPosition finalPosition movesTo currentLaps |
 	spaceships allButFirstDo: [ :spaceship |
-		currentPosition := (self dataFor: spaceship) position .
-		movesTo  := currentPosition - n.
-		finalPosition := board validateWithinBounds: movesTo .
- 		currentLaps := (self dataFor: spaceship) laps.
-		(currentLaps =0 and: (movesTo  <0)) ifTrue: [ finalPosition := 0 ].
-		movesTo < 0 ifTrue: [ self updateLaps: movesTo  // board squares - 1 of: spaceship  ].
-		(self dataFor: spaceship) moveTo: finalPosition  ] 
+		currentPosition := (self dataFor: spaceship) position.
+		movesTo := currentPosition - someSquares.
+		finalPosition := board validateWithinBounds: movesTo.
+		currentLaps := (self dataFor: spaceship) laps.
+		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
+		movesTo < 0 ifTrue: [
+			self updateLapsOf: spaceship by: movesTo // board squares - 1 ].
+		(self dataFor: spaceship) moveTo: finalPosition ]
 ]
 
 { #category : #action }
@@ -223,25 +224,30 @@ Game >> positionOf: aSpaceship [
 { #category : #action }
 Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
-	| loser resultForFirstPlayer resultForSecondPlayer currentShields |
+	| loser resultForFirstPlayer resultForSecondPlayer |
 	resultForFirstPlayer := self throwDice.
 	resultForSecondPlayer := self throwDice.
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
-
-	currentShields :=	(self dataFor:  loser) shields.
-	(self dataFor:  loser) changeShieldsTo:  (currentShields -1).
-	((self dataFor:  loser) shields ) = 0 ifTrue: [ (self dataFor:  loser) changeStateTo:  (RechargingState2 new) ].
-	(self dataFor:  loser) moveTo:  0.
-	
-	
-
+		
+	self reduceShieldsByOneOf: loser
 ]
 
 { #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
 	(self dataFor: aSpaceship ) changeShieldsTo: 3
+]
+
+{ #category : #action }
+Game >> reduceShieldsByOneOf: loser [
+
+	| currentShields |
+	currentShields := (self dataFor: loser) shields.
+	(self dataFor: loser) changeShieldsTo: currentShields - 1.
+	(self dataFor: loser) shields = 0 ifTrue: [
+		(self dataFor: loser) changeStateTo: RechargingState2 new ].
+	(self dataFor: loser) moveTo: 0
 ]
 
 { #category : #accessing }
@@ -279,7 +285,7 @@ Game >> updateLaps: amountOfLaps [
 ]
 
 { #category : #adding }
-Game >> updateLaps: amountOfLaps of: aSpaceship [
+Game >> updateLapsOf: aSpaceship by: amountOfLaps [
 
 	| currentLaps  totalLaps |
 
@@ -299,5 +305,5 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 { #category : #accessing }
 Game >> winner [
 
-	^ state winnerOf: spaceshipsData inAGameOf: laps 
+	^ state winnerOf: spaceshipsData after: laps 
 ]

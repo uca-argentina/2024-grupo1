@@ -28,7 +28,7 @@ Class {
 	#name : #MoonWalkEffect,
 	#superclass : #NullEffect,
 	#instVars : [
-		'n'
+		'someSquares'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -41,7 +41,7 @@ MoonWalkEffect class >> isIn: aPosition moves: aNumberOfSquares [
 { #category : #action }
 MoonWalkEffect >> applyIn: aGame [ 
 	
-	aGame moveAllButCurrentBack: n.
+	aGame moveAllButCurrentBack: someSquares .
 	aGame moveCurrentTo: myPosition .
 	^0
 ]
@@ -49,5 +49,5 @@ MoonWalkEffect >> applyIn: aGame [
 { #category : #initialization }
 MoonWalkEffect >> initializeIsIn: aPosition moves: aNumberOfSquares [ 
 	myPosition := aPosition .
-	n := aNumberOfSquares 
+	someSquares  := aNumberOfSquares 
 ]

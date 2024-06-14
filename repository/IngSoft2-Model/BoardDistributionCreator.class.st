@@ -1,3 +1,25 @@
+"
+Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+
+For the Class part: Creates the squares with effects
+
+For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+
+For the Collaborators Part: State my main collaborators and one line about how I interact with them.
+
+Public API and Key Messages
+
+- message one
+- message two
+- (for bonus points) how to create instances.
+
+   One simple example is simply gorgeous.
+
+Internal Representation and Key Implementation Points.
+
+
+    Implementation Points
+"
 Class {
 	#name : #BoardDistributionCreator,
 	#superclass : #Object,
@@ -5,17 +27,19 @@ Class {
 }
 
 { #category : #initialization }
-BoardDistributionCreator >> createHyperJumpIn: aSquare withParsecs: anAmountOfParsecs maximumAmountOfValues: anAmount [
+BoardDistributionCreator >> createHyperJumpIn: aSquare withParsecRatio: aRatio maximumAmountOfValues: anAmount [
 
-	|hyperJumpEffect parsecsToMove randomAmount|
-	
+	| hyperJumpEffect parsecsToMove randomAmount |
 	parsecsToMove := OrderedCollection new.
-	randomAmount := anAmount atRandom .
-	randomAmount timesRepeat: [ parsecsToMove add: (anAmountOfParsecs atRandom ) ].
-	
-	hyperJumpEffect := HyperJumpEffect isIn: aSquare  movesParsecs: parsecsToMove  SquaresPerParsec: anAmountOfParsecs .
+	randomAmount := anAmount atRandom.
+	randomAmount timesRepeat: [ parsecsToMove add: aRatio atRandom ].
 
-	^hyperJumpEffect 
+	hyperJumpEffect := HyperJumpEffect
+		                   isIn: aSquare
+		                   movesParsecs: parsecsToMove
+		                   SquaresPerParsec: aRatio.
+
+	^ hyperJumpEffect
 ]
 
 { #category : #action }
@@ -33,7 +57,7 @@ BoardDistributionCreator >> createOf: length with: someProbabilities withParsecs
 				effect = 'HyperJump' ifTrue: [
 					specialEffect := self
 						                 createHyperJumpIn: position
-						                 withParsecs: anAmountOfParsecs
+						                 withParsecRatio: length/ anAmountOfParsecs 
 						                 maximumAmountOfValues: anAmount  ].
 				effect = 'Moonwalk' ifTrue: [
 					specialEffect := MoonWalkEffect
