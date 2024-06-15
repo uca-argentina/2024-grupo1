@@ -28,11 +28,17 @@ Class {
 	#name : #HyperJumpEffect,
 	#superclass : #NullEffect,
 	#instVars : [
-		'parsecsToMove',
-		'parsecRatio'
+		'parsecRatio',
+		'toMove',
+		'distancesMeasurementUnit'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #testing }
+HyperJumpEffect class >> isIn: aSquare moves: someDistances SquaresPerParsec: parsecRatio dataTypes: types [ 
+	^self new initializeIsIn: aSquare moves: someDistances SquaresPerParsec: parsecRatio  dataTypes: types 
+]
 
 { #category : #testing }
 HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParsec: squaresToParsecsRatio [
@@ -44,24 +50,37 @@ HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParse
 ]
 
 { #category : #action }
-HyperJumpEffect >> applyIn: aGame [ 
+HyperJumpEffect >> applyIn: aGame [
 
-	|currentParsec squaresToMove finalPosition|
-	currentParsec :=parsecsToMove  removeFirst .
-	parsecsToMove  addLast: currentParsec .
-	squaresToMove := (currentParsec * parsecRatio )//1.
-	finalPosition := myPosition +squaresToMove .
-	aGame moveCurrentTo: (finalPosition ).
-	^ squaresToMove  
+	| currentDistance squaresToMove finalPosition measurementUnit |
+	currentDistance := toMove removeFirst.
+	toMove addLast: currentDistance.
+	measurementUnit := distancesMeasurementUnit removeFirst.
+	distancesMeasurementUnit addLast: measurementUnit.
 
+	measurementUnit = 'Lightyear'
+		ifTrue: [ squaresToMove := currentDistance * parsecRatio // 3 ]
+		ifFalse: [ squaresToMove := currentDistance * parsecRatio // 1 ].
 
+	finalPosition := myPosition + squaresToMove.
+	aGame moveCurrentTo: finalPosition.
+	^ squaresToMove
+]
 
+{ #category : #initialization }
+HyperJumpEffect >> initializeIsIn: aSquare moves: someDistances SquaresPerParsec: aRatio dataTypes: types [ 
+	myPosition := aSquare .
+	toMove := someDistances.
+	parsecRatio := aRatio .
+	distancesMeasurementUnit := types 
 ]
 
 { #category : #initialization }
 HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: aRatio [
 
 	myPosition := aSquare.
-	parsecsToMove := someParsecs.
-	parsecRatio := aRatio  
+	toMove  := someParsecs.
+	parsecRatio := aRatio  .
+	distancesMeasurementUnit := OrderedCollection new.
+	toMove size timesRepeat: [ distancesMeasurementUnit add: 'Parsec' ]
 ]
