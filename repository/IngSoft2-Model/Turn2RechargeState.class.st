@@ -21,16 +21,16 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #RechargingState1,
-	#superclass : #NormalState,
+	#name : #Turn2RechargeState,
+	#superclass : #NoPenaltyState,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
-RechargingState1 >> playIn: aGame [
+Turn2RechargeState >> playIn: aGame [
 	
 	|aSpaceship|
 	aSpaceship := aGame nextSpaceshipToPlay .
 	aGame rechargeShieldsOf: aSpaceship .
-	aGame changeStateOf: aSpaceship  to: (NormalState new).
+	aGame changeStateOf: aSpaceship  to: (NoPenaltyState new).
 ]

@@ -38,6 +38,12 @@ Square class >> with: anEffect [
 ^ self new initializeWith: anEffect  
 ]
 
+{ #category : #accessing }
+Square >> effect [ 
+ ^effect 
+
+]
+
 { #category : #initialization }
 Square >> initializeWith: anEffect [
 

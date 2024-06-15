@@ -26,9 +26,8 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #HyperJumpEffect,
-	#superclass : #Effect,
+	#superclass : #NullEffect,
 	#instVars : [
-		'myPosition',
 		'parsecsToMove',
 		'parsecRatio'
 	],
@@ -47,10 +46,12 @@ HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParse
 { #category : #action }
 HyperJumpEffect >> applyIn: aGame [ 
 
-	|currentParsec squaresToMove|
+	|currentParsec squaresToMove finalPosition|
 	currentParsec :=parsecsToMove  removeFirst .
 	parsecsToMove  addLast: currentParsec .
-	squaresToMove := (currentParsec * ( parsecRatio squaresPerParsec  ))//1.
+	squaresToMove := (currentParsec * parsecRatio )//1.
+	finalPosition := myPosition +squaresToMove .
+	aGame moveCurrentTo: (finalPosition ).
 	^ squaresToMove  
 
 
@@ -58,15 +59,9 @@ HyperJumpEffect >> applyIn: aGame [
 ]
 
 { #category : #initialization }
-HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: aParsec [
+HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: aRatio [
 
 	myPosition := aSquare.
 	parsecsToMove := someParsecs.
-	parsecRatio := aParsec 
-]
-
-{ #category : #accessing }
-HyperJumpEffect >> position [
-
-^myPosition 
+	parsecRatio := aRatio  
 ]

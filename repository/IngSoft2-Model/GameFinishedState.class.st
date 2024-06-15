@@ -39,7 +39,10 @@ GameFinishedState >> validateTurn [
 ]
 
 { #category : #accessing }
-GameFinishedState >> winnerOf: spaceshipsData inAGameOf: nLaps [
-	
-	^ spaceshipsData keyAtValue: (spaceshipsData  detect: [ :spaceship | (spaceship at: 'Laps') = nLaps  ])
+GameFinishedState >> winnerOf: spaceshipsData after: someLaps [
+
+	| dataForWinner |
+	dataForWinner := spaceshipsData detect: [ :dataForASpaceship |
+		                 dataForASpaceship laps = someLaps ].
+	^ dataForWinner spaceship
 ]

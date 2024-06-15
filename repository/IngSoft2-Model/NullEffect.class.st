@@ -25,7 +25,7 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #NullEffect,
-	#superclass : #Effect,
+	#superclass : #Object,
 	#instVars : [
 		'myPosition'
 	],
@@ -35,17 +35,18 @@ Class {
 { #category : #'instance creation' }
 NullEffect class >> isIn: aPosition [
 
- ^self new initializeIn: aPosition 
+ ^self new initializeIsIn: aPosition 
 ]
 
 { #category : #action }
 NullEffect >> applyIn: aGame [
 
-^0 
+aGame moveCurrentTo: myPosition .
+^0
 ]
 
 { #category : #initialization }
-NullEffect >> initializeIn: aPosition [ 
+NullEffect >> initializeIsIn: aPosition [ 
 
 myPosition := aPosition.
 ]

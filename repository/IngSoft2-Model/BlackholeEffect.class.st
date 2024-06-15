@@ -25,10 +25,7 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #BlackholeEffect,
-	#superclass : #Effect,
-	#instVars : [
-		'myPosition'
-	],
+	#superclass : #NullEffect,
 	#category : #'IngSoft2-Model'
 }
 
@@ -40,17 +37,6 @@ BlackholeEffect class >> isIn: aPosition [
 
 { #category : #action }
 BlackholeEffect >> applyIn: aGame [
+	aGame moveCurrentTo: (myPosition -4).
 	^ -4.
-]
-
-{ #category : #initialization }
-BlackholeEffect >> initializeIsIn: aPosition [
-
-	myPosition := aPosition  
-]
-
-{ #category : #accessing }
-BlackholeEffect >> position [
-
-^myPosition 
 ]

@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  Abstract class to create effects for squares
+For the Class part:  State where a spaceship can play normally
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -21,13 +21,13 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #Effect,
+	#name : #NoPenaltyState,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
-Effect >> applyIn: aGame [ 
+NoPenaltyState >> playIn: aGame [
 
-self subclassResponsibility.
+	aGame normalTurn .
 ]
