@@ -670,3 +670,27 @@ BoardTest >> test77WhenSpaceshipGoesBackMultipleLapsWithMoonwalkEffectThenLosesT
 	aGame playTurn.
 	self assert: (aGame lapsOf: aSpaceship) equals: 0
 ]
+
+{ #category : #tests }
+BoardTest >> test81HyperJumpEffectCanJumpLightyears [
+
+	| aGame aSpaceship  aBoard aDie hyperJumpEffect squares |
+	aSpaceship := Spaceship launch: 'One'.
+
+	hyperJumpEffect  :=Square with:( HyperJumpEffect  isIn: 4 moves: (OrderedCollection with: 3) SquaresPerParsec: 1 dataTypes: (OrderedCollection with: 'Lightyear'))  .
+	squares := ZeroBasedArray newEmpty .
+	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: hyperJumpEffect  .
+	aBoard := Board with: squares  parsecs: 5 wormholeBeginsAt: 1 andEndsAt: 2.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aGame playTurn.
+
+	self assert: (aGame positionOf:  aSpaceship) equals: 0
+]
