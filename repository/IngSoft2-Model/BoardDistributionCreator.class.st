@@ -29,15 +29,20 @@ Class {
 { #category : #initialization }
 BoardDistributionCreator >> createHyperJumpIn: aSquare withParsecRatio: aRatio maximumAmountOfValues: anAmount [
 
-	| hyperJumpEffect parsecsToMove randomAmount |
-	parsecsToMove := OrderedCollection new.
+	| hyperJumpEffect toMove randomAmount |
+	toMove := OrderedCollection new.
 	randomAmount := anAmount atRandom.
-	randomAmount timesRepeat: [ parsecsToMove add: aRatio atRandom ].
+	randomAmount timesRepeat: [
+		2 atRandom = 2
+			ifTrue: [
+				toMove add:
+					(LightyearDistance of: aRatio atRandom withRatio: aRatio) ]
+			ifFalse: [
+			toMove add: (ParsecDistance of: aRatio atRandom withRatio: aRatio) ] ].
 
 	hyperJumpEffect := HyperJumpEffect
 		                   isIn: aSquare
-		                   movesParsecs: parsecsToMove
-		                   SquaresPerParsec: aRatio.
+		                   movesDistance: toMove.
 
 	^ hyperJumpEffect
 ]

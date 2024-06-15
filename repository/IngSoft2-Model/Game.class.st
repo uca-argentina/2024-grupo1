@@ -7,7 +7,8 @@ Class {
 		'state',
 		'dice',
 		'spaceshipsData',
-		'laps'
+		'laps',
+		'activeCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -33,6 +34,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult squaresMovedByEffect newPosition  originalPosition |
 	diceResult := self throwDice.
+	activeCards isNotNil ifTrue: [ diceResult:= diceResult + activeCards play ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
@@ -202,6 +204,11 @@ Game >> normalTurn [
 	self battleIn: (self positionOf: aSpaceship) .
 
 	self checkForWinner.
+]
+
+{ #category : #action }
+Game >> playCard: aSpeedCard from: aSpaceship target: anotherSpaceship [ 
+	activeCards := aSpeedCard .
 ]
 
 { #category : #action }

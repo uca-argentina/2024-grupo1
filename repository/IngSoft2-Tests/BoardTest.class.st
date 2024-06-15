@@ -442,13 +442,16 @@ BoardTest >> test65WhenSpaceshipLandsOnSquareWithEffectAndGetsMovedToASquareWith
 { #category : #tests }
 BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 
-	| aGame aSpaceship aBoard aDie squares hyperJumpEffect |
+	| aGame aSpaceship aBoard aDie squares hyperJumpEffect aParsecDistance|
 	aSpaceship := Spaceship launch: 'One'.
-
-	hyperJumpEffect :=Square with: (HyperJumpEffect
-		                   isIn: 6
-		                   movesParsecs: (OrderedCollection with: 1)
-		                   SquaresPerParsec: 1).
+	
+	aParsecDistance:= ParsecDistance of: 1 withRatio: 1. 
+	hyperJumpEffect := Square with: (HyperJumpEffect
+			                    isIn: 6
+			                    movesDistance: 
+			                    (OrderedCollection
+				                     with: aParsecDistance)).
+	
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -468,16 +471,18 @@ BoardTest >> test68WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 { #category : #tests }
 BoardTest >> test70HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 
-	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie hyperJumpEffect squares |
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance anotherParsecDistance |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 
+	aParsecDistance:= ParsecDistance of: -1 withRatio: 1.
+	anotherParsecDistance:= ParsecDistance of: 2 withRatio: 1.
+
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
-		                   movesParsecs:
-		                   (OrderedCollection with: -1 with: 2)
-		                   SquaresPerParsec: 1).
+		                   movesDistance:
+		                   (OrderedCollection with: aParsecDistance with: anotherParsecDistance)).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -503,13 +508,14 @@ BoardTest >> test70HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 { #category : #tests }
 BoardTest >> test71WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFourSquares [
 
-	| aGame aSpaceship aBoard aDie hyperJumpEffect squares |
+	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance |
 	aSpaceship := Spaceship launch: 'One'.
+
+	aParsecDistance:= ParsecDistance of: 1 withRatio: 20/5. 
 
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
-		                   movesParsecs: (OrderedCollection with: 1)
-		                   SquaresPerParsec:  20 / 5).
+		                   movesDistance: (OrderedCollection with: aParsecDistance)).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -530,13 +536,14 @@ BoardTest >> test71WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFourS
 { #category : #tests }
 BoardTest >> test72WhenBoardHasMoreParsecsThanSquaresThenSpaceshipMovesTwoParsecsAndOneSquare [
 
-	| aGame aSpaceship aBoard aDie hyperJumpEffect squares |
+	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance |
 	aSpaceship := Spaceship launch: 'One'.
+
+	aParsecDistance:= ParsecDistance of: 2  withRatio: 20/40.
 
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
-		                   movesParsecs: (OrderedCollection with: 2)
-		                   SquaresPerParsec: 20 / 40).
+		                   movesDistance: (OrderedCollection with: aParsecDistance)).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -557,13 +564,14 @@ BoardTest >> test72WhenBoardHasMoreParsecsThanSquaresThenSpaceshipMovesTwoParsec
 { #category : #tests }
 BoardTest >> test73SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 
-	| aGame aSpaceship aBoard aDie hyperJumpEffect squares |
+	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance |
 	aSpaceship := Spaceship launch: 'One'.
+
+	aParsecDistance:=ParsecDistance of: 3 withRatio: 20/40.
 
 	hyperJumpEffect :=Square with: (HyperJumpEffect
 		                   isIn: 6
-		                   movesParsecs: (OrderedCollection with: 3)
-		                   SquaresPerParsec:  20 / 40).
+		                   movesDistance: (OrderedCollection with: aParsecDistance)).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: hyperJumpEffect    .
@@ -674,10 +682,10 @@ BoardTest >> test77WhenSpaceshipGoesBackMultipleLapsWithMoonwalkEffectThenLosesT
 { #category : #tests }
 BoardTest >> test81HyperJumpEffectCanJumpLightyears [
 
-	| aGame aSpaceship  aBoard aDie hyperJumpEffect squares |
+	| aGame aSpaceship  aBoard aDie hyperJumpEffect squares aLightyearDistance |
 	aSpaceship := Spaceship launch: 'One'.
-
-	hyperJumpEffect  :=Square with:( HyperJumpEffect  isIn: 4 moves: (OrderedCollection with: 3) SquaresPerParsec: 1 dataTypes: (OrderedCollection with: 'Lightyear'))  .
+	aLightyearDistance:= LightyearDistance of: 3 withRatio: 1. 
+	hyperJumpEffect  :=Square with:( HyperJumpEffect  isIn: 4 movesDistance: (OrderedCollection with: aLightyearDistance ) ) .
 	squares := ZeroBasedArray newEmpty .
 	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 4 put: hyperJumpEffect  .
@@ -693,4 +701,37 @@ BoardTest >> test81HyperJumpEffectCanJumpLightyears [
 	aGame playTurn.
 
 	self assert: (aGame positionOf:  aSpaceship) equals: 0
+]
+
+{ #category : #tests }
+BoardTest >> test82HyperJumpEffectStoresParsecAndLightYearArray [
+
+	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aLightyearDistance aParsecDistance |
+	aSpaceship := Spaceship launch: 'One'.
+	aLightyearDistance:= LightyearDistance of: 3 withRatio: 1.
+	aParsecDistance:= ParsecDistance of: 4 withRatio: 1. 
+	hyperJumpEffect := Square with: (HyperJumpEffect
+			                    isIn: 4
+			                    movesDistance: 
+			                    (OrderedCollection
+				                     with: aLightyearDistance
+				                     with: aParsecDistance)).
+	squares := ZeroBasedArray newEmpty.
+	0 to: 4 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: hyperJumpEffect.
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 1
+		          andEndsAt: 2.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 3
 ]
