@@ -18,6 +18,12 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 	^self new initializePlayedBy: someSpaceships  on: aBoard  throwing: someDice wonAfter: aNumberOfLaps .
 ]
 
+{ #category : #adding }
+Game >> addCardModifier: diceThrowNumber [
+
+^diceThrowNumber+(activeCards playOn: self nextSpaceshipToPlay) .
+]
+
 { #category : #action }
 Game >> battleIn: position [
 
@@ -32,16 +38,18 @@ Game >> battleIn: position [
 { #category : #action }
 Game >> calculateFinalPositionFor: aSpaceship [
 
-	| diceResult squaresMovedByEffect newPosition  originalPosition |
+	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
-	activeCards isNotNil ifTrue: [ diceResult:= diceResult + activeCards play ].
+	activeCards ifNotNil: [ diceResult := self addCardModifier: diceResult ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
 		                        finalSquareAfterMovingTo: newPosition
 		                        whenPlaying: self.
 
-	self calculateLapsFor: aSpaceship in: originalPosition + diceResult + squaresMovedByEffect.
+	self
+		calculateLapsFor: aSpaceship
+		in: originalPosition + diceResult + squaresMovedByEffect
 ]
 
 { #category : #action }
@@ -207,8 +215,13 @@ Game >> normalTurn [
 ]
 
 { #category : #action }
-Game >> playCard: aSpeedCard from: aSpaceship target: anotherSpaceship [ 
-	activeCards := aSpeedCard .
+Game >> playCard: aCard [
+	activeCards := aCard .
+]
+
+{ #category : #action }
+Game >> playCard: aCard from: aSpaceship target: anotherSpaceship [ 
+	activeCards := aCard useOn: anotherSpaceship .
 ]
 
 { #category : #action }

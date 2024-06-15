@@ -1,11 +1,20 @@
 Class {
 	#name : #SpeedCard,
 	#superclass : #Object,
+	#instVars : [
+		'target'
+	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #playing }
-SpeedCard >> play [
+SpeedCard >> playOn: aSpaceship [
 
-^1 
+aSpaceship = target ifTrue:[^1].
+^0
+]
+
+{ #category : #action }
+SpeedCard >> useOn: aSpaceship [
+target:= aSpaceship.
 ]
