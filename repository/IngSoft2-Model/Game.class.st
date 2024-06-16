@@ -23,15 +23,15 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 { #category : #adding }
 Game >> addActiveMovementCard: aCard [
 
-activeCards := aCard.
-activeMovementCards := aCard.
+activeCards add: aCard.
+activeMovementCards add: aCard.
 ]
 
 { #category : #adding }
 Game >> addMercenary: aCard [
 
-activeCards := aCard.
-mercenaryCards := aCard.
+activeCards add: aCard.
+mercenaryCards add: aCard.
 ]
 
 { #category : #action }
@@ -50,7 +50,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
-	activeMovementCards ifNotNil: [ diceResult := (activeMovementCards playOn: aSpaceship  withDiceThrow: diceResult) ].
+	activeMovementCards do: [ :card | diceResult := (card playOn: aSpaceship  withDiceThrow: diceResult) ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
@@ -147,6 +147,9 @@ state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
 laps := aNumberOfLaps .
+activeCards:= OrderedCollection new.
+activeMovementCards:= OrderedCollection new.
+mercenaryCards:= OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -256,14 +259,9 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
 	| loser resultForFirstPlayer resultForSecondPlayer |
 	resultForFirstPlayer := self throwDice.
+	mercenaryCards do: [ :card | resultForFirstPlayer := (card reinforce: aSpaceship in: self) + resultForFirstPlayer. ].
 	resultForSecondPlayer := self throwDice.
-	mercenaryCards ifNotNil: [
-		resultForFirstPlayer := (mercenaryCards
-			                              reinforce: aSpaceship
-			                              in: self) + resultForFirstPlayer.
-		resultForSecondPlayer := (mercenaryCards
-			                               reinforce: aSpaceship2
-			                               in: self) + resultForSecondPlayer ].
+	mercenaryCards do: [ :card | resultForSecondPlayer := (card reinforce: aSpaceship2 in: self) + resultForSecondPlayer. ].
 
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
@@ -279,7 +277,7 @@ Game >> rechargeShieldsOf: aSpaceship [
 { #category : #action }
 Game >> reducePartyShieldsByOneOf: loser [
 	
-	mercenaryCards ifNotNil: [ mercenaryCards reduceShieldsOfAllyOf: loser in: self ].
+	mercenaryCards do: [ :card | card reduceShieldsOfAllyOf: loser in: self ].
 	self reduceShieldsByOneOf: loser.
 	
 ]
