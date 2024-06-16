@@ -7,14 +7,16 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #playing }
-SpeedCard >> playOn: aSpaceship [
-
-aSpaceship = target ifTrue:[^1].
-^0
+{ #category : #action }
+SpeedCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	target := anotherSpaceship .
+	aGame addActiveMovementCard: self.
 ]
 
-{ #category : #action }
-SpeedCard >> useOn: aSpaceship [
-target:= aSpaceship.
+{ #category : #playing }
+SpeedCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
+| cardModifier |
+cardModifier:=0.
+aSpaceship = target ifTrue:[cardModifier:= 1].
+^aDiceThrow +cardModifier
 ]

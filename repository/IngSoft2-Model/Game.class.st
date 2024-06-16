@@ -8,7 +8,9 @@ Class {
 		'dice',
 		'spaceshipsData',
 		'laps',
-		'activeCards'
+		'activeCards',
+		'activeMovementCards',
+		'mercenaryCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,9 +21,17 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 ]
 
 { #category : #adding }
-Game >> addCardModifier: diceThrowNumber [
+Game >> addActiveMovementCard: aCard [
 
-^diceThrowNumber+(activeCards playOn: self nextSpaceshipToPlay) .
+activeCards := aCard.
+activeMovementCards := aCard.
+]
+
+{ #category : #adding }
+Game >> addMercenary: aCard [
+
+activeCards := aCard.
+mercenaryCards := aCard.
 ]
 
 { #category : #action }
@@ -40,7 +50,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
-	activeCards ifNotNil: [ diceResult := self addCardModifier: diceResult ].
+	activeMovementCards ifNotNil: [ diceResult := (activeMovementCards playOn: aSpaceship  withDiceThrow: diceResult) ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
@@ -215,13 +225,8 @@ Game >> normalTurn [
 ]
 
 { #category : #action }
-Game >> playCard: aCard [
-	activeCards := aCard .
-]
-
-{ #category : #action }
-Game >> playCard: aCard from: aSpaceship target: anotherSpaceship [ 
-	activeCards := aCard useOn: anotherSpaceship .
+Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame [
+	aCard from: aSpaceship withTarget: anotherSpaceship useIn: aGame.
 ]
 
 { #category : #action }
@@ -252,16 +257,31 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 	| loser resultForFirstPlayer resultForSecondPlayer |
 	resultForFirstPlayer := self throwDice.
 	resultForSecondPlayer := self throwDice.
+	mercenaryCards ifNotNil: [
+		resultForFirstPlayer := (mercenaryCards
+			                              reinforce: aSpaceship
+			                              in: self) + resultForFirstPlayer.
+		resultForSecondPlayer := (mercenaryCards
+			                               reinforce: aSpaceship2
+			                               in: self) + resultForSecondPlayer ].
+
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
-		
-	self reduceShieldsByOneOf: loser
+	self reducePartyShieldsByOneOf: loser
 ]
 
 { #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
 	(self dataFor: aSpaceship ) changeShieldsTo: 3
+]
+
+{ #category : #action }
+Game >> reducePartyShieldsByOneOf: loser [
+	
+	mercenaryCards ifNotNil: [ mercenaryCards reduceShieldsOfAllyOf: loser in: self ].
+	self reduceShieldsByOneOf: loser.
+	
 ]
 
 { #category : #action }

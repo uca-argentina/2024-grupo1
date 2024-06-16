@@ -4,8 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #playing }
-AccelerationCard >> playOn: aSpaceship [
+{ #category : #action }
+AccelerationCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	aGame addActiveMovementCard: self.
+]
 
-^1
+{ #category : #playing }
+AccelerationCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
+
+^aDiceThrow  +1
 ]

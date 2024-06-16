@@ -24,7 +24,7 @@ CardTest >> test083SpeedCardWorksWithOnlyOneSpaceship [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard:= SpeedCard new.
-	aGame playCard: aCard from: aSpaceship target: aSpaceship .
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship in: aGame.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 5
 ]
@@ -52,7 +52,7 @@ CardTest >> test084SpeedCardWorksWithMultipleSpaceships [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := SpeedCard new.
-	aGame playCard: aCard from: aSpaceship target: anotherSpaceship .
+	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame .
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -79,7 +79,7 @@ CardTest >> test085AccelerationCardWorksWithOneSpaceship [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard:= AccelerationCard new.
-	aGame playCard: aCard .
+	aGame playCard: aCard  from: aSpaceship  withTarget: aSpaceship in: aGame.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 5
 ]
@@ -107,9 +107,67 @@ CardTest >> test086AccelerationCardWorksForAllSpaceShips [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := AccelerationCard new.
-	aGame playCard: aCard .
+	aGame playCard: aCard  from: aSpaceship  withTarget: aSpaceship in: aGame.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((((aGame positionOf: aSpaceship) =5) and: (aGame positionOf: anotherSpaceship ) =6) and: ((aGame positionOf: yetAnotherSpaceship) = 4 ))
+]
+
+{ #category : #tests }
+CardTest >> test087MercenaryCardCanRecruitOneMercenaryThatHelpsInBattles [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: yetAnotherSpaceship in: aGame.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (((aGame positionOf: aSpaceship) =4) and: (aGame positionOf: anotherSpaceship ) =0) 
+]
+
+{ #category : #tests }
+CardTest >> test088IfSpaceshipAndOneMercenaryLoseTheBattleBothLoseShields [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:9).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: yetAnotherSpaceship in: aGame.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((aGame shieldsOf: aSpaceship) = 2 and: (aGame shieldsOf: yetAnotherSpaceship )= 2)
 ]
