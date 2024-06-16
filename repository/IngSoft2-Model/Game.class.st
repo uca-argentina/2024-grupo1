@@ -295,8 +295,10 @@ Game >> reduceShieldsByOneOf: loser [
 
 { #category : #removing }
 Game >> removeCard: aCard [ 
-	mercenaryCards remove: aCard ifAbsent: [].
-	activeMovementCards remove:aCard ifAbsent: []. 
+	| absent |
+	absent:=false.
+	(mercenaryCards remove: aCard ifAbsent: [absent:=true]).
+	(activeMovementCards remove:aCard ifAbsent: [absent ifTrue:[Error signal: 'Selected card is not active'. ] ]). 
 ]
 
 { #category : #accessing }

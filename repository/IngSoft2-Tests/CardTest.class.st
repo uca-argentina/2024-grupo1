@@ -371,7 +371,7 @@ CardTest >> test094ASpaceshipDoesNotBattleWithItsMercenary [
 ]
 
 { #category : #tests }
-CardTest >> test095CancellationCardCanRemoveActiveCards [
+CardTest >> test095CancellationCardCanRemoveActiveMercenaryCards [
 
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard |
 	aSpaceship := Spaceship launch: 'One'.
@@ -398,4 +398,58 @@ CardTest >> test095CancellationCardCanRemoveActiveCards [
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (((aGame positionOf: aSpaceship) =0) and: (aGame positionOf: anotherSpaceship ) =4) 
+]
+
+{ #category : #tests }
+CardTest >> test096CancellationCardCanRemoveActiveMovementCards [
+
+	| aGame aSpaceship aBoard aDie  squares aCard  anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard:= SpeedCard new.
+	anotherCard:= CancellationCard new.
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship in: aGame.
+	aGame playCard: anotherCard  from: aSpaceship  withTarget: aCard in: aGame.
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 4
+]
+
+{ #category : #tests }
+CardTest >> test097CancellationCardCanNotBePlayedOnACardThatIsNotActive [
+
+	| aGame aSpaceship aBoard aDie  squares aCard  anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard:= SpeedCard new.
+	anotherCard:= CancellationCard new.
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship in: aGame.
+	aGame playCard: anotherCard  from: aSpaceship  withTarget: aCard in: aGame.
+	
+	self should: [ aGame playCard: anotherCard  from: aSpaceship  withTarget: aCard in: aGame. ] raise: Error withMessage: 'Selected card is not active'
 ]
