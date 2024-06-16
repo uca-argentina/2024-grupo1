@@ -10,9 +10,21 @@ Class {
 
 { #category : #action }
 MercenaryCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	aGame validateMercenaryAvailability: anotherSpaceship .
 	mercenary:=anotherSpaceship.
 	ally := aSpaceship.
 	aGame addMercenary: self.
+]
+
+{ #category : #testing }
+MercenaryCard >> is: aSpaceship anAllyOf: anotherSpaceship [
+
+^((aSpaceship = ally) and: anotherSpaceship = mercenary) or: ((aSpaceship = mercenary ) and: anotherSpaceship = ally)
+]
+
+{ #category : #accessing }
+MercenaryCard >> mercenary [
+^mercenary
 ]
 
 { #category : #action }

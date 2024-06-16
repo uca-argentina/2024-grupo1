@@ -4,6 +4,19 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #asserting }
+CardTest >> should: anErrorBlock raise: anError withMessage: errorMessage [ 
+
+	
+
+self 
+	should: anErrorBlock 
+	raise: anError 
+	withExceptionDo: [ :error |
+										self assert: error messageText  equals: errorMessage  ]
+
+]
+
 { #category : #tests }
 CardTest >> test083SpeedCardWorksWithOnlyOneSpaceship [
 
@@ -264,7 +277,9 @@ CardTest >> test091MultipleSpeedCardsCanBeActiveAtTheSameTime [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: ((((aGame positionOf: aSpaceship) =4) and: (aGame positionOf: anotherSpaceship ) =6) and: ((aGame positionOf: yetAnotherSpaceship) = 3 ))
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((((aGame positionOf: aSpaceship) =8) and: (aGame positionOf: anotherSpaceship ) =12) and: ((aGame positionOf: yetAnotherSpaceship) = 3 ))
 ]
 
 { #category : #tests }
@@ -297,4 +312,90 @@ CardTest >> test092MultipleAccelerationCardsCanBeActiveAtTheSameTime [
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((((aGame positionOf: aSpaceship) =7) and: (aGame positionOf: anotherSpaceship ) =6) and: ((aGame positionOf: yetAnotherSpaceship) = 5 ))
+]
+
+{ #category : #tests }
+CardTest >> test093MultipleSpaceshipsCannotHaveTheSameMercenary [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship fourthSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	fourthSpaceship:= Spaceship launch: 'Four'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:9).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship with: fourthSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: yetAnotherSpaceship in: aGame.
+	self should: [ aGame playCard: aCard  from: anotherSpaceship  withTarget: yetAnotherSpaceship in: aGame. ] raise: Error withMessage: 'Selected spaceship is already a mercenary'
+]
+
+{ #category : #tests }
+CardTest >> test094ASpaceshipDoesNotBattleWithItsMercenary [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: anotherSpaceship in: aGame.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (((aGame positionOf: aSpaceship) =4) and: (aGame positionOf: anotherSpaceship ) =4) 
+]
+
+{ #category : #tests }
+CardTest >> test095CancellationCardCanRemoveActiveCards [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	anotherCard:= CancellationCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: anotherSpaceship in: aGame.
+	aGame playCard: anotherCard  from: anotherSpaceship  withTarget: aCard in: aGame.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (((aGame positionOf: aSpaceship) =0) and: (aGame positionOf: anotherSpaceship ) =4) 
 ]

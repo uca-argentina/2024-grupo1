@@ -41,7 +41,7 @@ Game >> battleIn: position [
 	aSpaceship := self nextSpaceshipToPlay.
 	position = 0 ifFalse: [
 		spaceships allButFirstDo: [ :spaceship |
-			(self dataFor: spaceship) position = position ifTrue: [
+			(((self dataFor: spaceship) position = position) and: (mercenaryCards anySatisfy: [:card| card is: aSpaceship anAllyOf: spaceship]) not ) ifTrue: [
 				self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
 
@@ -222,7 +222,7 @@ Game >> normalTurn [
 	| aSpaceship|
 	aSpaceship := self nextSpaceshipToPlay .
 	self calculateFinalPositionFor: aSpaceship.
-	self battleIn: (self positionOf: aSpaceship) .
+	self battleIn: (self positionOf: aSpaceship).
 
 	self checkForWinner.
 ]
@@ -293,6 +293,12 @@ Game >> reduceShieldsByOneOf: loser [
 	(self dataFor: loser) moveTo: 0
 ]
 
+{ #category : #removing }
+Game >> removeCard: aCard [ 
+	mercenaryCards remove: aCard ifAbsent: [].
+	activeMovementCards remove:aCard ifAbsent: []. 
+]
+
 { #category : #accessing }
 Game >> shieldsOf: aSpaceship [ 
 
@@ -343,6 +349,11 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 	(self dataFor: aSpaceship) moveTo: newPosition 
 	
 
+]
+
+{ #category : #validation }
+Game >> validateMercenaryAvailability: aSpaceship [
+(mercenaryCards anySatisfy:  [ :card | card mercenary = aSpaceship ]) ifTrue: [ Error signal: 'Selected spaceship is already a mercenary'. ].
 ]
 
 { #category : #accessing }
