@@ -10,7 +10,8 @@ Class {
 		'laps',
 		'activeCards',
 		'activeMovementCards',
-		'mercenaryCards'
+		'mercenaryCards',
+		'lastTypeOfCardPlayed'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -228,8 +229,10 @@ Game >> normalTurn [
 ]
 
 { #category : #action }
-Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame [
-	aCard from: aSpaceship withTarget: anotherSpaceship useIn: aGame.
+Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
+	state validateIfCardCanBePlayed.
+	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
+	lastTypeOfCardPlayed := aCard class.
 ]
 
 { #category : #action }
@@ -272,6 +275,13 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 { #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
 	(self dataFor: aSpaceship ) changeShieldsTo: 3
+]
+
+{ #category : #'as yet unclassified' }
+Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
+	| aCard |
+	aCard:= lastTypeOfCardPlayed new.
+	self playCard: aCard from: aSpaceship  withTarget: aTarget
 ]
 
 { #category : #action }

@@ -32,6 +32,11 @@ GameOngoingState >> isOngoing [
 ^ true
 ]
 
+{ #category : #validation }
+GameOngoingState >> validateIfCardCanBePlayed [
+	^true
+]
+
 { #category : #analyzing }
 GameOngoingState >> validateTurn [
 	^0
