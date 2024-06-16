@@ -234,3 +234,67 @@ CardTest >> test090IfSpaceshipAndMultipleMercenariesLoseTheBattleTheyAllLoseShie
 	aGame playTurn.
 	self assert: ((((aGame shieldsOf: aSpaceship) =2) and: (aGame shieldsOf: yetAnotherSpaceship  ) = 2) and: (aGame shieldsOf: fourthSpaceship  ) = 2)
 ]
+
+{ #category : #tests }
+CardTest >> test091MultipleSpeedCardsCanBeActiveAtTheSameTime [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:3).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := SpeedCard new.
+	anotherCard := SpeedCard new.
+	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame .
+	aGame playCard: anotherCard from: aSpaceship withTarget: anotherSpaceship in: aGame .
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((((aGame positionOf: aSpaceship) =4) and: (aGame positionOf: anotherSpaceship ) =6) and: ((aGame positionOf: yetAnotherSpaceship) = 3 ))
+]
+
+{ #category : #tests }
+CardTest >> test092MultipleAccelerationCardsCanBeActiveAtTheSameTime [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:5 with:4 with:3).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := AccelerationCard new.
+	anotherCard := AccelerationCard new.
+	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame .
+	aGame playCard: anotherCard from: aSpaceship withTarget: anotherSpaceship in: aGame .
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ((((aGame positionOf: aSpaceship) =7) and: (aGame positionOf: anotherSpaceship ) =6) and: ((aGame positionOf: yetAnotherSpaceship) = 5 ))
+]
