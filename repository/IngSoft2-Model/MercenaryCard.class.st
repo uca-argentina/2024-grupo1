@@ -1,6 +1,6 @@
 Class {
 	#name : #MercenaryCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#instVars : [
 		'ally',
 		'mercenary'
@@ -10,6 +10,7 @@ Class {
 
 { #category : #action }
 MercenaryCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
 	aGame validateMercenaryAvailability: anotherSpaceship .
 	mercenary:=anotherSpaceship.
 	ally := aSpaceship.

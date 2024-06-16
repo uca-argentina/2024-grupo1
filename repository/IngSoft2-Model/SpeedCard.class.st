@@ -1,6 +1,6 @@
 Class {
 	#name : #SpeedCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#instVars : [
 		'target'
 	],
@@ -9,6 +9,7 @@ Class {
 
 { #category : #action }
 SpeedCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
 	target := anotherSpaceship .
 	aGame addActiveMovementCard: self.
 ]

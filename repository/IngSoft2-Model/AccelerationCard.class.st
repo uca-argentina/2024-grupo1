@@ -1,11 +1,12 @@
 Class {
 	#name : #AccelerationCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
 AccelerationCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
 	aGame addActiveMovementCard: self.
 ]
 

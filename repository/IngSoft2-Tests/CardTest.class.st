@@ -339,6 +339,7 @@ CardTest >> test093MultipleSpaceshipsCannotHaveTheSameMercenary [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	aGame playCard: aCard  from: aSpaceship  withTarget: yetAnotherSpaceship in: aGame.
+	aGame playTurn.
 	self should: [ aGame playCard: aCard  from: anotherSpaceship  withTarget: yetAnotherSpaceship in: aGame. ] raise: Error withMessage: 'Selected spaceship is already a mercenary'
 ]
 
@@ -394,8 +395,8 @@ CardTest >> test095CancellationCardCanRemoveActiveMercenaryCards [
 	aCard := MercenaryCard new.
 	anotherCard:= CancellationCard new.
 	aGame playCard: aCard  from: aSpaceship  withTarget: anotherSpaceship in: aGame.
-	aGame playCard: anotherCard  from: anotherSpaceship  withTarget: aCard in: aGame.
 	aGame playTurn.
+	aGame playCard: anotherCard  from: anotherSpaceship  withTarget: aCard in: aGame.
 	aGame playTurn.
 	self assert: (((aGame positionOf: aSpaceship) =0) and: (aGame positionOf: anotherSpaceship ) =4) 
 ]
@@ -452,4 +453,60 @@ CardTest >> test097CancellationCardCanNotBePlayedOnACardThatIsNotActive [
 	aGame playCard: anotherCard  from: aSpaceship  withTarget: aCard in: aGame.
 	
 	self should: [ aGame playCard: anotherCard  from: aSpaceship  withTarget: aCard in: aGame. ] raise: Error withMessage: 'Selected card is not active'
+]
+
+{ #category : #tests }
+CardTest >> test098PermanentCardCannotBePlayedOutOfTurn [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship:= Spaceship launch: 'Three'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:3).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := SpeedCard new.
+	aGame playTurn.
+	self should: [ aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship in: aGame . ] raise: Error withMessage: 'Card cannot be played out of turn'
+]
+
+{ #category : #tests }
+CardTest >> test099InstantaneousCardCanBePlayedOutOfTurn [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with:4 with:4 with:5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	anotherCard:= CancellationCard new.
+	aGame playCard: aCard  from: aSpaceship  withTarget: anotherSpaceship in: aGame.
+	aGame playCard: anotherCard  from: anotherSpaceship  withTarget: aCard in: aGame.
+	aGame playTurn.
+	self assert: (aGame positionOf: aSpaceship) equals: 4.
 ]
