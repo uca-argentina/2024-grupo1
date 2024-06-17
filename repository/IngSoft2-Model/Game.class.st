@@ -177,7 +177,7 @@ Game >> leaderBoard [
 		  (self dataFor: sp1) >= (self dataFor: sp2) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Game >> move: aSpaceship anAmountOfSquares: squaresToMove [
 
 	| currentLaps finalPosition aPosition |
@@ -366,7 +366,7 @@ Game >> removeCard: aCard [
 	lastTypeOfCardPlayed := CancellationCard .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Game >> repeatLastEffectFor: aSpaceship [ 
 	lastEffectTriggered setPosition: (self positionOf: aSpaceship).
 	lastEffectTriggered applyIn: self for: aSpaceship.
@@ -375,7 +375,7 @@ Game >> repeatLastEffectFor: aSpaceship [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 Game >> saveLastEffectTiggeredTo: anEffect [
 
 lastEffectTriggered := anEffect deepCopy .
