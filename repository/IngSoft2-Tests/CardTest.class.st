@@ -1149,3 +1149,34 @@ CardTest >> test118MercenarySpaceshipDoesNotRecieveHelpFromItsAlly [
 	aGame playTurn.
 	self assert: (aGame positionOf: yetAnotherSpaceship ) equals: 0 
 ]
+
+{ #category : #tests }
+CardTest >> test119RepeatCardWorksWithMysteryCardEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard mysteryCardEffect spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard ) ).
+	mysteryCardEffect :=Square with:( MysteryCardEffect isIn: 4).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: mysteryCardEffect .
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: anotherSpaceship withTarget: aSpaceship .
+	
+	self assert: (spaceshipsData first cards size) equals: 3.
+]
