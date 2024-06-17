@@ -51,9 +51,9 @@ effect := anEffect.
 ]
 
 { #category : #action }
-Square >> landIn: aGame [ 
-
-^ effect applyIn: aGame .
+Square >> land: aSpaceship in:aGame [
+	aGame saveLastEffectTriggeredTo: effect .
+	^ effect applyIn: aGame for: aSpaceship 
 ]
 
 { #category : #accessing }

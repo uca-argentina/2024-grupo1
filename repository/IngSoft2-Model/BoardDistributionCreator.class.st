@@ -29,15 +29,20 @@ Class {
 { #category : #initialization }
 BoardDistributionCreator >> createHyperJumpIn: aSquare withParsecRatio: aRatio maximumAmountOfValues: anAmount [
 
-	| hyperJumpEffect parsecsToMove randomAmount |
-	parsecsToMove := OrderedCollection new.
+	| hyperJumpEffect toMove randomAmount |
+	toMove := OrderedCollection new.
 	randomAmount := anAmount atRandom.
-	randomAmount timesRepeat: [ parsecsToMove add: aRatio atRandom ].
+	randomAmount timesRepeat: [
+		2 atRandom = 2
+			ifTrue: [
+				toMove add:
+					(LightyearDistance of: aRatio atRandom withRatio: aRatio) ]
+			ifFalse: [
+			toMove add: (ParsecDistance of: aRatio atRandom withRatio: aRatio) ] ].
 
 	hyperJumpEffect := HyperJumpEffect
 		                   isIn: aSquare
-		                   movesParsecs: parsecsToMove
-		                   SquaresPerParsec: aRatio.
+		                   movesDistance: toMove.
 
 	^ hyperJumpEffect
 ]
@@ -68,7 +73,9 @@ BoardDistributionCreator >> createOf: length with: someProbabilities withParsecs
 				effect = 'Blackhole' ifTrue: [
 					specialEffect := BlackholeEffect isIn: position ].
 				effect = 'HyperSpaceJump' ifTrue: [
-					specialEffect := HyperSpaceJumpEffect isIn: position ] ].
+					specialEffect := HyperSpaceJumpEffect isIn: position ].
+				effect = 'MysteryCard' ifTrue: [
+					specialEffect := MysteryCardEffect isIn: position ] ].
 			lowerLimit := probability + lowerLimit ].
 
 		squares add: (Square with: specialEffect) ].

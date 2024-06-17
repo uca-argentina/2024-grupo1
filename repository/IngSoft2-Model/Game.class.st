@@ -7,7 +7,12 @@ Class {
 		'state',
 		'dice',
 		'spaceshipsData',
-		'laps'
+		'laps',
+		'activeCards',
+		'activeMovementCards',
+		'mercenaryCards',
+		'lastTypeOfCardPlayed',
+		'lastEffectTriggered'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,6 +22,28 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 	^self new initializePlayedBy: someSpaceships  on: aBoard  throwing: someDice wonAfter: aNumberOfLaps .
 ]
 
+{ #category : #adding }
+Game >> addActiveMovementCard: aCard [
+
+lastTypeOfCardPlayed := aCard class.
+activeCards add: aCard.
+activeMovementCards add: aCard.
+]
+
+{ #category : #adding }
+Game >> addMercenary: aCard [
+
+lastTypeOfCardPlayed := aCard class.
+activeCards add: aCard.
+mercenaryCards add: aCard.
+]
+
+{ #category : #adding }
+Game >> addRandomCardFor: aSpaceship [
+
+(self dataFor: aSpaceship) addRandomCard.
+]
+
 { #category : #action }
 Game >> battleIn: position [
 
@@ -24,22 +51,27 @@ Game >> battleIn: position [
 	aSpaceship := self nextSpaceshipToPlay.
 	position = 0 ifFalse: [
 		spaceships allButFirstDo: [ :spaceship |
-			(self dataFor: spaceship) position = position ifTrue: [
+			(((self dataFor: spaceship) position = position) and: (mercenaryCards anySatisfy: [:card| card is: aSpaceship anAllyOf: spaceship]) not ) ifTrue: [
 				self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
 
 { #category : #action }
 Game >> calculateFinalPositionFor: aSpaceship [
 
-	| diceResult squaresMovedByEffect newPosition  originalPosition |
+	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
+	activeMovementCards do: [ :card |
+		diceResult := card playOn: aSpaceship withDiceThrow: diceResult ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
-		                        finalSquareAfterMovingTo: newPosition
+		                        finalSquareFor: aSpaceship
+		                        afterMovingTo: newPosition
 		                        whenPlaying: self.
 
-	self calculateLapsFor: aSpaceship in: originalPosition + diceResult + squaresMovedByEffect.
+	self
+		calculateLapsFor: aSpaceship
+		in: originalPosition + diceResult + squaresMovedByEffect
 ]
 
 { #category : #action }
@@ -96,6 +128,14 @@ Game >> decreaseShieldByOne [
 	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
 ]
 
+{ #category : #adding }
+Game >> decreaseShieldByOneOf: aSpaceship [
+
+	| currentShield |
+	currentShield := self shieldsOf: aSpaceship  .
+	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
+]
+
 { #category : #accessing }
 Game >> dice [
 ^ dice.
@@ -107,26 +147,29 @@ Game >> end [
 ]
 
 { #category : #initialization }
-Game >> initializeData [ 
-
-	| numberOfPlayers |
-	numberOfPlayers := spaceships size.
-
-	spaceshipsData := OrderedCollection new.
-	spaceships  do: [ :spaceship |
-		spaceshipsData add: (SpaceshipData for: (spaceship ) ) ].
-	
-]
-
-{ #category : #initialization }
 Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice wonAfter: aNumberOfLaps [ 
 
-spaceships := someSpaceships.  
-self initializeData.
+spaceshipsData := someSpaceships.
+self initializeSpaceships.
 state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
 laps := aNumberOfLaps .
+activeCards:= OrderedCollection new.
+activeMovementCards:= OrderedCollection new.
+mercenaryCards:= OrderedCollection new.
+lastEffectTriggered:= NullEffect new.
+]
+
+{ #category : #initialization }
+Game >> initializeSpaceships [
+
+	| numberOfPlayers |
+	numberOfPlayers := spaceshipsData size.
+
+	spaceships := OrderedCollection new.
+	spaceshipsData do: [ :dataForASpaceship |
+		spaceships add: dataForASpaceship spaceship ]
 ]
 
 { #category : #accessing }
@@ -148,35 +191,35 @@ Game >> leaderBoard [
 ]
 
 { #category : #action }
+Game >> move: aSpaceship to: aPosition [
+
+	| currentLaps finalPosition |
+	finalPosition := board adjustBounds: aPosition.
+	currentLaps := (self dataFor: aSpaceship) laps .
+	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
+	(self dataFor: aSpaceship) moveTo: finalPosition 
+]
+
+{ #category : #action }
 Game >> moveAllBackToBeginning [
 	
 	spaceshipsData do: [ :dataForASpaceship | dataForASpaceship moveTo: 0 ]
 ]
 
 { #category : #action }
-Game >> moveAllButCurrentBack: someSquares [
+Game >> moveAllBut: aSpaceship back: someSquares [
 
-	| currentPosition finalPosition movesTo currentLaps |
-	spaceships allButFirstDo: [ :spaceship |
+	| currentPosition finalPosition movesTo currentLaps selectedSpaceships |
+	selectedSpaceships:= spaceships select:[ :spaceship | spaceship ~= aSpaceship .].
+	selectedSpaceships do: [ :spaceship |
 		currentPosition := (self dataFor: spaceship) position.
 		movesTo := currentPosition - someSquares.
 		finalPosition := board adjustBounds: movesTo.
 		currentLaps := (self dataFor: spaceship) laps.
 		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
-		movesTo < 0 ifTrue: [
-			self updateLapsOf: spaceship by: movesTo // board length - 1 ].
+		
+		self calculateLapsFor: spaceship  in: movesTo .
 		(self dataFor: spaceship) moveTo: finalPosition ]
-]
-
-{ #category : #action }
-Game >> moveCurrentTo: aPosition [
-
-	| aSpaceship currentLaps finalPosition |
-	aSpaceship := self nextSpaceshipToPlay.
-	finalPosition := board adjustBounds: aPosition.
-	currentLaps := (self dataFor: aSpaceship) laps .
-	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
-	(self dataFor: aSpaceship) moveTo: finalPosition 
 ]
 
 { #category : #accessing }
@@ -199,9 +242,16 @@ Game >> normalTurn [
 	| aSpaceship|
 	aSpaceship := self nextSpaceshipToPlay .
 	self calculateFinalPositionFor: aSpaceship.
-	self battleIn: (self positionOf: aSpaceship) .
+	self battleIn: (self positionOf: aSpaceship).
 
 	self checkForWinner.
+]
+
+{ #category : #action }
+Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
+	self validateIfCardCanBePlayed: aCard  by: aSpaceship .
+	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
+	(self dataFor: aSpaceship) removeCardFromHand: aCard. 
 ]
 
 { #category : #action }
@@ -231,17 +281,36 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
 	| loser resultForFirstPlayer resultForSecondPlayer |
 	resultForFirstPlayer := self throwDice.
+	mercenaryCards do: [ :card | resultForFirstPlayer := (card reinforce: aSpaceship in: self) + resultForFirstPlayer. ].
 	resultForSecondPlayer := self throwDice.
+	mercenaryCards do: [ :card | resultForSecondPlayer := (card reinforce: aSpaceship2 in: self) + resultForSecondPlayer. ].
+
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
 		         ifFalse: [ aSpaceship ].
-		
-	self reduceShieldsByOneOf: loser
+	self reducePartyShieldsByOneOf: loser
 ]
 
 { #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
 	(self dataFor: aSpaceship ) changeShieldsTo: 3
+]
+
+{ #category : #action }
+Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
+	| aCard |
+	self validateLastCardPlayed.
+	(self dataFor: aSpaceship) addCard: lastTypeOfCardPlayed. 
+	aCard:= lastTypeOfCardPlayed new.
+	self playCard: aCard from: aSpaceship  withTarget: aTarget
+]
+
+{ #category : #action }
+Game >> reducePartyShieldsByOneOf: loser [
+	
+	mercenaryCards do: [ :card | card reduceShieldsOfAllyOf: loser in: self ].
+	self reduceShieldsByOneOf: loser.
+	
 ]
 
 { #category : #action }
@@ -253,6 +322,30 @@ Game >> reduceShieldsByOneOf: loser [
 	(self dataFor: loser) shields = 0 ifTrue: [
 		(self dataFor: loser) changeStateTo: Turn1RechargeState new ].
 	(self dataFor: loser) moveTo: 0
+]
+
+{ #category : #removing }
+Game >> removeActiveCard: aCard [ 
+	
+	activeCards remove: aCard ifAbsent: [ Error signal: 'Selected card is not active'. ].
+	(mercenaryCards remove: aCard ifAbsent: []).
+	(activeMovementCards remove:aCard ifAbsent: [ ]). 
+	lastTypeOfCardPlayed := CancellationCard .
+]
+
+{ #category : #action }
+Game >> repeatLastEffectFor: aSpaceship [ 
+	lastEffectTriggered setPosition: (self positionOf: aSpaceship).
+	lastEffectTriggered applyIn: self for: aSpaceship.
+	
+	
+
+]
+
+{ #category : #adding }
+Game >> saveLastEffectTriggeredTo: anEffect [
+
+lastEffectTriggered := anEffect deepCopy .
 ]
 
 { #category : #accessing }
@@ -305,6 +398,26 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 	(self dataFor: aSpaceship) moveTo: newPosition 
 	
 
+]
+
+{ #category : #validation }
+Game >> validateIfCardCanBePlayed: aCard by: aSpaceship [
+
+	| spaceshipData |
+	state validateStateForCards.
+	
+	spaceshipData := self dataFor: aSpaceship.
+	spaceshipData validateThatSpaceshipHasCard: aCard .
+]
+
+{ #category : #validation }
+Game >> validateLastCardPlayed [
+	lastTypeOfCardPlayed ifNil: [Error signal: 'There are no cards played to redo'.]
+]
+
+{ #category : #validation }
+Game >> validateMercenaryAvailability: aSpaceship [
+(mercenaryCards anySatisfy:  [ :card | card mercenary = aSpaceship ]) ifTrue: [ Error signal: 'Selected spaceship is already a mercenary'. ].
 ]
 
 { #category : #accessing }

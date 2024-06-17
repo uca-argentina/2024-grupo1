@@ -34,15 +34,22 @@ Class {
 		'laps',
 		'shields',
 		'position',
-		'state'
+		'state',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-SpaceshipData class >> for: aSpaceship [
+SpaceshipData class >> for: aSpaceship withDeck: someCards [
 
-	^self new initializeFor: aSpaceship 
+	^self new initializeFor: aSpaceship withDeck: someCards
+]
+
+{ #category : #'instance creation' }
+SpaceshipData class >> randomCardsfor: aSpaceship [
+
+	^self new initializeRandomCardsFor: aSpaceship
 ]
 
 { #category : #comparing }
@@ -57,6 +64,31 @@ SpaceshipData >> >= anotherSpaceship [
 	laps = anotherSpaceship laps
 		ifFalse: [ ^ laps >= anotherSpaceship laps ]
 		ifTrue: [ ^ position >= anotherSpaceship position ]
+]
+
+{ #category : #adding }
+SpaceshipData >> addCard: aCard [
+
+cards add: aCard .
+]
+
+{ #category : #initialization }
+SpaceshipData >> addRandomCard [
+
+	| cardTypes randomCard |
+	cardTypes := OrderedCollection
+		             with: AccelerationCard
+		             with: SpeedCard
+		             with: MercenaryCard
+		             with: RedoCard
+		             with: RepeatCard.
+		randomCard := cardTypes atRandom.
+		cards add: randomCard new.
+]
+
+{ #category : #accessing }
+SpaceshipData >> cards [
+^cards 
 ]
 
 { #category : #accessing }
@@ -84,13 +116,26 @@ SpaceshipData >> hash [
 ]
 
 { #category : #initialization }
-SpaceshipData >> initializeFor: aSpaceship [ 
+SpaceshipData >> initializeFor: aSpaceship withDeck: someCards [
 
 	spaceship := aSpaceship .
 	position := 0.
 	laps := 0.
 	state := NoPenaltyState new.
 	shields := 3.
+	cards:=someCards.
+]
+
+{ #category : #initialization }
+SpaceshipData >> initializeRandomCardsFor: aSpaceship [
+
+	spaceship := aSpaceship .
+	position := 0.
+	laps := 0.
+	state := NoPenaltyState new.
+	shields := 3.
+	cards:= OrderedCollection new.
+	2 timesRepeat: [ self addRandomCard].
 ]
 
 { #category : #accessing }
@@ -109,6 +154,12 @@ SpaceshipData >> position [
 ^position 
 ]
 
+{ #category : #removing }
+SpaceshipData >> removeCardFromHand: aCard [
+
+ cards remove: (aCard class)
+]
+
 { #category : #accessing }
 SpaceshipData >> shields [
 ^shields 
@@ -122,4 +173,12 @@ SpaceshipData >> spaceship [
 { #category : #accessing }
 SpaceshipData >> state [ 
 ^state 
+]
+
+{ #category : #validation }
+SpaceshipData >> validateThatSpaceshipHasCard: aCard [
+	
+	(cards includes: aCard class) ifFalse: [
+		Error signal:
+			'A Spaceship cannot play a card that is not in its hand' ]
 ]

@@ -36,43 +36,27 @@ Class {
 }
 
 { #category : #testing }
-HyperJumpEffect class >> isIn: aSquare moves: someDistances SquaresPerParsec: parsecRatio dataTypes: types [ 
-	^self new initializeIsIn: aSquare moves: someDistances SquaresPerParsec: parsecRatio  dataTypes: types 
-]
-
-{ #category : #testing }
-HyperJumpEffect class >> isIn: aSquare movesParsecs: someParsecs SquaresPerParsec: squaresToParsecsRatio [
-
-	^ self new
-		  initializeIsIn: aSquare
-		  movesParsecs: someParsecs
-		  squaresPerParsec: squaresToParsecsRatio
+HyperJumpEffect class >> isIn: aSquare movesDistance: someDistances [
+	^self new initializeIsIn: aSquare movesDistance: someDistances
 ]
 
 { #category : #action }
-HyperJumpEffect >> applyIn: aGame [
+HyperJumpEffect >> applyIn: aGame for: aSpaceship [
 
-	| currentDistance squaresToMove finalPosition measurementUnit |
+	| currentDistance squaresToMove |
 	currentDistance := toMove removeFirst.
 	toMove addLast: currentDistance.
-	measurementUnit := distancesMeasurementUnit removeFirst.
-	distancesMeasurementUnit addLast: measurementUnit.
-
-	measurementUnit = 'Lightyear'
-		ifTrue: [ squaresToMove := currentDistance * parsecRatio // 3 ]
-		ifFalse: [ squaresToMove := currentDistance * parsecRatio // 1 ].
-
-	finalPosition := myPosition + squaresToMove.
-	aGame moveCurrentTo: finalPosition.
+	squaresToMove := currentDistance squaresToMove.
+	aGame move: aSpaceship to: myPosition + squaresToMove.
+	
 	^ squaresToMove
 ]
 
 { #category : #initialization }
-HyperJumpEffect >> initializeIsIn: aSquare moves: someDistances SquaresPerParsec: aRatio dataTypes: types [ 
-	myPosition := aSquare .
-	toMove := someDistances.
-	parsecRatio := aRatio .
-	distancesMeasurementUnit := types 
+HyperJumpEffect >> initializeIsIn: aSquare movesDistance: someDistance [
+
+	myPosition := aSquare.
+	toMove  := someDistance .
 ]
 
 { #category : #initialization }

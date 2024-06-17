@@ -1,7 +1,7 @@
 "
 Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
 
-For the Class part:  If you land here, you advance 4 squares, but lose a shield.
+For the Class part:  Increases dice result by one for a specific spaceship
 
 For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
 
@@ -18,26 +18,31 @@ Public API and Key Messages
 Internal Representation and Key Implementation Points.
 
     Instance Variables
-	myPosition:		<Object>
+	target:		<Object>
 
 
     Implementation Points
 "
 Class {
-	#name : #HyperSpaceJumpEffect,
-	#superclass : #NullEffect,
+	#name : #SpeedCard,
+	#superclass : #PermanentCard,
+	#instVars : [
+		'target'
+	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-HyperSpaceJumpEffect class >> isIn: aPosition [
-
- ^self new initializeIsIn: aPosition 
+{ #category : #action }
+SpeedCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
+	target := anotherSpaceship .
+	aGame addActiveMovementCard: self.
 ]
 
-{ #category : #action }
-HyperSpaceJumpEffect >> applyIn: aGame for: aSpaceship [ 
-	aGame decreaseShieldByOneOf: aSpaceship.
-	aGame move: aSpaceship to: myPosition + 4. 
-	^4
+{ #category : #playing }
+SpeedCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
+| cardModifier |
+cardModifier:=0.
+aSpaceship = target ifTrue:[cardModifier:= 1].
+^aDiceThrow +cardModifier
 ]
