@@ -1053,3 +1053,99 @@ CardTest >> test115IfASpaceshipPlaysACardItIsRemovedFromItsHand [
 	
 	self should: [ aGame playCard: anotherCard from: aSpaceship withTarget: aSpaceship ] raise: Error withMessage: 'A Spaceship cannot play a card that is not in its hand'
 ]
+
+{ #category : #tests }
+CardTest >> test116MysteryCardEffectAddsACardToASpaceshipThatLandsInIt [
+
+	| aGame aSpaceship aBoard aDie squares spaceshipsData mysteryCardEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship  ).
+	mysteryCardEffect :=Square with:( MysteryCardEffect isIn: 4).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: mysteryCardEffect .
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aGame playTurn .
+	
+	self assert: (spaceshipsData first cards size) equals: 3
+]
+
+{ #category : #tests }
+CardTest >> test117MysteryCardEffectAddsValidCardTypesToSpaceships [
+
+	| aGame aSpaceship aBoard aDie squares spaceshipsData mysteryCardEffect cardTypes |
+	aSpaceship := Spaceship launch: 'One'.
+	spaceshipsData := OrderedCollection with:
+		                  (SpaceshipData randomCardsfor: aSpaceship).
+	mysteryCardEffect := Square with: (MysteryCardEffect isIn: 4).
+	squares := ZeroBasedArray newEmpty.
+	0 to: 9 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: mysteryCardEffect.
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie of: 4.
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	cardTypes := OrderedCollection
+		             with: AccelerationCard
+		             with: SpeedCard
+		             with: MercenaryCard
+		             with: RedoCard
+		             with: RepeatCard.
+	aGame playTurn.
+
+
+	self assert: (spaceshipsData first cards allSatisfy: [ :card |
+			 cardTypes includes: card class ])
+]
+
+{ #category : #tests }
+CardTest >> test118MercenarySpaceshipDoesNotRecieveHelpFromItsAlly [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Three'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	squares := ZeroBasedArray newEmpty.
+	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 6
+		          andEndsAt: 7.
+
+	aDie := LoadedDie arrayOf:
+		        (OrderedCollection with: 1 with: 4 with: 4).
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+	aGame
+		playCard: aCard
+		from: aSpaceship
+		withTarget: yetAnotherSpaceship.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame positionOf: yetAnotherSpaceship ) equals: 0 
+]

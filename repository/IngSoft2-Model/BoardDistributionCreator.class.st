@@ -73,7 +73,9 @@ BoardDistributionCreator >> createOf: length with: someProbabilities withParsecs
 				effect = 'Blackhole' ifTrue: [
 					specialEffect := BlackholeEffect isIn: position ].
 				effect = 'HyperSpaceJump' ifTrue: [
-					specialEffect := HyperSpaceJumpEffect isIn: position ] ].
+					specialEffect := HyperSpaceJumpEffect isIn: position ].
+				effect = 'MysteryCard' ifTrue: [
+					specialEffect := MysteryCardEffect isIn: position ] ].
 			lowerLimit := probability + lowerLimit ].
 
 		squares add: (Square with: specialEffect) ].

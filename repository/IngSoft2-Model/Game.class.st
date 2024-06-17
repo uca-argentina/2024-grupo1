@@ -38,6 +38,12 @@ activeCards add: aCard.
 mercenaryCards add: aCard.
 ]
 
+{ #category : #adding }
+Game >> addRandomCardFor: aSpaceship [
+
+(self dataFor: aSpaceship) addRandomCard.
+]
+
 { #category : #action }
 Game >> battleIn: position [
 
@@ -138,18 +144,6 @@ Game >> dice [
 { #category : #adding }
 Game >> end [
 	state := GameFinishedState new.
-]
-
-{ #category : #initialization }
-Game >> initializeData [ 
-
-	| numberOfPlayers |
-	numberOfPlayers := spaceships size.
-
-	spaceshipsData := OrderedCollection new.
-	spaceships  do: [ :spaceship |
-		spaceshipsData add: (SpaceshipData for: (spaceship ) ) ].
-	
 ]
 
 { #category : #initialization }

@@ -41,12 +41,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-SpaceshipData class >> for: aSpaceship [
-
-	^self new initializeFor: aSpaceship 
-]
-
-{ #category : #'instance creation' }
 SpaceshipData class >> for: aSpaceship withDeck: someCards [
 
 	^self new initializeFor: aSpaceship withDeck: someCards
@@ -76,6 +70,20 @@ SpaceshipData >> >= anotherSpaceship [
 SpaceshipData >> addCard: aCard [
 
 cards add: aCard .
+]
+
+{ #category : #initialization }
+SpaceshipData >> addRandomCard [
+
+	| cardTypes randomCard |
+	cardTypes := OrderedCollection
+		             with: AccelerationCard
+		             with: SpeedCard
+		             with: MercenaryCard
+		             with: RedoCard
+		             with: RepeatCard.
+		randomCard := cardTypes atRandom.
+		cards add: randomCard new.
 ]
 
 { #category : #accessing }
@@ -108,16 +116,6 @@ SpaceshipData >> hash [
 ]
 
 { #category : #initialization }
-SpaceshipData >> initializeFor: aSpaceship [ 
-
-	spaceship := aSpaceship .
-	position := 0.
-	laps := 0.
-	state := NoPenaltyState new.
-	shields := 3.
-]
-
-{ #category : #initialization }
 SpaceshipData >> initializeFor: aSpaceship withDeck: someCards [
 
 	spaceship := aSpaceship .
@@ -137,7 +135,7 @@ SpaceshipData >> initializeRandomCardsFor: aSpaceship [
 	state := NoPenaltyState new.
 	shields := 3.
 	cards:= OrderedCollection new.
-	self setRandomCards.
+	2 timesRepeat: [ self addRandomCard].
 ]
 
 { #category : #accessing }
@@ -160,21 +158,6 @@ SpaceshipData >> position [
 SpaceshipData >> removeCardFromHand: aCard [
 
  cards remove: (aCard class)
-]
-
-{ #category : #initialization }
-SpaceshipData >> setRandomCards [
-
-	| cardTypes randomCard |
-	cardTypes := OrderedCollection
-		             with: AccelerationCard
-		             with: SpeedCard
-		             with: MercenaryCard
-		             with: RedoCard
-		             with: RepeatCard.
-	2 timesRepeat: [
-		randomCard := cardTypes atRandom.
-		cards add: randomCard new ]
 ]
 
 { #category : #accessing }
