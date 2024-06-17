@@ -833,3 +833,32 @@ CardTest >> test106RepeatCardWorksWithHyperJump [
 
 	self assert: (aGame positionOf: anotherSpaceship) equals: 4
 ]
+
+{ #category : #tests }
+CardTest >> test107 [
+
+	| aGame aSpaceship aBoard aDie moonwalkEffect squares  anotherSpaceship yetAnotherSpaceship aCard  |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Three'.
+	
+	moonwalkEffect  :=Square with: (MoonWalkEffect isIn: 6  moves: 2).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 6 put: moonwalkEffect     .
+	aBoard := Board with: squares  parsecs: 20 wormholeBeginsAt: 18 andEndsAt: 19.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 6).
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aCard:= RepeatCard new.
+	
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: aSpaceship  withTarget: aSpaceship.
+
+	self assert: (((aGame positionOf: yetAnotherSpaceship) = 0) and: (((aGame positionOf: aSpaceship) = 2) and: ((aGame positionOf: anotherSpaceship ) = 4))   ) 
+]

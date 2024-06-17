@@ -178,17 +178,6 @@ Game >> leaderBoard [
 ]
 
 { #category : #action }
-Game >> move: aSpaceship anAmountOfSquares: squaresToMove [
-
-	| currentLaps finalPosition aPosition |
-	aPosition := (self positionOf: aSpaceship) + squaresToMove.
-	finalPosition := board adjustBounds: aPosition.
-	currentLaps := (self dataFor: aSpaceship) laps .
-	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
-	(self dataFor: aSpaceship) moveTo: finalPosition 
-]
-
-{ #category : #action }
 Game >> move: aSpaceship to: aPosition [
 
 	| currentLaps finalPosition |
@@ -215,46 +204,9 @@ Game >> moveAllBut: aSpaceship back: someSquares [
 		finalPosition := board adjustBounds: movesTo.
 		currentLaps := (self dataFor: spaceship) laps.
 		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
-		movesTo < 0 ifTrue: [
-			self updateLapsOf: spaceship by: movesTo // board length - 1 ].
+		
+		self calculateLapsFor: spaceship  in: movesTo .
 		(self dataFor: spaceship) moveTo: finalPosition ]
-]
-
-{ #category : #action }
-Game >> moveAllButCurrentBack: someSquares [
-
-	| currentPosition finalPosition movesTo currentLaps |
-	spaceships allButFirstDo: [ :spaceship |
-		currentPosition := (self dataFor: spaceship) position.
-		movesTo := currentPosition - someSquares.
-		finalPosition := board adjustBounds: movesTo.
-		currentLaps := (self dataFor: spaceship) laps.
-		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
-		movesTo < 0 ifTrue: [
-			self updateLapsOf: spaceship by: movesTo // board length - 1 ].
-		(self dataFor: spaceship) moveTo: finalPosition ]
-]
-
-{ #category : #action }
-Game >> moveBackFour: aSpaceship [
-	
-	| aPosition finalPosition currentLaps |
-	aPosition:= (self positionOf: aSpaceship) -4.
-	finalPosition := board adjustBounds: aPosition.
-	currentLaps := (self dataFor: aSpaceship) laps .
-	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
-	(self dataFor: aSpaceship) moveTo: finalPosition
-]
-
-{ #category : #action }
-Game >> moveCurrentTo: aPosition [
-
-	| aSpaceship currentLaps finalPosition |
-	aSpaceship := self nextSpaceshipToPlay.
-	finalPosition := board adjustBounds: aPosition.
-	currentLaps := (self dataFor: aSpaceship) laps .
-	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
-	(self dataFor: aSpaceship) moveTo: finalPosition 
 ]
 
 { #category : #accessing }
