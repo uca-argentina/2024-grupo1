@@ -4,6 +4,17 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #'set up' }
+CardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+
+	| squares |
+	squares := ZeroBasedArray newEmpty .
+	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
+	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+]
+
 { #category : #asserting }
 CardTest >> should: anErrorBlock raise: anError withMessage: errorMessage [ 
 
@@ -835,18 +846,14 @@ CardTest >> test106RepeatCardWorksWithHyperJump [
 ]
 
 { #category : #tests }
-CardTest >> test107 [
+CardTest >> test107RepeatCardWorksWithMoonWalk [
 
-	| aGame aSpaceship aBoard aDie moonwalkEffect squares  anotherSpaceship yetAnotherSpaceship aCard  |
+	| aGame aSpaceship aBoard aDie anotherSpaceship yetAnotherSpaceship aCard  |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	
-	moonwalkEffect  :=Square with: (MoonWalkEffect isIn: 6  moves: 2).
-	squares := ZeroBasedArray newEmpty .
-	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	squares at: 6 put: moonwalkEffect     .
-	aBoard := Board with: squares  parsecs: 20 wormholeBeginsAt: 18 andEndsAt: 19.
+	aBoard := self createBoardOf: 20 parsecs: 20 withEffects: (OrderedCollection with: (MoonWalkEffect isIn: 6  moves: 2) ) wormholeBeginsAt: 18 andEndsAt: 19.
 
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 6).
 	aGame := Game
