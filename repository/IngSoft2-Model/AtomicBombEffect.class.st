@@ -33,7 +33,7 @@ AtomicBombEffect class >> isIn: aSquare [
 ]
 
 { #category : #action }
-AtomicBombEffect >> applyIn: aGame [ 
+AtomicBombEffect >> applyIn: aGame for: aSpaceship [ 
 	aGame moveAllBackToBeginning.
 	aGame decreaseAllShieldsByOne .
 	^0.

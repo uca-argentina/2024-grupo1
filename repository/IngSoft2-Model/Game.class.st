@@ -11,7 +11,8 @@ Class {
 		'activeCards',
 		'activeMovementCards',
 		'mercenaryCards',
-		'lastTypeOfCardPlayed'
+		'lastTypeOfCardPlayed',
+		'lastEffectTriggered'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -53,12 +54,14 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
-	activeMovementCards do: [ :card | diceResult := (card playOn: aSpaceship  withDiceThrow: diceResult) ].
+	activeMovementCards do: [ :card |
+		diceResult := card playOn: aSpaceship withDiceThrow: diceResult ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
 		                        finalSquareAfterMovingTo: newPosition
-		                        whenPlaying: self.
+		                        whenPlaying: self
+		                        for: aSpaceship.
 
 	self
 		calculateLapsFor: aSpaceship
@@ -153,6 +156,7 @@ laps := aNumberOfLaps .
 activeCards:= OrderedCollection new.
 activeMovementCards:= OrderedCollection new.
 mercenaryCards:= OrderedCollection new.
+lastEffectTriggered:= NullEffect new.
 ]
 
 { #category : #accessing }
@@ -173,10 +177,47 @@ Game >> leaderBoard [
 		  (self dataFor: sp1) >= (self dataFor: sp2) ]
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> move: aSpaceship anAmountOfSquares: squaresToMove [
+
+	| currentLaps finalPosition aPosition |
+	aPosition := (self positionOf: aSpaceship) + squaresToMove.
+	finalPosition := board adjustBounds: aPosition.
+	currentLaps := (self dataFor: aSpaceship) laps .
+	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
+	(self dataFor: aSpaceship) moveTo: finalPosition 
+]
+
+{ #category : #action }
+Game >> move: aSpaceship to: aPosition [
+
+	| currentLaps finalPosition |
+	finalPosition := board adjustBounds: aPosition.
+	currentLaps := (self dataFor: aSpaceship) laps .
+	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
+	(self dataFor: aSpaceship) moveTo: finalPosition 
+]
+
 { #category : #action }
 Game >> moveAllBackToBeginning [
 	
 	spaceshipsData do: [ :dataForASpaceship | dataForASpaceship moveTo: 0 ]
+]
+
+{ #category : #action }
+Game >> moveAllBut: aSpaceship back: someSquares [
+
+	| currentPosition finalPosition movesTo currentLaps selectedSpaceships |
+	selectedSpaceships:= spaceships select:[ :spaceship | spaceship ~= aSpaceship .].
+	selectedSpaceships do: [ :spaceship |
+		currentPosition := (self dataFor: spaceship) position.
+		movesTo := currentPosition - someSquares.
+		finalPosition := board adjustBounds: movesTo.
+		currentLaps := (self dataFor: spaceship) laps.
+		(currentLaps = 0 and: movesTo < 0) ifTrue: [ finalPosition := 0 ].
+		movesTo < 0 ifTrue: [
+			self updateLapsOf: spaceship by: movesTo // board length - 1 ].
+		(self dataFor: spaceship) moveTo: finalPosition ]
 ]
 
 { #category : #action }
@@ -327,12 +368,17 @@ Game >> removeCard: aCard [
 
 { #category : #'as yet unclassified' }
 Game >> repeatLastEffectFor: aSpaceship [ 
-	| blackHoleEffect |
-	blackHoleEffect:= BlackholeEffect new.
-	blackHoleEffect applyIn: self for: aSpaceship.
+	lastEffectTriggered setPosition: (self positionOf: aSpaceship).
+	lastEffectTriggered applyIn: self for: aSpaceship.
 	
 	
 
+]
+
+{ #category : #'as yet unclassified' }
+Game >> saveLastEffectTiggeredTo: anEffect [
+
+lastEffectTriggered := anEffect deepCopy .
 ]
 
 { #category : #accessing }

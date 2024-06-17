@@ -41,15 +41,14 @@ HyperJumpEffect class >> isIn: aSquare movesDistance: someDistances [
 ]
 
 { #category : #action }
-HyperJumpEffect >> applyIn: aGame [
+HyperJumpEffect >> applyIn: aGame for: aSpaceship [
 
-	| currentDistance squaresToMove finalPosition |
+	| currentDistance squaresToMove |
 	currentDistance := toMove removeFirst.
 	toMove addLast: currentDistance.
 	squaresToMove := currentDistance squaresToMove.
-
-	finalPosition := myPosition + squaresToMove.
-	aGame moveCurrentTo: finalPosition.
+	aGame move: aSpaceship to: myPosition + squaresToMove.
+	
 	^ squaresToMove
 ]
 

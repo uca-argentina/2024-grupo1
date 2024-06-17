@@ -99,12 +99,12 @@ Board >> adjustBounds: aSquare [
 ]
 
 { #category : #accessing }
-Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame [
+Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame for: aSpaceship [
 
 	| squaresMovedByEffect squareToLand |
 	squareToLand := boardOfSquares at:
 		                (self adjustBounds: aSquare).
-	squaresMovedByEffect := squareToLand landIn: aGame.
+	squaresMovedByEffect := squareToLand land: aSpaceship in: aGame.
 
 	^ squaresMovedByEffect
 ]

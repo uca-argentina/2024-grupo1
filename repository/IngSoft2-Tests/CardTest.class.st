@@ -761,7 +761,7 @@ CardTest >> test104RepeatCardWorksWithBlackholeEffect [
 		          wormholeBeginsAt: 8
 		          andEndsAt: 9.
 
-	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
 	aGame := Game
 		         playedBy:
 		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
@@ -771,7 +771,35 @@ CardTest >> test104RepeatCardWorksWithBlackholeEffect [
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship .
+	aGame playCard: aCard from: anotherSpaceship withTarget: aSpaceship  .
 	
-	self assert: (aGame positionOf: anotherSpaceship) equals: 1.
+	self assert: (aGame positionOf: aSpaceship ) equals: 1.
+]
+
+{ #category : #tests }
+CardTest >> test105RepeatCardWorksWithWormholeEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 4
+		          andEndsAt: 8.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playCard: aCard from: anotherSpaceship withTarget: anotherSpaceship .
+	
+	self assert: (aGame positionOf: anotherSpaceship) equals: 8.
 ]
