@@ -709,3 +709,69 @@ CardTest >> test102RedoCardCanCopyAnotherRedoCard [
 	self assert: ((aGame positionOf: aSpaceship) = 11 and:
 			 (aGame positionOf: anotherSpaceship) = 6)
 ]
+
+{ #category : #tests }
+CardTest >> test103RedoCardCannotBePlayedFirst [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty.
+	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 13
+		          andEndsAt: 14.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := SpeedCard new.
+	anotherCard := RedoCard new.
+	aGame playTurn.
+
+	self
+		should: [
+			aGame
+				playCard: anotherCard
+				from: anotherSpaceship
+				withTarget: anotherSpaceship ]
+		raise: Error
+		withMessage: 'There are no cards played to redo'
+]
+
+{ #category : #tests }
+CardTest >> test104RepeatCardWorksWithBlackholeEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard blackholeEffect |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	blackholeEffect :=Square with:( BlackholeEffect isIn: 4).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: blackholeEffect .
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship .
+	
+	self assert: (aGame positionOf: anotherSpaceship) equals: 1.
+]

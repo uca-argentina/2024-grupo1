@@ -195,6 +195,17 @@ Game >> moveAllButCurrentBack: someSquares [
 ]
 
 { #category : #action }
+Game >> moveBackFour: aSpaceship [
+	
+	| aPosition finalPosition currentLaps |
+	aPosition:= (self positionOf: aSpaceship) -4.
+	finalPosition := board adjustBounds: aPosition.
+	currentLaps := (self dataFor: aSpaceship) laps .
+	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
+	(self dataFor: aSpaceship) moveTo: finalPosition
+]
+
+{ #category : #action }
 Game >> moveCurrentTo: aPosition [
 
 	| aSpaceship currentLaps finalPosition |
@@ -278,9 +289,10 @@ Game >> rechargeShieldsOf: aSpaceship [
 	(self dataFor: aSpaceship ) changeShieldsTo: 3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
 	| aCard |
+	self validateLastCardPlayed.
 	aCard:= lastTypeOfCardPlayed new.
 	self playCard: aCard from: aSpaceship  withTarget: aTarget
 ]
@@ -311,6 +323,16 @@ Game >> removeCard: aCard [
 	(mercenaryCards remove: aCard ifAbsent: [absent:=true]).
 	(activeMovementCards remove:aCard ifAbsent: [absent ifTrue:[Error signal: 'Selected card is not active'. ] ]). 
 	lastTypeOfCardPlayed := CancellationCard .
+]
+
+{ #category : #'as yet unclassified' }
+Game >> repeatLastEffectFor: aSpaceship [ 
+	| blackHoleEffect |
+	blackHoleEffect:= BlackholeEffect new.
+	blackHoleEffect applyIn: self for: aSpaceship.
+	
+	
+
 ]
 
 { #category : #accessing }
@@ -363,6 +385,11 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 	(self dataFor: aSpaceship) moveTo: newPosition 
 	
 
+]
+
+{ #category : #validation }
+Game >> validateLastCardPlayed [
+	lastTypeOfCardPlayed ifNil: [Error signal: 'There are no cards played to redo'.]
 ]
 
 { #category : #validation }

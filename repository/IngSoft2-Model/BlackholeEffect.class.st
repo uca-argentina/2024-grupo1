@@ -40,3 +40,9 @@ BlackholeEffect >> applyIn: aGame [
 	aGame moveCurrentTo: (myPosition -4).
 	^ -4.
 ]
+
+{ #category : #action }
+BlackholeEffect >> applyIn: aGame for: aSpaceship [
+	aGame moveBackFour: aSpaceship.
+	^ -4.
+]
