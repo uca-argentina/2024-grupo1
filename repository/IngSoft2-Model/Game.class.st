@@ -59,9 +59,9 @@ Game >> calculateFinalPositionFor: aSpaceship [
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
-		                        finalSquareAfterMovingTo: newPosition
-		                        whenPlaying: self
-		                        for: aSpaceship.
+		                        finalSquareFor: aSpaceship
+		                        afterMovingTo: newPosition
+		                        whenPlaying: self.
 
 	self
 		calculateLapsFor: aSpaceship
@@ -328,7 +328,7 @@ Game >> repeatLastEffectFor: aSpaceship [
 ]
 
 { #category : #adding }
-Game >> saveLastEffectTiggeredTo: anEffect [
+Game >> saveLastEffectTriggeredTo: anEffect [
 
 lastEffectTriggered := anEffect deepCopy .
 ]

@@ -24,10 +24,8 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfSquares',
 		'boardOfSquares',
-		'parsecs',
-		'parsec'
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -99,7 +97,7 @@ Board >> adjustBounds: aSquare [
 ]
 
 { #category : #accessing }
-Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame for: aSpaceship [
+Board >> finalSquareFor: aSpaceship afterMovingTo: aSquare whenPlaying: aGame [
 
 	| squaresMovedByEffect squareToLand |
 	squareToLand := boardOfSquares at:
@@ -112,7 +110,6 @@ Board >> finalSquareAfterMovingTo: aSquare whenPlaying: aGame for: aSpaceship [
 { #category : #initialization }
 Board >> initializeWith: theSquares parsecs: someParsecs wormholeBeginsAt: startingPoint andEndsAt: endPoint [
 
-	numberOfSquares := theSquares size.
 	boardOfSquares := ZeroBasedArray withAll: theSquares.
 	parsecs := someParsecs.
 
