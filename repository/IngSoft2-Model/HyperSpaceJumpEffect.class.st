@@ -37,7 +37,7 @@ HyperSpaceJumpEffect class >> isIn: aPosition [
 
 { #category : #action }
 HyperSpaceJumpEffect >> applyIn: aGame for: aSpaceship [ 
-	aGame decreaseShieldByOne.
+	aGame decreaseShieldByOneOf: aSpaceship.
 	aGame move: aSpaceship to: myPosition + 4. 
 	^4
 ]

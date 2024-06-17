@@ -869,3 +869,97 @@ CardTest >> test107RepeatCardWorksWithMoonWalk [
 
 	self assert: (((aGame positionOf: yetAnotherSpaceship) = 0) and: (((aGame positionOf: aSpaceship) = 2) and: ((aGame positionOf: anotherSpaceship ) = 4))   ) 
 ]
+
+{ #category : #tests }
+CardTest >> test108RepeatCardWorksWithHyperSpaceJumpEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard hyperSpaceJumpEffect yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Two'.
+	hyperSpaceJumpEffect :=Square with:( HyperSpaceJumpEffect  isIn: 4).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: hyperSpaceJumpEffect .
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship  .
+	
+	self assert: (((aGame positionOf: aSpaceship)  = 9) and: ((aGame shieldsOf: aSpaceship) = 2)).
+]
+
+{ #category : #tests }
+CardTest >> test109RepeatCardWorksWithAtomicBombEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard atomicBombEffect yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Two'.
+	atomicBombEffect :=Square with:( AtomicBombEffect  isIn: 4).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: atomicBombEffect .
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship  .
+	
+	self assert: ((((aGame shieldsOf: aSpaceship)  = 1) and: ((aGame shieldsOf: anotherSpaceship ) = 1)) and: (aGame shieldsOf: yetAnotherSpaceship)=1) .
+]
+
+{ #category : #tests }
+CardTest >> test110RepeatCardDoesNothingIfLastSquareHadNoEffect [
+
+	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard yetAnotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship := Spaceship launch: 'Two'.
+	squares := ZeroBasedArray newEmpty .
+	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	aBoard := Board
+		          with: squares
+		          parsecs: 5
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aGame := Game
+		         playedBy:
+		         (OrderedCollection with: aSpaceship with: anotherSpaceship with: yetAnotherSpaceship)
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship  .
+	
+	self assert: (((aGame shieldsOf: anotherSpaceship )  = 3) and: ((aGame positionOf: anotherSpaceship ) = 4)) .
+]

@@ -122,6 +122,14 @@ Game >> decreaseShieldByOne [
 	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
 ]
 
+{ #category : #adding }
+Game >> decreaseShieldByOneOf: aSpaceship [
+
+	| currentShield |
+	currentShield := self shieldsOf: aSpaceship  .
+	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
+]
+
 { #category : #accessing }
 Game >> dice [
 ^ dice.
