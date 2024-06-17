@@ -671,7 +671,7 @@ CardTest >> test101RedoCardCanCopyLastCardPlayed [
 ]
 
 { #category : #tests }
-CardTest >> test102 [
+CardTest >> test102RedoCardCanCopyAnotherRedoCard [
 
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard |
 	aSpaceship := Spaceship launch: 'One'.
@@ -685,7 +685,7 @@ CardTest >> test102 [
 		          andEndsAt: 14.
 
 	aDie := LoadedDie arrayOf:
-		        (OrderedCollection with: 4 with: 5 with: 3).
+		        (OrderedCollection with: 4 with: 5).
 	aGame := Game
 		         playedBy:
 		         (OrderedCollection with: aSpaceship with: anotherSpaceship)

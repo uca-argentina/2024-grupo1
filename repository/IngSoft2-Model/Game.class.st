@@ -24,6 +24,7 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 { #category : #adding }
 Game >> addActiveMovementCard: aCard [
 
+lastTypeOfCardPlayed := aCard class.
 activeCards add: aCard.
 activeMovementCards add: aCard.
 ]
@@ -31,6 +32,7 @@ activeMovementCards add: aCard.
 { #category : #adding }
 Game >> addMercenary: aCard [
 
+lastTypeOfCardPlayed := aCard class.
 activeCards add: aCard.
 mercenaryCards add: aCard.
 ]
@@ -232,7 +234,6 @@ Game >> normalTurn [
 Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
 	state validateIfCardCanBePlayed.
 	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
-	lastTypeOfCardPlayed := aCard class.
 ]
 
 { #category : #action }
@@ -309,6 +310,7 @@ Game >> removeCard: aCard [
 	absent:=false.
 	(mercenaryCards remove: aCard ifAbsent: [absent:=true]).
 	(activeMovementCards remove:aCard ifAbsent: [absent ifTrue:[Error signal: 'Selected card is not active'. ] ]). 
+	lastTypeOfCardPlayed := CancellationCard .
 ]
 
 { #category : #accessing }
