@@ -803,3 +803,33 @@ CardTest >> test105RepeatCardWorksWithWormholeEffect [
 	
 	self assert: (aGame positionOf: anotherSpaceship) equals: 8.
 ]
+
+{ #category : #tests }
+CardTest >> test106RepeatCardWorksWithHyperJump [
+
+	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance anotherSpaceship aCard anotherParsecDistance |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	aParsecDistance:= ParsecDistance of: 1 withRatio: 20/5. 
+	anotherParsecDistance:= ParsecDistance of: 2 withRatio: 20/5.
+	hyperJumpEffect :=Square with: (HyperJumpEffect
+		                   isIn: 6
+		                   movesDistance: (OrderedCollection with: aParsecDistance with: anotherParsecDistance)).
+	squares := ZeroBasedArray newEmpty .
+	0 to: 19 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 6 put: hyperJumpEffect    .
+	aBoard := Board with: squares  parsecs: 5 wormholeBeginsAt: 0 andEndsAt: 1.
+
+
+	aDie := LoadedDie of: 6.
+	aGame := Game
+		         playedBy: (OrderedCollection with: aSpaceship with: anotherSpaceship )
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 1.
+	aCard:= RepeatCard new.
+	aGame playTurn.
+	aGame playCard: aCard from: anotherSpaceship withTarget: anotherSpaceship .
+
+	self assert: (aGame positionOf: anotherSpaceship) equals: 4
+]
