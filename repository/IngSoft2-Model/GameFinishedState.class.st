@@ -33,7 +33,7 @@ GameFinishedState >> isOngoing [
 ]
 
 { #category : #validation }
-GameFinishedState >> validateIfCardCanBePlayed [
+GameFinishedState >> validateStateForCards [
 
 Error signal: 'Cards cannot be played after game is over'
 ]

@@ -255,8 +255,9 @@ Game >> normalTurn [
 
 { #category : #action }
 Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
-	state validateIfCardCanBePlayed.
+	self validateIfCardCanBePlayed: aCard  by: aSpaceship .
 	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
+	(self dataFor: aSpaceship) removeCardFromHand: aCard. 
 ]
 
 { #category : #action }
@@ -305,6 +306,7 @@ Game >> rechargeShieldsOf: aSpaceship [
 Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
 	| aCard |
 	self validateLastCardPlayed.
+	(self dataFor: aSpaceship) addCard: lastTypeOfCardPlayed. 
 	aCard:= lastTypeOfCardPlayed new.
 	self playCard: aCard from: aSpaceship  withTarget: aTarget
 ]
@@ -329,7 +331,7 @@ Game >> reduceShieldsByOneOf: loser [
 ]
 
 { #category : #removing }
-Game >> removeCard: aCard [ 
+Game >> removeActiveCard: aCard [ 
 	
 	activeCards remove: aCard ifAbsent: [ Error signal: 'Selected card is not active'. ].
 	(mercenaryCards remove: aCard ifAbsent: []).
@@ -402,6 +404,16 @@ Game >> updatePositionOf: aSpaceship to: newPosition [
 	(self dataFor: aSpaceship) moveTo: newPosition 
 	
 
+]
+
+{ #category : #validation }
+Game >> validateIfCardCanBePlayed: aCard by: aSpaceship [
+
+	| spaceshipData |
+	state validateStateForCards.
+	
+	spaceshipData := self dataFor: aSpaceship.
+	spaceshipData validateThatSpaceshipHasCard: aCard .
 ]
 
 { #category : #validation }

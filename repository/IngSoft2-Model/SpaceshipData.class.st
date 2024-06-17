@@ -72,6 +72,12 @@ SpaceshipData >> >= anotherSpaceship [
 		ifTrue: [ ^ position >= anotherSpaceship position ]
 ]
 
+{ #category : #adding }
+SpaceshipData >> addCard: aCard [
+
+cards add: aCard .
+]
+
 { #category : #accessing }
 SpaceshipData >> cards [
 ^cards 
@@ -150,6 +156,12 @@ SpaceshipData >> position [
 ^position 
 ]
 
+{ #category : #removing }
+SpaceshipData >> removeCardFromHand: aCard [
+
+ cards remove: (aCard class)
+]
+
 { #category : #initialization }
 SpaceshipData >> setRandomCards [
 
@@ -178,4 +190,12 @@ SpaceshipData >> spaceship [
 { #category : #accessing }
 SpaceshipData >> state [ 
 ^state 
+]
+
+{ #category : #validation }
+SpaceshipData >> validateThatSpaceshipHasCard: aCard [
+	
+	(cards includes: aCard class) ifFalse: [
+		Error signal:
+			'A Spaceship cannot play a card that is not in its hand' ]
 ]
