@@ -34,7 +34,8 @@ Class {
 		'laps',
 		'shields',
 		'position',
-		'state'
+		'state',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,6 +44,18 @@ Class {
 SpaceshipData class >> for: aSpaceship [
 
 	^self new initializeFor: aSpaceship 
+]
+
+{ #category : #'instance creation' }
+SpaceshipData class >> for: aSpaceship withDeck: someCards [
+
+	^self new initializeFor: aSpaceship withDeck: someCards
+]
+
+{ #category : #'instance creation' }
+SpaceshipData class >> randomCardsfor: aSpaceship [
+
+	^self new initializeRandomCardsFor: aSpaceship
 ]
 
 { #category : #comparing }
@@ -57,6 +70,11 @@ SpaceshipData >> >= anotherSpaceship [
 	laps = anotherSpaceship laps
 		ifFalse: [ ^ laps >= anotherSpaceship laps ]
 		ifTrue: [ ^ position >= anotherSpaceship position ]
+]
+
+{ #category : #accessing }
+SpaceshipData >> cards [
+^cards 
 ]
 
 { #category : #accessing }
@@ -93,6 +111,29 @@ SpaceshipData >> initializeFor: aSpaceship [
 	shields := 3.
 ]
 
+{ #category : #initialization }
+SpaceshipData >> initializeFor: aSpaceship withDeck: someCards [
+
+	spaceship := aSpaceship .
+	position := 0.
+	laps := 0.
+	state := NoPenaltyState new.
+	shields := 3.
+	cards:=someCards.
+]
+
+{ #category : #initialization }
+SpaceshipData >> initializeRandomCardsFor: aSpaceship [
+
+	spaceship := aSpaceship .
+	position := 0.
+	laps := 0.
+	state := NoPenaltyState new.
+	shields := 3.
+	cards:= OrderedCollection new.
+	self setRandomCards.
+]
+
 { #category : #accessing }
 SpaceshipData >> laps [
 ^laps 
@@ -107,6 +148,21 @@ SpaceshipData >> moveTo: aPosition [
 { #category : #accessing }
 SpaceshipData >> position [
 ^position 
+]
+
+{ #category : #initialization }
+SpaceshipData >> setRandomCards [
+
+	| cardTypes randomCard |
+	cardTypes := OrderedCollection
+		             with: AccelerationCard
+		             with: SpeedCard
+		             with: MercenaryCard
+		             with: RedoCard
+		             with: RepeatCard.
+	2 timesRepeat: [
+		randomCard := cardTypes atRandom.
+		cards add: randomCard new ]
 ]
 
 { #category : #accessing }

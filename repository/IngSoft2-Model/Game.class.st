@@ -155,8 +155,8 @@ Game >> initializeData [
 { #category : #initialization }
 Game >> initializePlayedBy: someSpaceships on: aBoard throwing: someDice wonAfter: aNumberOfLaps [ 
 
-spaceships := someSpaceships.  
-self initializeData.
+spaceshipsData := someSpaceships.
+self initializeSpaceships.
 state := GameOngoingState new.
 board := aBoard.
 dice := someDice.
@@ -165,6 +165,17 @@ activeCards:= OrderedCollection new.
 activeMovementCards:= OrderedCollection new.
 mercenaryCards:= OrderedCollection new.
 lastEffectTriggered:= NullEffect new.
+]
+
+{ #category : #initialization }
+Game >> initializeSpaceships [
+
+	| numberOfPlayers |
+	numberOfPlayers := spaceshipsData size.
+
+	spaceships := OrderedCollection new.
+	spaceshipsData do: [ :dataForASpaceship |
+		spaceships add: dataForASpaceship spaceship ]
 ]
 
 { #category : #accessing }
