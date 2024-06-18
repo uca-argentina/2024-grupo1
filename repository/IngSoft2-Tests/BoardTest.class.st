@@ -20,6 +20,17 @@ BoardTest >> createArrayOf: length with: someEffects [
 	 ^ squares 
 ]
 
+{ #category : #accessing }
+BoardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+
+	| squares |
+	squares := ZeroBasedArray newEmpty .
+	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
+	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+]
+
 { #category : #tests }
 BoardTest >> should: anErrorBlock raise: anError withMessage: errorMessage [
 
@@ -640,18 +651,15 @@ BoardTest >> test75SpaceshipCantGoBackFurtherThanTheFirstSquareOnTheFirstLap [
 ]
 
 { #category : #tests }
-BoardTest >> test76IfSpaceshipCompletesALapsAndGoesBackBeyondTheFirstSquareThenItLosesTheLap [
+BoardTest >> test76IfSpaceshipCompletesALapAndGoesBackBeyondTheFirstSquareThenItLosesTheLap [
 
-	| aGame aSpaceship aBoard aDie blackholeEffect squares spaceshipsData |
+	| aGame aSpaceship aBoard aDie spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
-	blackholeEffect :=Square with:( BlackholeEffect isIn: 4).
-	squares := ZeroBasedArray newEmpty .
-	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	squares at: 4 put: blackholeEffect .
-	aBoard := Board with: squares  parsecs: 20 wormholeBeginsAt: 1 andEndsAt: 2.
 
-	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aBoard := self createBoardOf: 10 parsecs: 10 withEffects: { BlackholeEffect isIn: 2 } wormholeBeginsAt: 8 andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 2).
 	aGame := Game
 		         playedBy: spaceshipsData
 		         on: aBoard

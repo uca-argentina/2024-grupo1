@@ -92,12 +92,6 @@ SpaceshipData >> cards [
 ]
 
 { #category : #accessing }
-SpaceshipData >> changeShieldsTo: aShieldValue [
-
-shields := aShieldValue 
-]
-
-{ #category : #accessing }
 SpaceshipData >> changeStateTo: aState [ 
 
 state := aState 
@@ -105,7 +99,8 @@ state := aState
 
 { #category : #adding }
 SpaceshipData >> decreaseShieldsByOne [ 
-	shields := shields -1 max: 0
+	shields := shields -1 max: 0.
+	shields = 0 ifTrue: [ state := Turn1RechargeState new  ].
 ]
 
 { #category : #comparing }
@@ -151,6 +146,12 @@ SpaceshipData >> moveTo: aPosition [
 { #category : #accessing }
 SpaceshipData >> position [
 ^position 
+]
+
+{ #category : #adding }
+SpaceshipData >> rechargeShields [
+
+	shields := 3
 ]
 
 { #category : #removing }

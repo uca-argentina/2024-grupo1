@@ -79,7 +79,7 @@ Game >> calculateLapsFor: aSpaceship in: totalPosition [
 
 	totalPosition >= board length ifTrue: [
 		(self dataFor: aSpaceship )updateLapsBy: totalPosition // board length ].
-	totalPosition <= 0 ifTrue: [
+	totalPosition < 0 ifTrue: [
 		(self dataFor: aSpaceship ) updateLapsBy: totalPosition // board length - 1 ]
 ]
 
@@ -280,7 +280,7 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
 { #category : #adding }
 Game >> rechargeShieldsOf: aSpaceship [ 
-	(self dataFor: aSpaceship ) changeShieldsTo: 3
+	(self dataFor: aSpaceship ) rechargeShields 
 ]
 
 { #category : #action }
@@ -296,17 +296,9 @@ Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
 Game >> reducePartyShieldsByOneOf: loser [
 	
 	mercenaryCards do: [ :card | card reduceShieldsOfAllyOf: loser in: self ].
-	self reduceShieldsByOneOf: loser.
-	
-]
-
-{ #category : #action }
-Game >> reduceShieldsByOneOf: loser [
-
-	(self dataFor: loser) decreaseShieldsByOne  .
-	(self dataFor: loser) shields = 0 ifTrue: [
-		(self dataFor: loser) changeStateTo: Turn1RechargeState new ].
+	(self dataFor: loser) decreaseShieldsByOne . 
 	(self dataFor: loser) moveTo: 0
+	
 ]
 
 { #category : #removing }
