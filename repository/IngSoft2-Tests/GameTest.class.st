@@ -296,7 +296,7 @@ GameTest >> test022GameEndsAutomaticallyWhenSpaceshipPassesLastSquare [
 	aBoard := Board of: 8 wormholeBeginsAt: 1 andEndsAt: 2.
 	aSpaceship := Spaceship launch: ''.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
-	aLoadedDie := LoadedDie of: 8.
+	aLoadedDie := LoadedDie of: 10.
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game
 		         playedBy: spaceshipsData

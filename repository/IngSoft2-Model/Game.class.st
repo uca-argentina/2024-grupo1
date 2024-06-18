@@ -184,7 +184,8 @@ Game >> move: aSpaceship to: aPosition [
 	finalPosition := board adjustBounds: aPosition.
 	currentLaps := (self dataFor: aSpaceship) laps .
 	(currentLaps = 0 and: aPosition < 0) ifTrue: [ finalPosition := 0 ].
-	(self dataFor: aSpaceship) moveTo: finalPosition 
+	(self dataFor: aSpaceship) moveTo: finalPosition .
+
 ]
 
 { #category : #action }
