@@ -4,6 +4,17 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #accessing }
+GameTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+
+	| squares |
+	squares := ZeroBasedArray newEmpty .
+	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
+	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+]
+
 { #category : #tests }
 GameTest >> should: anErrorBlock raise: anError withMessage: errorMessage [
 
@@ -64,15 +75,16 @@ GameTest >> test003GameBeginsWithAPlayer [
 { #category : #tests }
 GameTest >> test004SpaceshipChangedPositionByOneWhenMoved [
 
-	| aSpaceship aGame spaceshipsData |
+	| aSpaceship aGame spaceshipsData aBoard|
 	aSpaceship := Spaceship launch: ''.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) .
+	aBoard := self createBoardOf: 5 parsecs: 5 withEffects: {  }  wormholeBeginsAt: 3 andEndsAt: 4.
 	aGame := Game
 		         playedBy: spaceshipsData
-		         on: nil
+		         on: aBoard 
 		         throwing: nil
 		         wonAfter: 1.
-	aGame updatePositionOf: aSpaceship to: 1.
+	aGame move: aSpaceship to: 1.
 	self assert: (aGame positionOf: aSpaceship) equals: 1
 ]
 
@@ -269,7 +281,7 @@ GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 { #category : #tests }
 GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice spaceshipsData |
+	| aGame aSpaceship anotherSpaceship aBoard aLoadedDie someDice spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship) .
@@ -296,7 +308,7 @@ GameTest >> test022GameEndsAutomaticallyWhenSpaceshipPassesLastSquare [
 	aBoard := Board of: 8 wormholeBeginsAt: 1 andEndsAt: 2.
 	aSpaceship := Spaceship launch: ''.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
-	aLoadedDie := LoadedDie of: 8.
+	aLoadedDie := LoadedDie of: 10.
 	someDice := OrderedCollection with: aLoadedDie.
 	aGame := Game
 		         playedBy: spaceshipsData

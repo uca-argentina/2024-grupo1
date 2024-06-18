@@ -4,20 +4,15 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #creation }
-BoardTest >> createArrayOf: length with: someEffects [
+{ #category : #accessing }
+BoardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
 
-	|squares|
-
-	squares  := ZeroBasedArray newEmpty .
-
-	0 to: (length  -1) do: [ :square |
-		squares  add: (Square with: (NullEffect isIn: square)) ].
-
-
-	someEffects keysDo: [ :index |
-		squares  at: index put: (Square with: (someEffects at: index)) ].
-	 ^ squares 
+	| squares |
+	squares := ZeroBasedArray newEmpty .
+	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
+	
+	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
+	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
 ]
 
 { #category : #tests }
@@ -141,6 +136,28 @@ BoardTest >> test035BoardCannotBeCreatedIfWormholeEndpointsAreInTheSameSquare [
 	| aBoard | 
 
 	self should: [ aBoard := Board of: 3 wormholeBeginsAt: 1 andEndsAt: 1. ] raise: Error withMessage: 'Wormhole endpoints cannot be in the same square'.  
+]
+
+{ #category : #tests }
+BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareThenGainsALap [
+
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aCard aBoard aDie  spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship :=Spaceship launch: 'Three'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship  ) with: (SpaceshipData for: yetAnotherSpaceship  withDeck: (OrderedCollection with: RepeatCard  with: RedoCard )).
+	aBoard := self createBoardOf: 6 parsecs: 6 withEffects: { HyperJumpEffect isIn: 3 movesDistance: (OrderedCollection with: (ParsecDistance of: 7 withRatio: 1)) } wormholeBeginsAt: 0 andEndsAt: 1.
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: spaceshipsData 
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playCard: aCard  from: yetAnotherSpaceship  withTarget: yetAnotherSpaceship .
+
+	self assert: (aGame lapsOf:  yetAnotherSpaceship ) equals: 1
 ]
 
 { #category : #tests }
@@ -379,7 +396,7 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: atomicBombEffect .
-	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt: 0 andEndsAt: 1.
+	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt:  8 andEndsAt: 9.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 6).
 	aGame := Game
 		         playedBy: spaceshipsData 
@@ -387,7 +404,7 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	aGame playTurn.
-	aGame decreaseShieldByOne.
+	aGame decreaseShieldByOneOf: anotherSpaceship .
 	aGame playTurn.
 
 	self assert: ((aGame shieldsOf: anotherSpaceship) = 1 and:
@@ -640,18 +657,15 @@ BoardTest >> test75SpaceshipCantGoBackFurtherThanTheFirstSquareOnTheFirstLap [
 ]
 
 { #category : #tests }
-BoardTest >> test76IfSpaceshipCompletesALapsAndGoesBackBeyondTheFirstSquareThenItLosesTheLap [
+BoardTest >> test76IfSpaceshipCompletesALapAndGoesBackBeyondTheFirstSquareThenItLosesTheLap [
 
-	| aGame aSpaceship aBoard aDie blackholeEffect squares spaceshipsData |
+	| aGame aSpaceship aBoard aDie spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
-	blackholeEffect :=Square with:( BlackholeEffect isIn: 4).
-	squares := ZeroBasedArray newEmpty .
-	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	squares at: 4 put: blackholeEffect .
-	aBoard := Board with: squares  parsecs: 20 wormholeBeginsAt: 1 andEndsAt: 2.
 
-	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
+	aBoard := self createBoardOf: 10 parsecs: 10 withEffects: { BlackholeEffect isIn: 2 } wormholeBeginsAt: 8 andEndsAt: 9.
+
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 2).
 	aGame := Game
 		         playedBy: spaceshipsData
 		         on: aBoard

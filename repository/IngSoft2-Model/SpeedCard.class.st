@@ -36,7 +36,12 @@ Class {
 SpeedCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
 	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
 	target := anotherSpaceship .
-	aGame addActiveMovementCard: self.
+	aGame addActiveCard: self.
+]
+
+{ #category : #testing }
+SpeedCard >> isMovementCard [ 
+	^true
 ]
 
 { #category : #playing }

@@ -27,6 +27,6 @@ Class {
 }
 
 { #category : #action }
-RepeatCard >> from: aSpaceship withTarget: aTarget useIn: aGame [
-	aGame repeatLastEffectFor: aTarget
+RepeatCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	aGame repeatLastEffectFor: anotherSpaceship  
 ]

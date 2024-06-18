@@ -11,16 +11,22 @@ Class {
 { #category : #action }
 MercenaryCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
 	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
+	self validateAllianceBetween: aSpaceship and: anotherSpaceship .
 	aGame validateMercenaryAvailability: anotherSpaceship .
 	mercenary:=anotherSpaceship.
 	ally := aSpaceship.
-	aGame addMercenary: self.
+	aGame addActiveCard: self.
 ]
 
 { #category : #testing }
 MercenaryCard >> is: aSpaceship anAllyOf: anotherSpaceship [
 
 ^((aSpaceship = ally) and: anotherSpaceship = mercenary) or: ((aSpaceship = mercenary ) and: anotherSpaceship = ally)
+]
+
+{ #category : #testing }
+MercenaryCard >> isMercenaryCard [ 
+	^true
 ]
 
 { #category : #accessing }
@@ -31,7 +37,7 @@ MercenaryCard >> mercenary [
 { #category : #action }
 MercenaryCard >> reduceShieldsOfAllyOf: aSpaceship in: aGame [
 
-aSpaceship =ally ifTrue: [ aGame reduceShieldsByOneOf: mercenary. ].
+aSpaceship =ally ifTrue: [ aGame decreaseShieldByOneOf:  mercenary. ].
 ]
 
 { #category : #action }
@@ -40,4 +46,9 @@ MercenaryCard >> reinforce: aSpaceship in: aGame [
 
 aSpaceship = ally ifTrue: [ ^aGame throwDice ].
 ^0.
+]
+
+{ #category : #validation }
+MercenaryCard >> validateAllianceBetween: aSpaceship and: anotherSpaceship [
+	aSpaceship = anotherSpaceship ifTrue: [ Error signal: 'A spaceship cannot be its own mercenary' ]
 ]

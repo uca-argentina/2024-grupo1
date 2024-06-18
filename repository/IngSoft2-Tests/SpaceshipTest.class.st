@@ -19,3 +19,12 @@ SpaceshipTest >> test027SpaceshipCreatedWithAnotherName [
 	aSpaceship := Spaceship launch: 'Death Star'.
 	self assert: aSpaceship getName equals: 'Death Star'	
 ]
+
+{ #category : #tests }
+SpaceshipTest >> test120SpaceshipsShieldsCannotBeLessThanZero [
+
+	| aSpaceship |
+	aSpaceship :=SpaceshipData randomCardsfor: ( Spaceship launch: 'Death Star').
+	6 timesRepeat: [ aSpaceship decreaseShieldsByOne ].
+	self assert: aSpaceship shields  equals: 0
+]

@@ -29,12 +29,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-HyperSpaceJumpEffect class >> isIn: aPosition [
-
- ^self new initializeIsIn: aPosition 
-]
-
 { #category : #action }
 HyperSpaceJumpEffect >> applyIn: aGame for: aSpaceship [ 
 	aGame decreaseShieldByOneOf: aSpaceship.

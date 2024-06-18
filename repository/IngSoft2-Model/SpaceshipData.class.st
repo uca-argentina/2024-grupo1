@@ -72,7 +72,7 @@ SpaceshipData >> addCard: aCard [
 cards add: aCard .
 ]
 
-{ #category : #initialization }
+{ #category : #adding }
 SpaceshipData >> addRandomCard [
 
 	| cardTypes randomCard |
@@ -92,27 +92,21 @@ SpaceshipData >> cards [
 ]
 
 { #category : #accessing }
-SpaceshipData >> changeLapsTo: anAmountOfLaps [
-
-laps := anAmountOfLaps 
-]
-
-{ #category : #accessing }
-SpaceshipData >> changeShieldsTo: aShieldValue [
-
-shields := aShieldValue 
-]
-
-{ #category : #accessing }
 SpaceshipData >> changeStateTo: aState [ 
 
 state := aState 
 ]
 
+{ #category : #adding }
+SpaceshipData >> decreaseShieldsByOne [ 
+	shields := shields -1 max: 0.
+	shields = 0 ifTrue: [ state := Turn1RechargeState new  ].
+]
+
 { #category : #comparing }
 SpaceshipData >> hash [ 
 
-^laps 
+^laps hash + shields hash + position hash + spaceship hash 
 ]
 
 { #category : #initialization }
@@ -123,7 +117,7 @@ SpaceshipData >> initializeFor: aSpaceship withDeck: someCards [
 	laps := 0.
 	state := NoPenaltyState new.
 	shields := 3.
-	cards:=someCards.
+	cards:= OrderedCollection withAll:  someCards.
 ]
 
 { #category : #initialization }
@@ -149,9 +143,21 @@ SpaceshipData >> moveTo: aPosition [
 	position := aPosition 
 ]
 
+{ #category : #action }
+SpaceshipData >> playIn: aGame [
+
+	state playIn: aGame 
+]
+
 { #category : #accessing }
 SpaceshipData >> position [
 ^position 
+]
+
+{ #category : #adding }
+SpaceshipData >> rechargeShields [
+
+	shields := 3
 ]
 
 { #category : #removing }
@@ -173,6 +179,16 @@ SpaceshipData >> spaceship [
 { #category : #accessing }
 SpaceshipData >> state [ 
 ^state 
+]
+
+{ #category : #adding }
+SpaceshipData >> updateLapsBy: amountOfLaps [
+
+	| currentLaps  totalLaps |
+
+	currentLaps := laps .
+	totalLaps := (currentLaps + amountOfLaps) max: 0 .
+	laps:= totalLaps
 ]
 
 { #category : #validation }

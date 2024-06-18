@@ -26,12 +26,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-AtomicBombEffect class >> isIn: aSquare [
-
-^self new initializeIsIn: aSquare 
-]
-
 { #category : #action }
 AtomicBombEffect >> applyIn: aGame for: aSpaceship [ 
 	aGame moveAllBackToBeginning.

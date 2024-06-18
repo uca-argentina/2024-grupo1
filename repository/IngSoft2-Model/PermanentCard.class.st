@@ -26,8 +26,26 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #action }
+PermanentCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
+	self subclassResponsibility 
+]
+
+{ #category : #testing }
+PermanentCard >> isMercenaryCard [
+
+	^false
+]
+
+{ #category : #testing }
+PermanentCard >> isMovementCard [
+
+	^false
+]
+
 { #category : #validation }
 PermanentCard >> validateIfCardCanBePlayedBy: aSpaceship in: aGame [
 
-aSpaceship = aGame nextSpaceshipToPlay ifFalse: [ Error signal: 'Card cannot be played out of turn' ].
+	aSpaceship = aGame nextSpaceshipToPlay ifFalse: [
+		Error signal: 'Card cannot be played out of turn' ]
 ]

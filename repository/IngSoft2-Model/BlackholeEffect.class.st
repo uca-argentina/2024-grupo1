@@ -29,12 +29,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-BlackholeEffect class >> isIn: aPosition [
-
-	^self new initializeIsIn: aPosition 
-]
-
 { #category : #action }
 BlackholeEffect >> applyIn: aGame for: aSpaceship [
 	aGame move: aSpaceship to: myPosition -4. 

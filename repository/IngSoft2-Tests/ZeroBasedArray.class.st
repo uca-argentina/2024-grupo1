@@ -77,6 +77,11 @@ ZeroBasedArray >> addLast: aValue [
 ]
 
 { #category : #enumerating }
+ZeroBasedArray >> allSatisfy: aBlock [ 
+	^collection allSatisfy: aBlock 
+]
+
+{ #category : #enumerating }
 ZeroBasedArray >> asOrderedCollection [ 
 
 	^collection 
