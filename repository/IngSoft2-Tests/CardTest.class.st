@@ -82,9 +82,8 @@ CardTest >> test084SpeedCardWorksWithMultipleSpaceships [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (((aGame positionOf: aSpaceship) = 4 and:
-			  (aGame positionOf: anotherSpaceship) = 5) and:
-			 (aGame positionOf: yetAnotherSpaceship) = 3)
+	self assert: ((aGame positionOf: aSpaceship) = 4 and: ((aGame positionOf: anotherSpaceship) = 5 and: ((aGame positionOf: yetAnotherSpaceship) = 3) )  )
+	
 ]
 
 { #category : #tests }
@@ -120,7 +119,17 @@ CardTest >> test086AccelerationCardWorksForAllSpaceShips [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	spaceshipsData := OrderedCollection
+		                  with: (SpaceshipData
+				                   for: aSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: SpeedCard
+					                    with: AccelerationCard))
+		                  with:
+		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  with:
+		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -141,9 +150,9 @@ CardTest >> test086AccelerationCardWorksForAllSpaceShips [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (((aGame positionOf: aSpaceship) = 5 and:
-			  (aGame positionOf: anotherSpaceship) = 6) and:
-			 (aGame positionOf: yetAnotherSpaceship) = 4)
+	self assert: ((aGame positionOf: aSpaceship) = 5 and:
+			 ((aGame positionOf: anotherSpaceship) = 6 and:
+				  (aGame positionOf: yetAnotherSpaceship) = 4))
 ]
 
 { #category : #tests }
@@ -258,7 +267,19 @@ CardTest >> test090IfSpaceshipAndMultipleMercenariesLoseTheBattleTheyAllLoseShie
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	fourthSpaceship := Spaceship launch: 'Four'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ) with: (SpaceshipData randomCardsfor: fourthSpaceship ).
+	spaceshipsData := OrderedCollection
+		                  with: (SpaceshipData
+				                   for: aSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: MercenaryCard
+					                    with: MercenaryCard))
+		                  with:
+		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  with:
+		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship)
+		                  with:
+		                  (SpaceshipData randomCardsfor: fourthSpaceship).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -289,9 +310,10 @@ CardTest >> test090IfSpaceshipAndMultipleMercenariesLoseTheBattleTheyAllLoseShie
 		withTarget: fourthSpaceship.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (((aGame shieldsOf: aSpaceship) = 2 and:
-			  (aGame shieldsOf: yetAnotherSpaceship) = 2) and:
-			 (aGame shieldsOf: fourthSpaceship) = 2)
+
+	self assert: ((aGame shieldsOf: aSpaceship) = 2 and:
+			 ((aGame shieldsOf: yetAnotherSpaceship) = 2 and:
+				  (aGame shieldsOf: fourthSpaceship) = 2))
 ]
 
 { #category : #tests }
@@ -329,9 +351,8 @@ CardTest >> test091MultipleSpeedCardsCanBeActiveAtTheSameTime [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (((aGame positionOf: aSpaceship) = 8 and:
-			  (aGame positionOf: anotherSpaceship) = 12) and:
-			 (aGame positionOf: yetAnotherSpaceship) = 3)
+	self assert: ((aGame positionOf: aSpaceship) = 8 and: ((aGame positionOf: anotherSpaceship) = 12 and: ((aGame positionOf: yetAnotherSpaceship) = 3) )  )
+
 ]
 
 { #category : #tests }
@@ -367,9 +388,8 @@ CardTest >> test092MultipleAccelerationCardsCanBeActiveAtTheSameTime [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (((aGame positionOf: aSpaceship) = 7 and:
-			  (aGame positionOf: anotherSpaceship) = 6) and:
-			 (aGame positionOf: yetAnotherSpaceship) = 5)
+	self assert: ((aGame positionOf: aSpaceship) = 7 and: ((aGame positionOf: anotherSpaceship) = 6 and: ((aGame positionOf: yetAnotherSpaceship) = 5) )  )
+
 ]
 
 { #category : #tests }
@@ -893,11 +913,25 @@ CardTest >> test109RepeatCardWorksWithAtomicBombEffect [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship).
-	atomicBombEffect :=Square with:( AtomicBombEffect  isIn: 4).
-	squares := ZeroBasedArray newEmpty .
-	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	squares at: 4 put: atomicBombEffect .
+	spaceshipsData := OrderedCollection
+		                  with: (SpaceshipData
+				                   for: aSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: RepeatCard
+					                    with: AccelerationCard))
+		                  with: (SpaceshipData
+				                   for: anotherSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: RepeatCard
+					                    with: AccelerationCard))
+		                  with:
+		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+	atomicBombEffect := Square with: (AtomicBombEffect isIn: 4).
+	squares := ZeroBasedArray newEmpty.
+	0 to: 9 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
+	squares at: 4 put: atomicBombEffect.
 	aBoard := Board
 		          with: squares
 		          parsecs: 5
@@ -913,9 +947,10 @@ CardTest >> test109RepeatCardWorksWithAtomicBombEffect [
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship  .
-	
-	self assert: ((((aGame shieldsOf: aSpaceship)  = 1) and: ((aGame shieldsOf: anotherSpaceship ) = 1)) and: (aGame shieldsOf: yetAnotherSpaceship)=1) .
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	self assert: ((aGame shieldsOf: aSpaceship) = 1 and:
+			 ((aGame shieldsOf: anotherSpaceship) = 1 and:
+				  (aGame shieldsOf: yetAnotherSpaceship) = 1))
 ]
 
 { #category : #tests }

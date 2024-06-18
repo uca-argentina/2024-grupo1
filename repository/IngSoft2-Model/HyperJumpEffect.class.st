@@ -28,9 +28,7 @@ Class {
 	#name : #HyperJumpEffect,
 	#superclass : #NullEffect,
 	#instVars : [
-		'parsecRatio',
-		'toMove',
-		'distancesMeasurementUnit'
+		'toMove'
 	],
 	#category : #'IngSoft2-Model'
 }

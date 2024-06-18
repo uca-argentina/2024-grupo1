@@ -273,8 +273,8 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 ]
 
 { #category : #adding }
-Game >> rechargeShieldsOf: aSpaceship [ 
-	(self dataFor: aSpaceship ) rechargeShields 
+Game >> rechargeShieldsOf: aSpaceship [
+	(self dataFor: aSpaceship ) rechargeShields
 ]
 
 { #category : #action }

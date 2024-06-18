@@ -4,22 +4,6 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #creation }
-BoardTest >> createArrayOf: length with: someEffects [
-
-	|squares|
-
-	squares  := ZeroBasedArray newEmpty .
-
-	0 to: (length  -1) do: [ :square |
-		squares  add: (Square with: (NullEffect isIn: square)) ].
-
-
-	someEffects keysDo: [ :index |
-		squares  at: index put: (Square with: (someEffects at: index)) ].
-	 ^ squares 
-]
-
 { #category : #accessing }
 BoardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
 

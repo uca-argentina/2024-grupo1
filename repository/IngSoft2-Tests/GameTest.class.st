@@ -281,7 +281,7 @@ GameTest >> test020GameWithMultiplePlayersKnowsTheWinner [
 { #category : #tests }
 GameTest >> test021WhenGameIsOverLeaderboardIsShown [
 
-	| aGame aSpaceship anotherSpaceship stack aBoard aLoadedDie someDice spaceshipsData |
+	| aGame aSpaceship anotherSpaceship aBoard aLoadedDie someDice spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship) .
