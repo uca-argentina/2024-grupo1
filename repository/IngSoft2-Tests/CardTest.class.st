@@ -1180,3 +1180,91 @@ CardTest >> test119RepeatCardWorksWithMysteryCardEffect [
 	
 	self assert: (spaceshipsData first cards size) equals: 3.
 ]
+
+{ #category : #tests }
+CardTest >> test123GameSavesActiveMercenaryCards [
+
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie cards spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Another'.
+	yetAnotherSpaceship := Spaceship launch: 'And another'.
+	spaceshipsData := OrderedCollection
+		                  with: (SpaceshipData
+				                   for: aSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: MercenaryCard
+					                    with: MercenaryCard))
+		                  with:
+		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  with:
+		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+	aBoard := self
+		          createBoardOf: 10
+		          parsecs: 1
+		          withEffects: OrderedCollection new
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	cards := OrderedCollection
+		         with: MercenaryCard new
+		         with: MercenaryCard new.
+
+	aGame
+		playCard: cards first
+		from: aSpaceship 
+		withTarget: anotherSpaceship .
+	aGame playCard: cards last from: aSpaceship   withTarget: yetAnotherSpaceship .
+
+	self assert: aGame activeMercenaryCards  equals: cards 
+]
+
+{ #category : #tests }
+CardTest >> test124GameSavesActiveMovementCards [
+
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aBoard aDie cards spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Another'.
+	yetAnotherSpaceship := Spaceship launch: 'And another'.
+	spaceshipsData := OrderedCollection
+		                  with: (SpaceshipData
+				                   for: aSpaceship
+				                   withDeck:
+				                   (OrderedCollection
+					                    with: SpeedCard 
+					                    with: AccelerationCard ))
+		                  with:
+		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  with:
+		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+	aBoard := self
+		          createBoardOf: 10
+		          parsecs: 1
+		          withEffects: OrderedCollection new
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	cards := OrderedCollection
+		         with: SpeedCard  new
+		         with: AccelerationCard  new.
+
+	aGame
+		playCard: cards first
+		from: aSpaceship 
+		withTarget: anotherSpaceship .
+	aGame playCard: cards last from: aSpaceship   withTarget: yetAnotherSpaceship .
+
+	self assert: aGame activeMovementCards   equals: cards 
+]
