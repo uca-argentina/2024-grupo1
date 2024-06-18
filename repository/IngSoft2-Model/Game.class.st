@@ -78,9 +78,9 @@ Game >> calculateFinalPositionFor: aSpaceship [
 Game >> calculateLapsFor: aSpaceship in: totalPosition [
 
 	totalPosition >= board length ifTrue: [
-		self updateLapsOf: aSpaceship by: totalPosition // board length ].
+		(self dataFor: aSpaceship )updateLapsBy: totalPosition // board length ].
 	totalPosition <= 0 ifTrue: [
-		self updateLapsOf: aSpaceship by: totalPosition // board length - 1 ]
+		(self dataFor: aSpaceship ) updateLapsBy: totalPosition // board length - 1 ]
 ]
 
 { #category : #action }
@@ -370,26 +370,6 @@ Game >> throwDice [
 	result :=0.
 	dice do: [ :aDie | result := result + aDie throw ].
  	^ result 
-]
-
-{ #category : #adding }
-Game >> updateLaps: amountOfLaps [
-
-	| currentLaps currentPlayer totalLaps |
-	currentPlayer := spaceships first.
-	currentLaps := (self dataFor: currentPlayer) laps.
-	totalLaps := (currentLaps + amountOfLaps) max: 0 .
-	(self dataFor: currentPlayer) changeLapsTo: totalLaps 
-]
-
-{ #category : #adding }
-Game >> updateLapsOf: aSpaceship by: amountOfLaps [
-
-	| currentLaps  totalLaps |
-
-	currentLaps := (self dataFor: aSpaceship ) laps .
-	totalLaps := (currentLaps + amountOfLaps) max: 0 .
-	(self dataFor: aSpaceship ) changeLapsTo: totalLaps
 ]
 
 { #category : #action }

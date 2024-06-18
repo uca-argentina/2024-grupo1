@@ -92,12 +92,6 @@ SpaceshipData >> cards [
 ]
 
 { #category : #accessing }
-SpaceshipData >> changeLapsTo: anAmountOfLaps [
-
-laps := anAmountOfLaps 
-]
-
-{ #category : #accessing }
 SpaceshipData >> changeShieldsTo: aShieldValue [
 
 shields := aShieldValue 
@@ -173,6 +167,16 @@ SpaceshipData >> spaceship [
 { #category : #accessing }
 SpaceshipData >> state [ 
 ^state 
+]
+
+{ #category : #adding }
+SpaceshipData >> updateLapsBy: amountOfLaps [
+
+	| currentLaps  totalLaps |
+
+	currentLaps := laps .
+	totalLaps := (currentLaps + amountOfLaps) max: 0 .
+	laps:= totalLaps
 ]
 
 { #category : #validation }
