@@ -33,6 +33,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'instance creation' }
+MoonWalkEffect class >> isIn: aPosition [
+	^self new initializeIsIn: aPosition  moves: (aPosition atRandom )
+]
+
 { #category : #testing }
 MoonWalkEffect class >> isIn: aPosition moves: aNumberOfSquares [ 
 	^self new initializeIsIn: aPosition moves: aNumberOfSquares 
