@@ -9,8 +9,6 @@ Class {
 		'spaceshipsData',
 		'laps',
 		'activeCards',
-		'activeMovementCards',
-		'mercenaryCards',
 		'lastTypeOfCardPlayed',
 		'lastEffectTriggered'
 	],
@@ -53,7 +51,9 @@ Game >> battleIn: position [
 	aSpaceship := self nextSpaceshipToPlay.
 	position = 0 ifFalse: [
 		spaceships allButFirstDo: [ :spaceship |
-			(((self dataFor: spaceship) position = position) and: (self activeMercenaryCards  anySatisfy: [:card| card is: aSpaceship anAllyOf: spaceship]) not ) ifTrue: [
+			((self positionOf: spaceship) = position and:
+				 (self activeMercenaryCards allSatisfy: [ :card |
+					  (card is: aSpaceship anAllyOf: spaceship) not ])) ifTrue: [
 				self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
 
@@ -96,20 +96,14 @@ Game >> checkForWinner [
 
 	|currentSpaceship|
 	currentSpaceship := self nextSpaceshipToPlay .
-	(((self dataFor: currentSpaceship ) laps ) >= laps) ifTrue: [ self end  ]
-]
-
-{ #category : #testing }
-Game >> data [ 
-
-^spaceshipsData 
+	((self lapsOf: currentSpaceship  ) >= laps) ifTrue: [ self end  ]
 ]
 
 { #category : #accessing }
 Game >> dataFor: aSpaceship [
 
 ^spaceshipsData detect: [:dataForASpaceship | dataForASpaceship spaceship = aSpaceship   ] ifNone: [ Error signal: 'That spaceship is not a player in this game' ].
-"^spaceshipsData at: aSpaceship ifAbsent: [Error signal: 'That spaceship is not a player in this game']"
+
 ]
 
 { #category : #adding }
@@ -155,8 +149,7 @@ Game >> initializeSpaceships [
 	numberOfPlayers := spaceshipsData size.
 
 	spaceships := OrderedCollection new.
-	spaceshipsData do: [ :dataForASpaceship |
-		spaceships add: dataForASpaceship spaceship ]
+	spaceships := spaceshipsData collect: [ :dataForASpaceship | dataForASpaceship spaceship ]
 ]
 
 { #category : #accessing }
