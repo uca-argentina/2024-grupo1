@@ -248,7 +248,7 @@ Game >> playTurn [
 	| aSpaceship |
 	state validateTurn.
 	aSpaceship := self nextSpaceshipToPlay.
-	((self dataFor: aSpaceship ) state) playIn: self.
+	(self dataFor: aSpaceship ) playIn: self.
 
 	self nextTurn
 ]
@@ -313,8 +313,15 @@ Game >> removeActiveCard: aCard [
 
 { #category : #action }
 Game >> repeatLastEffectFor: aSpaceship [ 
-	lastEffectTriggered setPosition: (self positionOf: aSpaceship).
-	lastEffectTriggered applyIn: self for: aSpaceship.
+
+	|squaresMovedByEffect originalPosition|
+	originalPosition := (self positionOf: aSpaceship).
+	lastEffectTriggered setPosition: originalPosition .
+	
+	squaresMovedByEffect := lastEffectTriggered applyIn: self for: aSpaceship.
+	self
+		calculateLapsFor: aSpaceship
+		in: originalPosition +  squaresMovedByEffect
 	
 	
 

@@ -58,13 +58,3 @@ HyperJumpEffect >> initializeIsIn: aSquare movesDistance: someDistance [
 	myPosition := aSquare.
 	toMove  := someDistance .
 ]
-
-{ #category : #initialization }
-HyperJumpEffect >> initializeIsIn: aSquare movesParsecs: someParsecs squaresPerParsec: aRatio [
-
-	myPosition := aSquare.
-	toMove  := someParsecs.
-	parsecRatio := aRatio  .
-	distancesMeasurementUnit := OrderedCollection new.
-	toMove size timesRepeat: [ distancesMeasurementUnit add: 'Parsec' ]
-]

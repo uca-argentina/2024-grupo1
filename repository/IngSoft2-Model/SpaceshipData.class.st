@@ -143,6 +143,12 @@ SpaceshipData >> moveTo: aPosition [
 	position := aPosition 
 ]
 
+{ #category : #action }
+SpaceshipData >> playIn: aGame [
+
+	state playIn: aGame 
+]
+
 { #category : #accessing }
 SpaceshipData >> position [
 ^position 

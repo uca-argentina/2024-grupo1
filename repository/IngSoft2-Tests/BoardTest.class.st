@@ -155,6 +155,28 @@ BoardTest >> test035BoardCannotBeCreatedIfWormholeEndpointsAreInTheSameSquare [
 ]
 
 { #category : #tests }
+BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareThenGainsALap [
+
+	| aGame aSpaceship anotherSpaceship yetAnotherSpaceship aCard aBoard aDie  spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	yetAnotherSpaceship :=Spaceship launch: 'Three'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship  ) with: (SpaceshipData for: yetAnotherSpaceship  withDeck: (OrderedCollection with: RepeatCard  with: RedoCard )).
+	aBoard := self createBoardOf: 6 parsecs: 6 withEffects: { HyperJumpEffect isIn: 3 movesDistance: (OrderedCollection with: (ParsecDistance of: 7 withRatio: 1)) } wormholeBeginsAt: 0 andEndsAt: 1.
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: spaceshipsData 
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := RepeatCard new.
+	aGame playTurn.
+	aGame playCard: aCard  from: yetAnotherSpaceship  withTarget: yetAnotherSpaceship .
+
+	self assert: (aGame lapsOf:  yetAnotherSpaceship ) equals: 1
+]
+
+{ #category : #tests }
 BoardTest >> test37WhenSpaceshipPassesFinalSquareThenGoesBackToBeginning [
 
 	| aGame aSpaceship aBoard aDie spaceshipsData |
