@@ -11,6 +11,7 @@ Class {
 { #category : #action }
 MercenaryCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
 	self validateIfCardCanBePlayedBy: aSpaceship in: aGame.
+	self validateAllianceBetween: aSpaceship and: anotherSpaceship .
 	aGame validateMercenaryAvailability: anotherSpaceship .
 	mercenary:=anotherSpaceship.
 	ally := aSpaceship.
@@ -45,4 +46,9 @@ MercenaryCard >> reinforce: aSpaceship in: aGame [
 
 aSpaceship = ally ifTrue: [ ^aGame throwDice ].
 ^0.
+]
+
+{ #category : #validation }
+MercenaryCard >> validateAllianceBetween: aSpaceship and: anotherSpaceship [
+	aSpaceship = anotherSpaceship ifTrue: [ Error signal: 'A spaceship cannot be its own mercenary' ]
 ]

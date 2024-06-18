@@ -72,7 +72,7 @@ SpaceshipData >> addCard: aCard [
 cards add: aCard .
 ]
 
-{ #category : #initialization }
+{ #category : #adding }
 SpaceshipData >> addRandomCard [
 
 	| cardTypes randomCard |
@@ -117,7 +117,7 @@ SpaceshipData >> initializeFor: aSpaceship withDeck: someCards [
 	laps := 0.
 	state := NoPenaltyState new.
 	shields := 3.
-	cards:=someCards.
+	cards:= OrderedCollection withAll:  someCards.
 ]
 
 { #category : #initialization }

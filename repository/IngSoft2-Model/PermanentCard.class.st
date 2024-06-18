@@ -46,5 +46,6 @@ PermanentCard >> isMovementCard [
 { #category : #validation }
 PermanentCard >> validateIfCardCanBePlayedBy: aSpaceship in: aGame [
 
-aSpaceship = aGame nextSpaceshipToPlay ifFalse: [ Error signal: 'Card cannot be played out of turn' ].
+	aSpaceship = aGame nextSpaceshipToPlay ifFalse: [
+		Error signal: 'Card cannot be played out of turn' ]
 ]

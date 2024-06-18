@@ -230,7 +230,7 @@ Game >> normalTurn [
 
 { #category : #action }
 Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
-	self validateIfCardCanBePlayed: aCard  by: aSpaceship .
+	self validateIf: aCard  canBePlayedBy: aSpaceship .
 	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
 	(self dataFor: aSpaceship) removeCardFromHand: aCard. 
 ]
@@ -348,16 +348,8 @@ Game >> throwDice [
  	^ result 
 ]
 
-{ #category : #action }
-Game >> updatePositionOf: aSpaceship to: newPosition [ 
-
-	(self dataFor: aSpaceship) moveTo: newPosition 
-	
-
-]
-
 { #category : #validation }
-Game >> validateIfCardCanBePlayed: aCard by: aSpaceship [
+Game >> validateIf: aCard canBePlayedBy: aSpaceship [
 
 	| spaceshipData |
 	state validateStateForCards.
@@ -373,7 +365,10 @@ Game >> validateLastCardPlayed [
 
 { #category : #validation }
 Game >> validateMercenaryAvailability: aSpaceship [
-(self activeMercenaryCards  anySatisfy:  [ :card | card mercenary = aSpaceship ]) ifTrue: [ Error signal: 'Selected spaceship is already a mercenary'. ].
+
+	(self activeMercenaryCards anySatisfy: [ :card |
+		 card mercenary = aSpaceship ]) ifTrue: [
+		Error signal: 'Selected spaceship is already a mercenary' ]
 ]
 
 { #category : #accessing }

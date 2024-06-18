@@ -1268,3 +1268,37 @@ CardTest >> test124GameSavesActiveMovementCards [
 
 	self assert: aGame activeMovementCards   equals: cards 
 ]
+
+{ #category : #tests }
+CardTest >> test125SpaceshipCannotAppointItselfAsItsMercenary [
+
+	| aGame aSpaceship aBoard aDie aCard spaceshipsData |
+	aSpaceship := Spaceship launch: 'One'.
+
+	spaceshipsData := OrderedCollection with: (SpaceshipData
+			                   for: aSpaceship
+			                   withDeck:
+			                   (OrderedCollection
+				                    with: MercenaryCard
+				                    with: AccelerationCard)).
+	aBoard := self
+		          createBoardOf: 10
+		          parsecs: 1
+		          withEffects: OrderedCollection new
+		          wormholeBeginsAt: 8
+		          andEndsAt: 9.
+ 
+	aDie := LoadedDie of: 3.
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := MercenaryCard new.
+
+	self
+		should: [
+		aGame playCard: aCard from: aSpaceship withTarget: aSpaceship ]
+		raise: Error
+		withMessage: 'A spaceship cannot be its own mercenary'
+]
