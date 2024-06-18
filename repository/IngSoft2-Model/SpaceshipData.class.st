@@ -103,10 +103,15 @@ SpaceshipData >> changeStateTo: aState [
 state := aState 
 ]
 
+{ #category : #adding }
+SpaceshipData >> decreaseShieldsByOne [ 
+	shields := shields -1 max: 0
+]
+
 { #category : #comparing }
 SpaceshipData >> hash [ 
 
-^laps 
+^laps hash + shields hash + position hash + spaceship hash 
 ]
 
 { #category : #initialization }

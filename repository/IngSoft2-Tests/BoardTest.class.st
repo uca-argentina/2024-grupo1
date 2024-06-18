@@ -379,7 +379,7 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	squares at: 6 put: atomicBombEffect .
-	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt: 0 andEndsAt: 1.
+	aBoard := Board with: squares  parsecs: 1 wormholeBeginsAt:  8 andEndsAt: 9.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 3 with: 6).
 	aGame := Game
 		         playedBy: spaceshipsData 
@@ -387,7 +387,7 @@ BoardTest >> test63WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	aGame playTurn.
-	aGame decreaseShieldByOne.
+	aGame decreaseShieldByOneOf: anotherSpaceship .
 	aGame playTurn.
 
 	self assert: ((aGame shieldsOf: anotherSpaceship) = 1 and:

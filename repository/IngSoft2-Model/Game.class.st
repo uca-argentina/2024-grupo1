@@ -113,27 +113,14 @@ Game >> dataFor: aSpaceship [
 { #category : #adding }
 Game >> decreaseAllShieldsByOne [
 
-	| currentShields |
 	spaceshipsData do: [ :dataForASpaceship |
-		currentShields := dataForASpaceship shields .
-		dataForASpaceship changeShieldsTo: currentShields -1]
-]
-
-{ #category : #adding }
-Game >> decreaseShieldByOne [
-
-	| currentShield aSpaceship |
-	aSpaceship := self nextSpaceshipToPlay.
-	currentShield := (self dataFor: self nextSpaceshipToPlay) shields .
-	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
+		dataForASpaceship decreaseShieldsByOne ]
 ]
 
 { #category : #adding }
 Game >> decreaseShieldByOneOf: aSpaceship [
 
-	| currentShield |
-	currentShield := self shieldsOf: aSpaceship  .
-	(self dataFor: aSpaceship) changeShieldsTo:  currentShield - 1
+	(self dataFor: aSpaceship) decreaseShieldsByOne  
 ]
 
 { #category : #accessing }
@@ -316,9 +303,7 @@ Game >> reducePartyShieldsByOneOf: loser [
 { #category : #action }
 Game >> reduceShieldsByOneOf: loser [
 
-	| currentShields |
-	currentShields := (self dataFor: loser) shields.
-	(self dataFor: loser) changeShieldsTo: currentShields - 1.
+	(self dataFor: loser) decreaseShieldsByOne  .
 	(self dataFor: loser) shields = 0 ifTrue: [
 		(self dataFor: loser) changeStateTo: Turn1RechargeState new ].
 	(self dataFor: loser) moveTo: 0
