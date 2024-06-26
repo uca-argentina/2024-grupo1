@@ -233,6 +233,7 @@ Game >> playCard: aCard from: aSpaceship withTarget: anotherSpaceship [
 	self validateIf: aCard  canBePlayedBy: aSpaceship .
 	aCard from: aSpaceship withTarget: anotherSpaceship useIn: self.
 	(self dataFor: aSpaceship) removeCardFromHand: aCard. 
+	
 ]
 
 { #category : #action }
@@ -312,7 +313,9 @@ Game >> repeatLastEffectFor: aSpaceship [
 	squaresMovedByEffect := lastEffectTriggered applyIn: self for: aSpaceship.
 	self
 		calculateLapsFor: aSpaceship
-		in: originalPosition +  squaresMovedByEffect
+		in: originalPosition +  squaresMovedByEffect.
+		
+	lastTypeOfCardPlayed := RepeatCard .
 	
 	
 
