@@ -96,6 +96,12 @@ Board >> adjustBounds: aSquare [
 	^ aSquare
 ]
 
+{ #category : #converting }
+Board >> convertToSquares: aParsecDistance [
+
+^ aParsecDistance * self length // parsecs 
+]
+
 { #category : #accessing }
 Board >> finalSquareFor: aSpaceship afterMovingTo: aSquare whenPlaying: aGame [
 

@@ -1,10 +1,13 @@
 Class {
 	#name : #ParsecDistance,
-	#superclass : #Distance,
+	#superclass : #Object,
+	#instVars : [
+		'travelDistance'
+	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
-ParsecDistance >> squaresToMove [
-^(travelDistance *squareRatio)//1 
+ParsecDistance >> inParsecs [
+^travelDistance //1 
 ]

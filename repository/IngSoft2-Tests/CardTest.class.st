@@ -495,7 +495,7 @@ CardTest >> test095CancellationCardCanRemoveActiveMercenaryCards [
 ]
 
 { #category : #tests }
-CardTest >> test096CancellationCardCanRemoveActiveMovementCards [
+CardTest >> test096CancellationCardCanRemoveActiveSpeedCards [
 
 	| aGame aSpaceship aBoard aDie squares aCard anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
@@ -1514,4 +1514,28 @@ CardTest >> test129WhenRedoCardCopiesRepeatCardThenEffectIsAppliedAgain [
 	
 	self assert: (aGame positionOf: aSpaceship ) equals: 12
 	
+]
+
+{ #category : #tests }
+CardTest >> test130CancellationCardCanRemoveActiveAccelerationCards [
+
+	| aGame aSpaceship aBoard aDie  aCard anotherCard spaceshipsData anotherSpaceship |
+	aSpaceship := Spaceship launch: 'One'.
+	anotherSpaceship := Spaceship launch: 'Two'.
+	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: CancellationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ).
+	
+	aBoard := self createBoardOf: 16 parsecs: 5 withEffects: {  } wormholeBeginsAt: 13 andEndsAt: 14.
+	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
+	aGame := Game
+		         playedBy: spaceshipsData
+		         on: aBoard
+		         throwing: (OrderedCollection with: aDie)
+		         wonAfter: 3.
+	aCard := AccelerationCard  new.
+	anotherCard := CancellationCard new.
+	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame playCard: anotherCard from: aSpaceship withTarget: aCard.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (((aGame positionOf: aSpaceship) = 4) and: ((aGame positionOf: anotherSpaceship) = 5) )
 ]

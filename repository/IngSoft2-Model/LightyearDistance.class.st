@@ -1,10 +1,13 @@
 Class {
 	#name : #LightyearDistance,
-	#superclass : #Distance,
+	#superclass : #Object,
+	#instVars : [
+		'travelDistance'
+	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #action }
-LightyearDistance >> squaresToMove [
-^(travelDistance *squareRatio)//3
+LightyearDistance >> inParsecs [
+^travelDistance //3
 ]

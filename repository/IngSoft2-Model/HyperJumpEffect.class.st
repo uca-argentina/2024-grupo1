@@ -44,7 +44,7 @@ HyperJumpEffect >> applyIn: aGame for: aSpaceship [
 	| currentDistance squaresToMove |
 	currentDistance := toMove removeFirst.
 	toMove addLast: currentDistance.
-	squaresToMove := currentDistance squaresToMove.
+	squaresToMove := aGame convertToSquares:  (currentDistance inParsecs) .
 	aGame move: aSpaceship to: myPosition + squaresToMove.
 	
 	^ squaresToMove
