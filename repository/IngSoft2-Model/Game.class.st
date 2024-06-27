@@ -99,6 +99,12 @@ Game >> checkForWinner [
 	((self lapsOf: currentSpaceship  ) >= laps) ifTrue: [ self end  ]
 ]
 
+{ #category : #converting }
+Game >> convertToSquares: aParsecDistance [
+	^board convertToSquares: aParsecDistance
+	
+]
+
 { #category : #accessing }
 Game >> dataFor: aSpaceship [
 

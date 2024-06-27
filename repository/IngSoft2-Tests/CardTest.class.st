@@ -842,8 +842,8 @@ CardTest >> test106WhenRepeatCardIsPlayedAfterHyperJumpThenTargetSpaceshipMovesS
 				                   (OrderedCollection
 					                    with: RepeatCard
 					                    with: AccelerationCard)).
-	aParsecDistance := ParsecDistance of: 1 withRatio: 20 / 5.
-	anotherParsecDistance := ParsecDistance of: 2 withRatio: 20 / 5.
+	aParsecDistance := ParsecDistance of: 1.
+	anotherParsecDistance := ParsecDistance of: 2.
 
 	aBoard := self
 		          createBoardOf: 20

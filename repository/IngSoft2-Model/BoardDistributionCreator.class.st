@@ -34,11 +34,8 @@ BoardDistributionCreator >> createHyperJumpIn: aSquare withParsecRatio: aRatio m
 	randomAmount := anAmount atRandom.
 	randomAmount timesRepeat: [
 		2 atRandom = 2
-			ifTrue: [
-				toMove add:
-					(LightyearDistance of: aRatio atRandom withRatio: aRatio) ]
-			ifFalse: [
-			toMove add: (ParsecDistance of: aRatio atRandom withRatio: aRatio) ] ].
+			ifTrue: [ toMove add: (LightyearDistance of: aRatio atRandom) ]
+			ifFalse: [ toMove add: (ParsecDistance of: aRatio atRandom) ] ].
 
 	hyperJumpEffect := HyperJumpEffect
 		                   isIn: aSquare
