@@ -37,8 +37,8 @@ AtomicBombEffect class >> isIn: aPosition [
 
 { #category : #action }
 AtomicBombEffect >> applyIn: aGame for: aSpaceship [ 
-	aGame moveAllBackToBeginning.
-	aGame decreaseAllShieldsByOne .
+	aGame detonateAtomicBomb .
+	
 	^0.
 ]
 

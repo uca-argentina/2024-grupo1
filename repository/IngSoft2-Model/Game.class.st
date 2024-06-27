@@ -45,6 +45,20 @@ Game >> addRandomCardFor: aSpaceship [
 ]
 
 { #category : #action }
+Game >> applyHyperSpaceJumpFor: aSpaceship in: aPosition [
+
+	self  decreaseShieldByOneOf: aSpaceship.
+	self  move: aSpaceship to: aPosition 
+	
+]
+
+{ #category : #action }
+Game >> applyMoonwalkFor: aSpaceship  in: aPosition movingOthersBack: someSquares [
+	self moveAllBut: aSpaceship back: someSquares.
+	self move: aSpaceship  to:  aPosition .
+]
+
+{ #category : #action }
 Game >> battleIn: position [
 
 	| aSpaceship |
@@ -123,6 +137,12 @@ Game >> decreaseAllShieldsByOne [
 Game >> decreaseShieldByOneOf: aSpaceship [
 
 	(self dataFor: aSpaceship) decreaseShieldsByOne  
+]
+
+{ #category : #action }
+Game >> detonateAtomicBomb [
+	self moveAllBackToBeginning .
+	self decreaseAllShieldsByOne .
 ]
 
 { #category : #accessing }
