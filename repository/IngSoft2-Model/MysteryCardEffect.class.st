@@ -22,9 +22,18 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #MysteryCardEffect,
-	#superclass : #NullEffect,
+	#superclass : #Object,
+	#instVars : [
+		'myPosition'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #testing }
+MysteryCardEffect class >> isIn: aPosition [
+
+ ^self new initializeIsIn: aPosition 
+]
 
 { #category : #action }
 MysteryCardEffect >> applyIn: aGame for: aSpaceship [
@@ -32,4 +41,21 @@ MysteryCardEffect >> applyIn: aGame for: aSpaceship [
 aGame addRandomCardFor: aSpaceship .
 aGame move: aSpaceship  to:  myPosition .
 ^0
+]
+
+{ #category : #initialization }
+MysteryCardEffect >> initializeIsIn: aPosition [ 
+
+myPosition := aPosition.
+]
+
+{ #category : #accessing }
+MysteryCardEffect >> position [
+
+^myPosition 
+]
+
+{ #category : #initialization }
+MysteryCardEffect >> setPosition: aPosition [
+myPosition := aPosition.
 ]
