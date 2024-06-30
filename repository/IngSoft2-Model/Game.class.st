@@ -20,16 +20,6 @@ Game class >> playedBy: someSpaceships on: aBoard throwing: someDice wonAfter: a
 	^self new initializePlayedBy: someSpaceships  on: aBoard  throwing: someDice wonAfter: aNumberOfLaps .
 ]
 
-{ #category : #accessing }
-Game >> activeMercenaryCards [
-	^activeCards select: [ :card | card isMercenaryCard  ]
-]
-
-{ #category : #accessing }
-Game >> activeMovementCards [
-	^activeCards select: [ :card | card isMovementCard   ]
-]
-
 { #category : #adding }
 Game >> addActiveCard: aCard [
 
@@ -66,7 +56,7 @@ Game >> battleIn: position [
 	position = 0 ifFalse: [
 		spaceships allButFirstDo: [ :spaceship |
 			((self positionOf: spaceship) = position and:
-				 (self activeMercenaryCards allSatisfy: [ :card |
+				 (activeCards allSatisfy: [ :card |
 					  (card is: aSpaceship anAllyOf: spaceship) not ])) ifTrue: [
 				self processBattleBetween: aSpaceship and: spaceship ] ] ]
 ]
@@ -76,7 +66,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 
 	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
-	self activeMovementCards  do: [ :card |
+	activeCards  do: [ :card |
 		diceResult := card playOn: aSpaceship withDiceThrow: diceResult ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
@@ -289,9 +279,9 @@ Game >> processBattleBetween: aSpaceship and: aSpaceship2 [
 
 	| loser resultForFirstPlayer resultForSecondPlayer |
 	resultForFirstPlayer := self throwDice.
-	self activeMercenaryCards  do: [ :card | resultForFirstPlayer := (card reinforce: aSpaceship in: self) + resultForFirstPlayer. ].
+	activeCards  do: [ :card | resultForFirstPlayer := (card reinforce: aSpaceship in: self) + resultForFirstPlayer. ].
 	resultForSecondPlayer := self throwDice.
-	self activeMercenaryCards  do: [ :card | resultForSecondPlayer := (card reinforce: aSpaceship2 in: self) + resultForSecondPlayer. ].
+	activeCards  do: [ :card | resultForSecondPlayer := (card reinforce: aSpaceship2 in: self) + resultForSecondPlayer. ].
 
 	loser := resultForFirstPlayer > resultForSecondPlayer
 		         ifTrue: [ aSpaceship2 ]
@@ -316,7 +306,7 @@ Game >> redoLastCardPlayedFor: aSpaceship withTarget: aTarget [
 { #category : #action }
 Game >> reducePartyShieldsByOneOf: loser [
 	
-	self activeMercenaryCards  do: [ :card | card reduceShieldsOfAllyOf: loser in: self ].
+	activeCards  do: [ :card | card reduceShieldsOfAllyOf: loser in: self ].
 	(self dataFor: loser) decreaseShieldsByOne . 
 	(self dataFor: loser) moveTo: 0
 	
@@ -395,7 +385,7 @@ Game >> validateLastCardPlayed [
 { #category : #validation }
 Game >> validateMercenaryAvailability: aSpaceship [
 
-	(self activeMercenaryCards anySatisfy: [ :card |
+	(activeCards anySatisfy: [ :card |
 		 card mercenary = aSpaceship ]) ifTrue: [
 		Error signal: 'Selected spaceship is already a mercenary' ]
 ]

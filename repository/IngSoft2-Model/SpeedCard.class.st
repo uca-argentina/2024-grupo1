@@ -40,8 +40,14 @@ SpeedCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
 ]
 
 { #category : #testing }
-SpeedCard >> isMovementCard [ 
-	^true
+SpeedCard >> is: aSpaceship anAllyOf: anotherSpaceship [
+
+^false.
+]
+
+{ #category : #accessing }
+SpeedCard >> mercenary [
+^0
 ]
 
 { #category : #playing }
@@ -50,4 +56,18 @@ SpeedCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
 cardModifier:=0.
 aSpaceship = target ifTrue:[cardModifier:= 1].
 ^aDiceThrow +cardModifier
+]
+
+{ #category : #action }
+SpeedCard >> reduceShieldsOfAllyOf: aSpaceship in: aGame [
+]
+
+{ #category : #action }
+SpeedCard >> reinforce: aSpaceship in: aGame [
+
+^0.
+]
+
+{ #category : #validation }
+SpeedCard >> validateAllianceBetween: aSpaceship and: anotherSpaceship [
 ]

@@ -11,12 +11,34 @@ AccelerationCard >> from: aSpaceship withTarget: anotherSpaceship useIn: aGame [
 ]
 
 { #category : #testing }
-AccelerationCard >> isMovementCard [ 
-	^true 
+AccelerationCard >> is: aSpaceship anAllyOf: anotherSpaceship [
+
+^false.
+]
+
+{ #category : #accessing }
+AccelerationCard >> mercenary [
+^0
 ]
 
 { #category : #playing }
 AccelerationCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
 
 ^aDiceThrow  +1
+]
+
+{ #category : #action }
+AccelerationCard >> reduceShieldsOfAllyOf: aSpaceship in: aGame [
+
+
+]
+
+{ #category : #action }
+AccelerationCard >> reinforce: aSpaceship in: aGame [
+
+^0.
+]
+
+{ #category : #validation }
+AccelerationCard >> validateAllianceBetween: aSpaceship and: anotherSpaceship [
 ]

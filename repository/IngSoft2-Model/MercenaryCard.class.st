@@ -24,14 +24,15 @@ MercenaryCard >> is: aSpaceship anAllyOf: anotherSpaceship [
 ^((aSpaceship = ally) and: anotherSpaceship = mercenary) or: ((aSpaceship = mercenary ) and: anotherSpaceship = ally)
 ]
 
-{ #category : #testing }
-MercenaryCard >> isMercenaryCard [ 
-	^true
-]
-
 { #category : #accessing }
 MercenaryCard >> mercenary [
 ^mercenary
+]
+
+{ #category : #playing }
+MercenaryCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
+
+^aDiceThrow
 ]
 
 { #category : #action }
