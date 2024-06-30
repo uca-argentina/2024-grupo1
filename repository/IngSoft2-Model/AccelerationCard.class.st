@@ -22,9 +22,9 @@ AccelerationCard >> mercenary [
 ]
 
 { #category : #playing }
-AccelerationCard >> playOn: aSpaceship with: aDiceThrow [
+AccelerationCard >> playOn: aSpaceship [
 
-^aDiceThrow  +1
+^1
 ]
 
 { #category : #action }

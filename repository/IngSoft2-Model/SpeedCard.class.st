@@ -51,11 +51,11 @@ SpeedCard >> mercenary [
 ]
 
 { #category : #playing }
-SpeedCard >> playOn: aSpaceship with: aDiceThrow [
+SpeedCard >> playOn: aSpaceship [
 | cardModifier |
 cardModifier:=0.
 aSpaceship = target ifTrue:[cardModifier:= 1].
-^aDiceThrow +cardModifier
+^cardModifier
 ]
 
 { #category : #action }

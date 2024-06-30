@@ -29,5 +29,5 @@ Class {
 { #category : #action }
 NoPenaltyState >> playIn: aGame [
 
-	aGame normalTurn .
+	aGame turn .
 ]

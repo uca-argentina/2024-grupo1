@@ -819,9 +819,9 @@ BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareT
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: yetAnotherSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 
 	self assert: (aGame lapsOf: yetAnotherSpaceship) equals: 1
 ]

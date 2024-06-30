@@ -498,7 +498,7 @@ GameTest >> test43AfterLosingABattleSpaceshipLosesAShield [
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
 
 	self assert: (aGame shieldsOf: aSpaceship) equals: 2
 ]
@@ -517,7 +517,7 @@ GameTest >> test44IfSpaceshipWinsBattleDoesntLoseShields [
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
 
 	self assert: (aGame shieldsOf: aSpaceship) equals: 3
 ]
@@ -536,8 +536,8 @@ GameTest >> test45SpaceshipLosesTwoBattlesAndLosesTwoShields [
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
 
 	self assert: (aGame shieldsOf: aSpaceship) equals: 1
 ]
@@ -558,7 +558,7 @@ GameTest >> test46AfterLosingBattleSpaceshipGetsSentToBeginning [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	aGame playTurn.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
 
 	self assert: (aGame positionOf: aSpaceship) equals: 0
 ]
@@ -637,7 +637,7 @@ GameTest >> test50SkippingATurnRechargesShields [
 		         on: aBoard
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
-	aGame processBattleBetween: aSpaceship and: anotherSpaceship.
+	aGame battleBetween: aSpaceship and: anotherSpaceship.
 	aGame skipTurn.
 
 	self assert: (aGame shieldsOf: aSpaceship) equals: 3
@@ -677,7 +677,7 @@ GameTest >> test52IfSpaceshipLosesAllShieldsThenTheirTurnGetsSkipped [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	3 timesRepeat: [
-		aGame processBattleBetween: aSpaceship and: anotherSpaceship ].
+		aGame battleBetween: aSpaceship and: anotherSpaceship ].
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 0
 ]
@@ -697,7 +697,7 @@ GameTest >> test53AfterLosingAllShieldsSpaceshipCannotPlayForTwoTurns [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	3 timesRepeat: [
-		aGame processBattleBetween: aSpaceship and: anotherSpaceship ].
+		aGame battleBetween: aSpaceship and: anotherSpaceship ].
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -720,7 +720,7 @@ GameTest >> test54AfterLosingTwoTurnsSpaceshipCanPlayAgain [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 1.
 	3 timesRepeat: [
-		aGame processBattleBetween: aSpaceship and: anotherSpaceship ].
+		aGame battleBetween: aSpaceship and: anotherSpaceship ].
 	5 timesRepeat: [ aGame playTurn ].
 
 	self assert: (aGame positionOf: aSpaceship) equals: 2

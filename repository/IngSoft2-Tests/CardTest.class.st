@@ -55,7 +55,7 @@ CardTest >> test083SpeedCardWorksWithOnlyOneSpaceship [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := SpeedCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 5
 ]
@@ -84,7 +84,7 @@ CardTest >> test084SpeedCardWorksWithMultipleSpaceships [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := SpeedCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -113,7 +113,7 @@ CardTest >> test085AccelerationCardWorksWithOneSpaceship [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := AccelerationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 5
 ]
@@ -152,7 +152,7 @@ CardTest >> test086AccelerationCardWorksForAllSpaceShips [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := AccelerationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -186,9 +186,9 @@ CardTest >> test087MercenaryCardCanRecruitOneMercenaryThatHelpsInBattles [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 4 and:
@@ -220,9 +220,9 @@ CardTest >> test088IfSpaceshipAndOneMercenaryLoseTheBattleBothLoseShields [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((aGame shieldsOf: aSpaceship) = 2 and:
@@ -255,10 +255,10 @@ CardTest >> test089ASpaceshipCanRecruitMultipleMercenariesThetHelpInBattle [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
-	aGame playCard: aCard from: aSpaceship withTarget: fourthSpaceship.
+		targeting: yetAnotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: fourthSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 4 and:
@@ -307,13 +307,13 @@ CardTest >> test090IfSpaceshipAndMultipleMercenariesLoseTheBattleTheyAllLoseShie
 	aCard := MercenaryCard new.
 	anotherCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: aSpaceship
-		withTarget: fourthSpaceship.
+		targeting: fourthSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 
@@ -347,11 +347,11 @@ CardTest >> test091MultipleSpeedCardsCanBeActiveAtTheSameTime [
 		         wonAfter: 3.
 	aCard := SpeedCard new.
 	anotherCard := SpeedCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: aSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -386,11 +386,11 @@ CardTest >> test092MultipleAccelerationCardsCanBeActiveAtTheSameTime [
 		         wonAfter: 3.
 	aCard := AccelerationCard new.
 	anotherCard := AccelerationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: aSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -425,16 +425,16 @@ CardTest >> test093MultipleSpaceshipsCannotHaveTheSameMercenary [
 	aCard := MercenaryCard new.
 	anotherCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame playTurn.
 	self
 		should: [
 			aGame
-				playCard: anotherCard
+				play: anotherCard
 				from: anotherSpaceship
-				withTarget: yetAnotherSpaceship ]
+				targeting: yetAnotherSpaceship ]
 		raise: Error
 		withMessage: 'Selected spaceship is already a mercenary'
 ]
@@ -461,7 +461,7 @@ CardTest >> test094ASpaceshipDoesNotBattleWithItsMercenary [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 4 and:
@@ -492,9 +492,9 @@ CardTest >> test095CancellationCardCanRemoveActiveMercenaryCards [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	anotherCard := CancellationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
 	aGame playTurn.
-	aGame playCard: anotherCard from: anotherSpaceship withTarget: aCard.
+	aGame play: anotherCard from: anotherSpaceship targeting: aCard.
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 0 and:
 			 (aGame positionOf: anotherSpaceship) = 4)
@@ -522,8 +522,8 @@ CardTest >> test096CancellationCardCanRemoveActiveSpeedCards [
 		         wonAfter: 3.
 	aCard := SpeedCard new.
 	anotherCard := CancellationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
-	aGame playCard: anotherCard from: aSpaceship withTarget: aCard.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
+	aGame play: anotherCard from: aSpaceship targeting: aCard.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 4
 ]
@@ -551,12 +551,12 @@ CardTest >> test097CancellationCardCanNotBePlayedOnACardThatIsNotActive [
 	aCard := SpeedCard new.
 	anotherCard := CancellationCard new.
 	yetAnotherCard:= CancellationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
-	aGame playCard: anotherCard from: aSpaceship withTarget: aCard.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
+	aGame play: anotherCard from: aSpaceship targeting: aCard.
 
 	self
 		should: [
-		aGame playCard: yetAnotherCard from: aSpaceship withTarget: aCard ]
+		aGame play: yetAnotherCard from: aSpaceship targeting: aCard ]
 		raise: Error
 		withMessage: 'Selected card is not active'
 ]
@@ -588,7 +588,7 @@ CardTest >> test098PermanentCardCannotBePlayedOutOfTurn [
 	aGame playTurn.
 	self
 		should: [
-		aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship ]
+		aGame play: aCard from: aSpaceship targeting: anotherSpaceship ]
 		raise: Error
 		withMessage: 'Card cannot be played out of turn'
 ]
@@ -617,8 +617,8 @@ CardTest >> test099InstantaneousCardCanBePlayedOutOfTurn [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	anotherCard := CancellationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship.
-	aGame playCard: anotherCard from: anotherSpaceship withTarget: aCard.
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship.
+	aGame play: anotherCard from: anotherSpaceship targeting: aCard.
 	aGame playTurn.
 	self assert: (aGame positionOf: aSpaceship) equals: 4
 ]
@@ -650,7 +650,7 @@ CardTest >> test100CardsCannotBePlayedAfterGameIsOver [
 	aGame end.
 	self
 		should: [
-		aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship ]
+		aGame play: aCard from: aSpaceship targeting: anotherSpaceship ]
 		raise: Error
 		withMessage: 'Cards cannot be played after game is over'
 ]
@@ -674,12 +674,12 @@ CardTest >> test101RedoCardCanCopyLastSpeedCardPlayedAndApplyItToADifferentTarge
 		         wonAfter: 3.
 	aCard := SpeedCard new.
 	anotherCard := RedoCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: anotherSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 5 and:
 			 (aGame positionOf: anotherSpaceship) = 6)
@@ -710,17 +710,17 @@ CardTest >> test102RedoCardCanCopyAnotherRedoCard [
 	aCard := SpeedCard new.
 	anotherCard := RedoCard new.
 	yetAnotherCard:= RedoCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	aGame playTurn.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: anotherSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 	aGame playTurn.
 	aGame
-		playCard: yetAnotherCard
+		play: yetAnotherCard
 		from: aSpaceship 
-		withTarget: aSpaceship .
+		targeting: aSpaceship .
 	aGame playTurn.
 	self assert: ((aGame positionOf: aSpaceship) = 11 and:
 			 (aGame positionOf: anotherSpaceship) = 6)
@@ -753,9 +753,9 @@ CardTest >> test103RedoCardCannotBePlayedFirst [
 	self
 		should: [
 			aGame
-				playCard: anotherCard
+				play: anotherCard
 				from: anotherSpaceship
-				withTarget: anotherSpaceship ]
+				targeting: anotherSpaceship ]
 		raise: Error
 		withMessage: 'There are no cards played to redo'
 ]
@@ -792,7 +792,7 @@ CardTest >> test104WhenRepeatCardIsPlayedAfterBlackholeEffectThenTargetSpaceship
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: anotherSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: anotherSpaceship targeting: aSpaceship.
 
 	self assert: (aGame positionOf: aSpaceship) equals: 1
 ]
@@ -827,9 +827,9 @@ CardTest >> test105WhenRepeatCardIsPlayedAfterWormholeEffectThenTargetSpaceshipG
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: anotherSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 
 	self assert: (aGame positionOf: anotherSpaceship) equals: 8
 ]
@@ -873,9 +873,9 @@ CardTest >> test106WhenRepeatCardIsPlayedAfterHyperJumpThenTargetSpaceshipMovesS
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: anotherSpaceship
-		withTarget: anotherSpaceship.
+		targeting: anotherSpaceship.
 
 	self assert: (aGame positionOf: anotherSpaceship) equals: 4
 ]
@@ -900,7 +900,7 @@ CardTest >> test107WhenRepeatCardIsPlayedAfterMoonWalkThenSpaceshipsGoBackTwice 
 	
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship  withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship  targeting: aSpaceship.
 
 	self assert: (((aGame positionOf: yetAnotherSpaceship) = 0) and: (((aGame positionOf: aSpaceship) = 2) and: ((aGame positionOf: anotherSpaceship ) = 4))   ) 
 ]
@@ -938,7 +938,7 @@ CardTest >> test108WhenRepeatCardIsPlayedAfterHyperSpaceJumpEffectThenTargetSpac
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 
 	self assert: ((aGame positionOf: aSpaceship) = 9 and:
 			 (aGame shieldsOf: aSpaceship) = 2)
@@ -973,7 +973,7 @@ CardTest >> test109WhenRepeatCardIsPlayedAfterAtomicBombEffectThenAllShieldsGetD
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	self assert: ((aGame shieldsOf: aSpaceship) = 1 and:
 			 ((aGame shieldsOf: anotherSpaceship) = 1 and:
 				  (aGame shieldsOf: yetAnotherSpaceship) = 1))
@@ -1004,7 +1004,7 @@ CardTest >> test110RepeatCardDoesNothingIfLastSquareHadNoEffect [
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship  .
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship  .
 	
 	self assert: (((aGame shieldsOf: anotherSpaceship )  = 3) and: ((aGame positionOf: anotherSpaceship ) = 4)) .
 ]
@@ -1032,7 +1032,7 @@ CardTest >> test111IfNoSpaceshipHasPlayedYetRepeatCardHasNoEffect [
 		         throwing: (OrderedCollection with: aDie)
 		         wonAfter: 3.
 	aCard := RepeatCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship  .
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship  .
 	
 	self assert: (((aGame shieldsOf: anotherSpaceship )  = 3) and: ((aGame positionOf: anotherSpaceship ) = 0)) .
 ]
@@ -1085,7 +1085,7 @@ CardTest >> test114ASpaceshipCannotPlayACardThatIsNotInItsHand [
 		         wonAfter: 3.
 	aCard := SpeedCard new.
 	
-	self should: [ aGame playCard: aCard from: aSpaceship withTarget: aSpaceship ] raise: Error withMessage: 'A Spaceship cannot play a card that is not in its hand'
+	self should: [ aGame play: aCard from: aSpaceship targeting: aSpaceship ] raise: Error withMessage: 'A Spaceship cannot play a card that is not in its hand'
 ]
 
 { #category : #tests }
@@ -1110,9 +1110,9 @@ CardTest >> test115IfASpaceshipPlaysACardItIsRemovedFromItsHand [
 		         wonAfter: 3.
 	aCard := SpeedCard new.
 	anotherCard:= SpeedCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
 	
-	self should: [ aGame playCard: anotherCard from: aSpaceship withTarget: aSpaceship ] raise: Error withMessage: 'A Spaceship cannot play a card that is not in its hand'
+	self should: [ aGame play: anotherCard from: aSpaceship targeting: aSpaceship ] raise: Error withMessage: 'A Spaceship cannot play a card that is not in its hand'
 ]
 
 { #category : #tests }
@@ -1203,9 +1203,9 @@ CardTest >> test118MercenarySpaceshipDoesNotRecieveHelpFromItsAlly [
 		         wonAfter: 3.
 	aCard := MercenaryCard new.
 	aGame
-		playCard: aCard
+		play: aCard
 		from: aSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (aGame positionOf: yetAnotherSpaceship ) equals: 0 
@@ -1237,7 +1237,7 @@ CardTest >> test119RepeatCardWorksWithMysteryCardEffect [
 	aCard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: aCard from: anotherSpaceship withTarget: aSpaceship .
+	aGame play: aCard from: anotherSpaceship targeting: aSpaceship .
 	
 	self assert: (spaceshipsData first cards size) equals: 3.
 ]
@@ -1271,7 +1271,7 @@ CardTest >> test125SpaceshipCannotAppointItselfAsItsMercenary [
 
 	self
 		should: [
-		aGame playCard: aCard from: aSpaceship withTarget: aSpaceship ]
+		aGame play: aCard from: aSpaceship targeting: aSpaceship ]
 		raise: Error
 		withMessage: 'A spaceship cannot be its own mercenary'
 ]
@@ -1296,12 +1296,12 @@ CardTest >> test126WhenRedoCardCopiesMercenaryCardThenAlliedSpaceshipsDoNotBattl
 		         wonAfter: 3.
 	aCard := MercenaryCard  new.
 	anotherCard := RedoCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship .
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship .
 	aGame playTurn.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: anotherSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	aGame playTurn.
 	aGame playTurn .
 	self assert: ((aGame positionOf: anotherSpaceship ) = 5 and:
@@ -1328,12 +1328,12 @@ CardTest >> test127WhenRedoCardCopiesAccelerationCardThenAllSpaceshipsIncreaseTh
 		         wonAfter: 3.
 	aCard := AccelerationCard   new.
 	anotherCard := RedoCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: anotherSpaceship .
+	aGame play: aCard from: aSpaceship targeting: anotherSpaceship .
 	aGame playTurn.
 	aGame
-		playCard: anotherCard
+		play: anotherCard
 		from: anotherSpaceship
-		withTarget: yetAnotherSpaceship.
+		targeting: yetAnotherSpaceship.
 	3 timesRepeat: 	[aGame playTurn].
 
 	self assert: (((aGame positionOf: aSpaceship) = 5) and: (((aGame positionOf: anotherSpaceship)  = 6) and: ((aGame positionOf: yetAnotherSpaceship)  = 9) ) )
@@ -1378,10 +1378,10 @@ CardTest >> test128WhenRedoCardCopiesCancellationCardThenThrowIncreaseIsCancelle
 	aCancellationCard  := CancellationCard new.
 	aRedoCard  := RedoCard new.
 	
-	aGame playCard: aSpeedCard   from: aSpaceship  withTarget: aSpaceship .
-	aGame playCard: anotherSpeedCard  from: aSpaceship  withTarget: aSpaceship .
-	aGame playCard: aCancellationCard  from: anotherSpaceship  withTarget: aSpeedCard .
-	aGame playCard: aRedoCard  from: anotherSpaceship  withTarget: anotherSpeedCard .
+	aGame play: aSpeedCard   from: aSpaceship  targeting: aSpaceship .
+	aGame play: anotherSpeedCard  from: aSpaceship  targeting: aSpaceship .
+	aGame play: aCancellationCard  from: anotherSpaceship  targeting: aSpeedCard .
+	aGame play: aRedoCard  from: anotherSpaceship  targeting: anotherSpeedCard .
 	aGame playTurn .
 	
 	self assert: (aGame positionOf: aSpaceship ) equals: 3
@@ -1427,8 +1427,8 @@ CardTest >> test129WhenRedoCardCopiesRepeatCardThenEffectIsAppliedAgain [
 	
 	
 	aGame playTurn .
-	aGame playCard: aRepeatCard  from: anotherSpaceship  withTarget: anotherSpaceship .
-	aGame playCard: aRedoCard  from: aSpaceship  withTarget: aSpaceship .
+	aGame play: aRepeatCard  from: anotherSpaceship  targeting: anotherSpaceship .
+	aGame play: aRedoCard  from: aSpaceship  targeting: aSpaceship .
 	
 	self assert: (aGame positionOf: aSpaceship ) equals: 12
 	
@@ -1451,8 +1451,8 @@ CardTest >> test130CancellationCardCanRemoveActiveAccelerationCards [
 		         wonAfter: 3.
 	aCard := AccelerationCard  new.
 	anotherCard := CancellationCard new.
-	aGame playCard: aCard from: aSpaceship withTarget: aSpaceship.
-	aGame playCard: anotherCard from: aSpaceship withTarget: aCard.
+	aGame play: aCard from: aSpaceship targeting: aSpaceship.
+	aGame play: anotherCard from: aSpaceship targeting: aCard.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (((aGame positionOf: aSpaceship) = 4) and: ((aGame positionOf: anotherSpaceship) = 5) )
