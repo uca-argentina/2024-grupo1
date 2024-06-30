@@ -39,7 +39,7 @@ CardTest >> test083SpeedCardWorksWithOnlyOneSpaceship [
 
 	| aGame aSpaceship aBoard aDie squares aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard with: SpeedCard)  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard with: SpeedCard)  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -67,7 +67,7 @@ CardTest >> test084SpeedCardWorksWithMultipleSpaceships [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: SpeedCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship   ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: SpeedCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship   ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -97,7 +97,7 @@ CardTest >> test085AccelerationCardWorksWithOneSpaceship [
 
 	| aGame aSpaceship aBoard aDie squares aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) .
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) .
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -126,16 +126,16 @@ CardTest >> test086AccelerationCardWorksForAllSpaceShips [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: SpeedCard
 					                    with: AccelerationCard))
 		                  with:
-		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  (SpaceshipLog randomCardsfor: anotherSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+		                  (SpaceshipLog randomCardsfor: yetAnotherSpaceship).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -168,7 +168,7 @@ CardTest >> test087MercenaryCardCanRecruitOneMercenaryThatHelpsInBattles [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -202,7 +202,7 @@ CardTest >> test088IfSpaceshipAndOneMercenaryLoseTheBattleBothLoseShields [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -237,7 +237,7 @@ CardTest >> test089ASpaceshipCanRecruitMultipleMercenariesThetHelpInBattle [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	fourthSpaceship := Spaceship launch: 'Four'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ) with: (SpaceshipData randomCardsfor: fourthSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ) with: (SpaceshipLog randomCardsfor: fourthSpaceship ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -274,18 +274,18 @@ CardTest >> test090IfSpaceshipAndMultipleMercenariesLoseTheBattleTheyAllLoseShie
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	fourthSpaceship := Spaceship launch: 'Four'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: MercenaryCard
 					                    with: MercenaryCard))
 		                  with:
-		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  (SpaceshipLog randomCardsfor: anotherSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship)
+		                  (SpaceshipLog randomCardsfor: yetAnotherSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: fourthSpaceship).
+		                  (SpaceshipLog randomCardsfor: fourthSpaceship).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -329,7 +329,7 @@ CardTest >> test091MultipleSpeedCardsCanBeActiveAtTheSameTime [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: SpeedCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: SpeedCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -368,7 +368,7 @@ CardTest >> test092MultipleAccelerationCardsCanBeActiveAtTheSameTime [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ) .
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard  with: AccelerationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ) .
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -406,7 +406,7 @@ CardTest >> test093MultipleSpaceshipsCannotHaveTheSameMercenary [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	fourthSpaceship := Spaceship launch: 'Four'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ) with: (SpaceshipData randomCardsfor: fourthSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ) with: (SpaceshipLog randomCardsfor: fourthSpaceship ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -445,7 +445,7 @@ CardTest >> test094ASpaceshipDoesNotBattleWithItsMercenary [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: MercenaryCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -474,7 +474,7 @@ CardTest >> test095CancellationCardCanRemoveActiveMercenaryCards [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard ) ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -505,7 +505,7 @@ CardTest >> test096CancellationCardCanRemoveActiveSpeedCards [
 
 	| aGame aSpaceship aBoard aDie squares aCard anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: CancellationCard )  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: CancellationCard )  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -533,7 +533,7 @@ CardTest >> test097CancellationCardCanNotBePlayedOnACardThatIsNotActive [
 
 	| aGame aSpaceship aBoard aDie squares aCard anotherCard spaceshipsData yetAnotherCard |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: CancellationCard   with: CancellationCard )).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: CancellationCard   with: CancellationCard )).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -568,7 +568,7 @@ CardTest >> test098PermanentCardCannotBePlayedOutOfTurn [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard ) ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -599,7 +599,7 @@ CardTest >> test099InstantaneousCardCanBePlayedOutOfTurn [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard ))  with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard )).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard ))  with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: CancellationCard  with: AccelerationCard )).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -629,7 +629,7 @@ CardTest >> test100CardsCannotBePlayedAfterGameIsOver [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard new with: AccelerationCard new)  ) with: (SpaceshipData randomCardsfor:  anotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard new with: AccelerationCard new)  ) with: (SpaceshipLog randomCardsfor:  anotherSpaceship ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -661,7 +661,7 @@ CardTest >> test101RedoCardCanCopyLastSpeedCardPlayedAndApplyItToADifferentTarge
 	| aGame aSpaceship aBoard aDie anotherSpaceship aCard anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
 	
 	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
@@ -691,7 +691,7 @@ CardTest >> test102RedoCardCanCopyAnotherRedoCard [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard anotherCard spaceshipsData yetAnotherCard |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: RedoCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: RedoCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -732,7 +732,7 @@ CardTest >> test103RedoCardCannotBePlayedFirst [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares  anotherCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -767,8 +767,8 @@ CardTest >> test104WhenRepeatCardIsPlayedAfterBlackholeEffectThenTargetSpaceship
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData randomCardsfor: aSpaceship )
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog randomCardsfor: aSpaceship )
+		                  with: (SpaceshipLog
 				                   for: anotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection
@@ -804,8 +804,8 @@ CardTest >> test105WhenRepeatCardIsPlayedAfterWormholeEffectThenTargetSpaceshipG
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData randomCardsfor: aSpaceship )
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog randomCardsfor: aSpaceship )
+		                  with: (SpaceshipLog
 				                   for: anotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection
@@ -841,8 +841,8 @@ CardTest >> test106WhenRepeatCardIsPlayedAfterHyperJumpThenTargetSpaceshipMovesS
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData randomCardsfor: aSpaceship)
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog randomCardsfor: aSpaceship)
+		                  with: (SpaceshipLog
 				                   for: anotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection
@@ -887,7 +887,7 @@ CardTest >> test107WhenRepeatCardIsPlayedAfterMoonWalkThenSpaceshipsGoBackTwice 
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship  ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship  ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship ).
 	aBoard := self createBoardOf: 20 distance: 20 withEffects: (OrderedCollection with: (MoonWalkEffect isIn: 6  moves: 2) ) wormholeBeginsAt: 18 andEndsAt: 19.
 
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 6).
@@ -913,13 +913,13 @@ CardTest >> test108WhenRepeatCardIsPlayedAfterHyperSpaceJumpEffectThenTargetSpac
 	anotherSpaceship := Spaceship launch: 'Two'.
 
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: RepeatCard
 					                    with: AccelerationCard))
-		                  with:  (SpaceshipData randomCardsfor: anotherSpaceship).
+		                  with:  (SpaceshipLog randomCardsfor: anotherSpaceship).
 
 	aBoard := self
 		          createBoardOf: 10
@@ -952,15 +952,15 @@ CardTest >> test109WhenRepeatCardIsPlayedAfterAtomicBombEffectThenAllShieldsGetD
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: RepeatCard
 					                    with: AccelerationCard))
-		                  with: (SpaceshipData randomCardsfor: anotherSpaceship )
+		                  with: (SpaceshipLog randomCardsfor: anotherSpaceship )
 		                  with:
-		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+		                  (SpaceshipLog randomCardsfor: yetAnotherSpaceship).
 	
 	aBoard := self createBoardOf: 10 distance: 5 withEffects: (OrderedCollection with: (AtomicBombEffect isIn: 4) ) wormholeBeginsAt: 8 andEndsAt: 	9.
 
@@ -986,7 +986,7 @@ CardTest >> test110RepeatCardDoesNothingIfLastSquareHadNoEffect [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard ) ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -1016,7 +1016,7 @@ CardTest >> test111IfNoSpaceshipHasPlayedYetRepeatCardHasNoEffect [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard with: AccelerationCard ) ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -1042,7 +1042,7 @@ CardTest >> test112SpaceshipDataCanBeCreatedWithTwoRandomCards [
 
 	|  aSpaceship aSpaceshipData  |
 	aSpaceship := Spaceship launch: 'One'.
-	aSpaceshipData:= SpaceshipData randomCardsfor: aSpaceship .
+	aSpaceshipData:= SpaceshipLog randomCardsfor: aSpaceship .
 	
 	self assert: (aSpaceshipData cards size) equals:2 .
 ]
@@ -1052,7 +1052,7 @@ CardTest >> test113SpaceshipDataIsCreatedWithRandomValidCards [
 
 	|  aSpaceship    aSpaceshipData cardTypes |
 	aSpaceship := Spaceship launch: 'One'.
-	aSpaceshipData:= SpaceshipData randomCardsfor: aSpaceship .
+	aSpaceshipData:= SpaceshipLog randomCardsfor: aSpaceship .
 	cardTypes := OrderedCollection
 		             with: AccelerationCard
 		             with: SpeedCard
@@ -1068,7 +1068,7 @@ CardTest >> test114ASpaceshipCannotPlayACardThatIsNotInItsHand [
 
 	| aGame aSpaceship aBoard aDie squares aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: AccelerationCard)  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: AccelerationCard)  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -1093,7 +1093,7 @@ CardTest >> test115IfASpaceshipPlaysACardItIsRemovedFromItsHand [
 
 	| aGame aSpaceship aBoard aDie squares aCard spaceshipsData anotherCard |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard with: AccelerationCard)  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard with: AccelerationCard)  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 15 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -1120,7 +1120,7 @@ CardTest >> test116MysteryCardEffectAddsACardToASpaceshipThatLandsInIt [
 
 	| aGame aSpaceship aBoard aDie squares spaceshipsData mysteryCardEffect |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship  ).
 	mysteryCardEffect :=Square with:( MysteryCardEffect isIn: 4).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -1148,7 +1148,7 @@ CardTest >> test117MysteryCardEffectAddsValidCardTypesToSpaceships [
 	| aGame aSpaceship aBoard aDie squares spaceshipsData mysteryCardEffect cardTypes |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	mysteryCardEffect := Square with: (MysteryCardEffect isIn: 4).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 9 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
@@ -1185,7 +1185,7 @@ CardTest >> test118MercenarySpaceshipDoesNotRecieveHelpFromItsAlly [
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship  ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship  ).
 	squares := ZeroBasedArray newEmpty.
 	0 to: 7 do: [ :i | squares add: (Square with: (NullEffect isIn: i)) ].
 	aBoard := Board
@@ -1217,7 +1217,7 @@ CardTest >> test119RepeatCardWorksWithMysteryCardEffect [
 	| aGame aSpaceship aBoard aDie anotherSpaceship squares aCard mysteryCardEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard ) ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard ) ).
 	mysteryCardEffect :=Square with:( MysteryCardEffect isIn: 4).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -1248,7 +1248,7 @@ CardTest >> test125SpaceshipCannotAppointItselfAsItsMercenary [
 	| aGame aSpaceship aBoard aDie aCard spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 
-	spaceshipsData := OrderedCollection with: (SpaceshipData
+	spaceshipsData := OrderedCollection with: (SpaceshipLog
 			                   for: aSpaceship
 			                   withDeck:
 			                   (OrderedCollection
@@ -1283,7 +1283,7 @@ CardTest >> test126WhenRedoCardCopiesMercenaryCardThenAlliedSpaceshipsDoNotBattl
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship ).
 	
 	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
@@ -1315,7 +1315,7 @@ CardTest >> test127WhenRedoCardCopiesAccelerationCardThenAllSpaceshipsIncreaseTh
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipLog for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipLog randomCardsfor: yetAnotherSpaceship ).
 	
 	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
@@ -1347,13 +1347,13 @@ CardTest >> test128WhenRedoCardCopiesCancellationCardThenThrowIncreaseIsCancelle
 	anotherSpaceship := Spaceship launch: 'Two'.
 
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: SpeedCard 
 					                    with: SpeedCard))
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: anotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection
@@ -1396,13 +1396,13 @@ CardTest >> test129WhenRedoCardCopiesRepeatCardThenEffectIsAppliedAgain [
 	anotherSpaceship := Spaceship launch: 'Two'.
 
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: aSpaceship
 				                   withDeck:
 				                   (OrderedCollection
 					                    with: RedoCard  
 					                    with: SpeedCard))
-		                  with: (SpaceshipData
+		                  with: (SpaceshipLog
 				                   for: anotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection
@@ -1440,7 +1440,7 @@ CardTest >> test130CancellationCardCanRemoveActiveAccelerationCards [
 	| aGame aSpaceship aBoard aDie  aCard anotherCard spaceshipsData anotherSpaceship |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: CancellationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: CancellationCard )  ) with: (SpaceshipLog randomCardsfor: anotherSpaceship ).
 	
 	aBoard := self createBoardOf: 16 distance: 5 withEffects: {  } wormholeBeginsAt: 13 andEndsAt: 14.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).

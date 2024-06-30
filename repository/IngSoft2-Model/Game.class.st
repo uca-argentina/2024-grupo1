@@ -53,12 +53,12 @@ Game >> battleIn: position [
 
 	| aSpaceship |
 	aSpaceship := self nextSpaceshipToPlay.
-	position = 0 ifFalse: [
+	
 		spaceships allButFirstDo: [ :spaceship |
 			((self positionOf: spaceship) = position and:
 				 (activeCards allSatisfy: [ :card |
 					  (card is: aSpaceship anAllyOf: spaceship) not ])) ifTrue: [
-				self processBattleBetween: aSpaceship and: spaceship ] ] ]
+				self processBattleBetween: aSpaceship and: spaceship ] ] 
 ]
 
 { #category : #action }
@@ -67,7 +67,7 @@ Game >> calculateFinalPositionFor: aSpaceship [
 	| diceResult squaresMovedByEffect newPosition originalPosition |
 	diceResult := self throwDice.
 	activeCards  do: [ :card |
-		diceResult := card playOn: aSpaceship withDiceThrow: diceResult ].
+		diceResult := card playOn: aSpaceship with: diceResult ].
 	originalPosition := self positionOf: aSpaceship.
 	newPosition := diceResult + originalPosition.
 	squaresMovedByEffect := board
@@ -236,11 +236,11 @@ Game >> nextTurn [
 { #category : #action }
 Game >> normalTurn [
 
-	| aSpaceship|
+	| aSpaceship position |
 	aSpaceship := self nextSpaceshipToPlay .
 	self calculateFinalPositionFor: aSpaceship.
-	self battleIn: (self positionOf: aSpaceship).
-
+	position := self positionOf: aSpaceship.
+	position = 0 ifFalse: [ self battleIn: position ]. 
 	self checkForWinner.
 ]
 

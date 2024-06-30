@@ -54,7 +54,7 @@ BoardTest >> test013IfSpaceshipLandsOnWormholeInSquareThreePlayerGetsMovedToSqua
 
 	| aSpaceship aLoadedDie aGame aBoard  someDice spaceshipsData |
 	aSpaceship := Spaceship launch: ''.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	aBoard := Board of: 6 wormholeBeginsAt: 4 andEndsAt: 5.
 	aLoadedDie := LoadedDie of: 4.
 	someDice := OrderedCollection with: aLoadedDie.
@@ -74,7 +74,7 @@ BoardTest >> test014IfSpaceshipLandsOnWormholeStartingPointEndsInEndpoint [
 
 	| aSpaceship aLoadedDie aGame aBoard someDice spaceshipsData |
 	aSpaceship := Spaceship launch: ''.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) .
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) .
 	aBoard := Board of: 10 wormholeBeginsAt: 4 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 4.
 	someDice := OrderedCollection with: aLoadedDie.
@@ -95,7 +95,7 @@ BoardTest >> test015IfSpaceshipLandsOnWormholeEndpointEndsInStartingPoint [
 
 	| aSpaceship aLoadedDie aGame aBoard someDice spaceshipsData |
 	aSpaceship := Spaceship launch: ''.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	aBoard := Board of: 10 wormholeBeginsAt: 3 andEndsAt: 7.
 	aLoadedDie := LoadedDie of: 7.
 	someDice := OrderedCollection with: aLoadedDie.
@@ -149,7 +149,7 @@ BoardTest >> test037WhenSpaceshipPassesFinalSquareThenGoesBackToBeginning [
 
 	| aGame aSpaceship aBoard aDie spaceshipsData |
 	aSpaceship := Spaceship launch: ''.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	aBoard := Board of: 7 wormholeBeginsAt: 1 andEndsAt: 2.
 	aDie := LoadedDie of: 10.
 	aGame := Game
@@ -167,7 +167,7 @@ BoardTest >> test038WhenSpaceshipMovesTenInBoardOfEightThenGoesToSquareThree [
 
 	| aGame aSpaceship aBoard aDie spaceshipsData |
 	aSpaceship := Spaceship launch: ''.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	aBoard := Board of: 8 wormholeBeginsAt: 3 andEndsAt: 4.
 	aDie := LoadedDie of: 10.
 	aGame := Game
@@ -185,7 +185,7 @@ BoardTest >> test055WhenLandingInABlackholeSpaceshipGoesBackFourSquares [
 
 	| aGame aSpaceship aBoard aDie squares blackholeEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	blackholeEffect :=Square with:( BlackholeEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 9 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -206,7 +206,7 @@ BoardTest >> test056IfSpaceshipLandsOnHyperSpaceJumpSquareThenAdvancesFourSquare
 
 	| aGame aSpaceship aBoard aDie squares hyperSpaceJumpEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	hyperSpaceJumpEffect :=Square with:( HyperSpaceJumpEffect isIn: 6).
 	
 	squares := ZeroBasedArray newEmpty .
@@ -229,7 +229,7 @@ BoardTest >> test057IfSpaceshipLandsOnHyperSpaceJumpSquareThenLosesAShield [
 
 	| aGame aSpaceship aBoard aDie squares hyperSpaceJumpEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	hyperSpaceJumpEffect := Square with: ( HyperSpaceJumpEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -252,7 +252,7 @@ BoardTest >> test058WhenSpaceshipLandsOnMoonWalkSquareThenOtherSpaceshipsGetSent
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares moonWalkEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	moonWalkEffect := Square with:( MoonWalkEffect isIn: 6 moves: 3).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -276,7 +276,7 @@ BoardTest >> test059WhenSpaceshipLandsOnMoonwalkSquareThenItDoesntMove [
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares moonWalkEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship) .
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship) .
 	moonWalkEffect := Square with: (MoonWalkEffect isIn: 6 moves: 3).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -299,7 +299,7 @@ BoardTest >> test060WhenSpaceshipLandsOnAtomicBombSquareThenGetsSentBackToBeginn
 
 	| aGame aSpaceship aDie aBoard atomicBombEffect squares spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	aDie := LoadedDie of: 6.
 	atomicBombEffect :=Square with: (AtomicBombEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
@@ -323,7 +323,7 @@ BoardTest >> test061WhenSpaceshipLandsOnAtomicBombEffectThenEveryoneGetsSentToSq
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares atomicBombEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	atomicBombEffect := Square with:( AtomicBombEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -349,7 +349,7 @@ BoardTest >> test062WhenSpaceshipLandsOnAtomicBombAllShieldsGetReducedByOne [
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares atomicBombEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	atomicBombEffect := Square with: (AtomicBombEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -375,7 +375,7 @@ BoardTest >> test063WhenSpaceshipLandsOnAtomicBombAllShieldsGoDownByOne [
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares atomicBombEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	atomicBombEffect := Square with: (AtomicBombEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -401,7 +401,7 @@ BoardTest >> test064WhenTwoSpaceshipOnAnEffectSquareThenTheEffectsHappensBeforeB
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares moonwalk spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	moonwalk :=Square with:( MoonWalkEffect isIn: 6 moves: 3).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -427,7 +427,7 @@ BoardTest >> test065WhenSpaceshipLandsOnSquareWithEffectAndGetsMovedToASquareWit
 	| aGame aSpaceship anotherSpaceship aBoard aDie squares blackholeEffect spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	blackholeEffect := Square with:( BlackholeEffect isIn: 6).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 10 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -452,7 +452,7 @@ BoardTest >> test068WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 	| aGame aSpaceship aBoard aDie squares hyperJumpEffect aParsecDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	aParsecDistance := ParsecDistance of: 1.
 	hyperJumpEffect := Square with: (HyperJumpEffect
 			                    isIn: 6
@@ -487,11 +487,11 @@ BoardTest >> test070HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData randomCardsfor: aSpaceship)
+		                  with: (SpaceshipLog randomCardsfor: aSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: anotherSpaceship)
+		                  (SpaceshipLog randomCardsfor: anotherSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
+		                  (SpaceshipLog randomCardsfor: yetAnotherSpaceship).
 	aParsecDistance := ParsecDistance of: -1.
 	anotherParsecDistance := ParsecDistance of: 2.
 
@@ -530,7 +530,7 @@ BoardTest >> test071WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFour
 	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 
 	aParsecDistance := ParsecDistance of: 1.
 
@@ -565,7 +565,7 @@ BoardTest >> test072WhenBoardHasMoreParsecsThanSquaresThenSpaceshipMovesTwoParse
 	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	aParsecDistance := ParsecDistance of: 2.
 
 	hyperJumpEffect := Square with: (HyperJumpEffect
@@ -599,7 +599,7 @@ BoardTest >> test073SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aParsecDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	aParsecDistance := ParsecDistance of: 3.
 
 	hyperJumpEffect := Square with: (HyperJumpEffect
@@ -632,7 +632,7 @@ BoardTest >> test074SpaceshipLosesALapIfItGetsSentBackPastTheFirstSquare [
 
 	| aGame aSpaceship aBoard aDie blackholeEffect squares spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	blackholeEffect :=Square with: (BlackholeEffect isIn: 2).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -655,7 +655,7 @@ BoardTest >> test075SpaceshipCantGoBackFurtherThanTheFirstSquareOnTheFirstLap [
 
 	| aGame aSpaceship aBoard aDie blackholeEffect squares spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 	blackholeEffect :=Square with:( BlackholeEffect isIn: 3).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -678,7 +678,7 @@ BoardTest >> test076IfSpaceshipCompletesALapAndGoesBackBeyondTheFirstSquareThenI
 
 	| aGame aSpaceship aBoard aDie spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship).
 
 	aBoard := self createBoardOf: 10 distance: 10 withEffects: { BlackholeEffect isIn: 2 } wormholeBeginsAt: 8 andEndsAt: 9.
 
@@ -699,7 +699,7 @@ BoardTest >> test077WhenSpaceshipGoesBackMultipleLapsWithMoonwalkEffectThenLoses
 	| aGame aSpaceship anotherSpaceship aBoard aDie moonwalkEffect squares spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	anotherSpaceship := Spaceship launch: 'Two'.
-	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) with: (SpaceshipData randomCardsfor: anotherSpaceship).
+	spaceshipsData:= OrderedCollection with: (SpaceshipLog randomCardsfor: aSpaceship) with: (SpaceshipLog randomCardsfor: anotherSpaceship).
 	moonwalkEffect :=Square with:( MoonWalkEffect isIn: 4 moves: 10).
 	squares := ZeroBasedArray newEmpty .
 	0 to: 4 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
@@ -723,7 +723,7 @@ BoardTest >> test081HyperJumpEffectCanJumpLightyears [
 	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aLightyearDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	aLightyearDistance := LightyearDistance of: 3.
 	hyperJumpEffect := Square with: (HyperJumpEffect
 			                    isIn: 4
@@ -755,7 +755,7 @@ BoardTest >> test082HyperJumpEffectStoresParsecAndLightYearArray [
 	| aGame aSpaceship aBoard aDie hyperJumpEffect squares aLightyearDistance aParsecDistance spaceshipsData |
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData := OrderedCollection with:
-		                  (SpaceshipData randomCardsfor: aSpaceship).
+		                  (SpaceshipLog randomCardsfor: aSpaceship).
 	aLightyearDistance := LightyearDistance of: 3.
 	aParsecDistance := ParsecDistance of: 4.
 	hyperJumpEffect := Square with: (HyperJumpEffect
@@ -792,10 +792,10 @@ BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareT
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData := OrderedCollection
-		                  with: (SpaceshipData randomCardsfor: aSpaceship)
+		                  with: (SpaceshipLog randomCardsfor: aSpaceship)
 		                  with:
-		                  (SpaceshipData randomCardsfor: anotherSpaceship)
-		                  with: (SpaceshipData
+		                  (SpaceshipLog randomCardsfor: anotherSpaceship)
+		                  with: (SpaceshipLog
 				                   for: yetAnotherSpaceship
 				                   withDeck:
 				                   (OrderedCollection

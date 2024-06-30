@@ -24,7 +24,7 @@ SpaceshipTest >> test027SpaceshipCreatedWithAnotherName [
 SpaceshipTest >> test120SpaceshipsShieldsCannotBeLessThanZero [
 
 	| aSpaceship |
-	aSpaceship :=SpaceshipData randomCardsfor: ( Spaceship launch: 'Death Star').
+	aSpaceship :=SpaceshipLog randomCardsfor: ( Spaceship launch: 'Death Star').
 	6 timesRepeat: [ aSpaceship decreaseShieldsByOne ].
 	self assert: aSpaceship shields  equals: 0
 ]

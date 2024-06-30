@@ -30,7 +30,7 @@ MercenaryCard >> mercenary [
 ]
 
 { #category : #playing }
-MercenaryCard >> playOn: aSpaceship withDiceThrow: aDiceThrow [
+MercenaryCard >> playOn: aSpaceship with: aDiceThrow [
 
 ^aDiceThrow
 ]
