@@ -261,6 +261,22 @@ BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareT
 ]
 
 { #category : #tests }
+BoardTest >> test131WhenBoardWithFiveSquaresAndFiveParsecsReturnsLengthInParsecsEqualsToFive [
+
+	| aBoard |
+	aBoard := self createBoardOf: 5 parsecs: 5 withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	self assert: aBoard lengthInParsecs  equals: 5.
+]
+
+{ #category : #tests }
+BoardTest >> test132BoardWithFiveParsecsEqualsFifteenLightYears [
+
+	| aBoard |
+	aBoard := self createBoardOf: 5 parsecs: 5 withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	self assert: aBoard lengthInLightYears  equals: 15.
+]
+
+{ #category : #tests }
 BoardTest >> test57IfSpaceshipLandsOnHyperSpaceJumpSquareThenLosesAShield [
 
 	| aGame aSpaceship aBoard aDie squares hyperSpaceJumpEffect spaceshipsData |

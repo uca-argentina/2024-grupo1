@@ -132,3 +132,8 @@ Board >> length [
 
 ^ boardOfSquares size.
 ]
+
+{ #category : #accessing }
+Board >> lengthInLightYears [
+	^ 15.
+]
