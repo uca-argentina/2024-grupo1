@@ -99,7 +99,7 @@ Board >> adjustBounds: aSquare [
 { #category : #converting }
 Board >> convertToSquares: aParsecDistance [
 
-^ aParsecDistance * self length // parsecs 
+^ aParsecDistance * self length // (parsecs inParsecs) 
 ]
 
 { #category : #accessing }

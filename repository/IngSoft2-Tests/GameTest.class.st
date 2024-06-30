@@ -5,14 +5,20 @@ Class {
 }
 
 { #category : #accessing }
-GameTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+GameTest >> createBoardOf: length distance: aDistance withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
 
 	| squares |
-	squares := ZeroBasedArray newEmpty .
-	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	
-	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
-	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+	squares := ZeroBasedArray newEmpty.
+	0 to: length - 1 do: [ :i |
+	squares add: (Square with: (NullEffect isIn: i)) ].
+
+	someEffects do: [ :effect |
+		squares at: effect position put: (Square with: effect) ].
+	^ Board
+		  with: squares
+		  parsecs: aDistance
+		  wormholeBeginsAt: startPoint
+		  andEndsAt: endPoint
 ]
 
 { #category : #tests }
@@ -78,7 +84,7 @@ GameTest >> test004SpaceshipChangedPositionByOneWhenMoved [
 	| aSpaceship aGame spaceshipsData aBoard|
 	aSpaceship := Spaceship launch: ''.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship) .
-	aBoard := self createBoardOf: 5 parsecs: 5 withEffects: {  }  wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: 5 withEffects: {  }  wormholeBeginsAt: 3 andEndsAt: 4.
 	aGame := Game
 		         playedBy: spaceshipsData
 		         on: aBoard 

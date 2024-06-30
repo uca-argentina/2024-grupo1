@@ -5,14 +5,20 @@ Class {
 }
 
 { #category : #'set up' }
-CardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+CardTest >> createBoardOf: length distance: aDistance withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
 
 	| squares |
-	squares := ZeroBasedArray newEmpty .
-	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	
-	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
-	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+	squares := ZeroBasedArray newEmpty.
+	0 to: length - 1 do: [ :i |
+	squares add: (Square with: (NullEffect isIn: i)) ].
+
+	someEffects do: [ :effect |
+		squares at: effect position put: (Square with: effect) ].
+	^ Board
+		  with: squares
+		  parsecs: aDistance
+		  wormholeBeginsAt: startPoint
+		  andEndsAt: endPoint
 ]
 
 { #category : #asserting }
@@ -657,7 +663,7 @@ CardTest >> test101RedoCardCanCopyLastSpeedCardPlayedAndApplyItToADifferentTarge
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: SpeedCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ).
 	
-	aBoard := self createBoardOf: 16 parsecs: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
+	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
 	aDie := LoadedDie arrayOf:
 		        (OrderedCollection with: 4 with: 5 with: 3).
@@ -771,7 +777,7 @@ CardTest >> test104WhenRepeatCardIsPlayedAfterBlackholeEffectThenTargetSpaceship
 
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 5
+		          distance: 5
 		          withEffects:
 		          (OrderedCollection with: (BlackholeEffect isIn: 4))
 		          wormholeBeginsAt: 8
@@ -807,7 +813,7 @@ CardTest >> test105WhenRepeatCardIsPlayedAfterWormholeEffectThenTargetSpaceshipG
 					                    with: AccelerationCard)).
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 5
+		          distance: 5
 		          withEffects: OrderedCollection new
 		          wormholeBeginsAt: 4
 		          andEndsAt: 8.
@@ -847,7 +853,7 @@ CardTest >> test106WhenRepeatCardIsPlayedAfterHyperJumpThenTargetSpaceshipMovesS
 
 	aBoard := self
 		          createBoardOf: 20
-		          parsecs: 5
+		          distance: (ParsecDistance of: 5)
 		          withEffects: (OrderedCollection with: (HyperJumpEffect
 					            isIn: 6
 					            movesDistance:
@@ -882,7 +888,7 @@ CardTest >> test107WhenRepeatCardIsPlayedAfterMoonWalkThenSpaceshipsGoBackTwice 
 	anotherSpaceship := Spaceship launch: 'Two'.
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: RepeatCard  with: AccelerationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship  ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
-	aBoard := self createBoardOf: 20 parsecs: 20 withEffects: (OrderedCollection with: (MoonWalkEffect isIn: 6  moves: 2) ) wormholeBeginsAt: 18 andEndsAt: 19.
+	aBoard := self createBoardOf: 20 distance: 20 withEffects: (OrderedCollection with: (MoonWalkEffect isIn: 6  moves: 2) ) wormholeBeginsAt: 18 andEndsAt: 19.
 
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 6).
 	aGame := Game
@@ -917,7 +923,7 @@ CardTest >> test108WhenRepeatCardIsPlayedAfterHyperSpaceJumpEffectThenTargetSpac
 
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 5
+		          distance: 5
 		          withEffects:
 		          (OrderedCollection with: (HyperSpaceJumpEffect isIn: 4))
 		          wormholeBeginsAt: 8
@@ -956,7 +962,7 @@ CardTest >> test109WhenRepeatCardIsPlayedAfterAtomicBombEffectThenAllShieldsGetD
 		                  with:
 		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
 	
-	aBoard := self createBoardOf: 10 parsecs: 5 withEffects: (OrderedCollection with: (AtomicBombEffect isIn: 4) ) wormholeBeginsAt: 8 andEndsAt: 	9.
+	aBoard := self createBoardOf: 10 distance: 5 withEffects: (OrderedCollection with: (AtomicBombEffect isIn: 4) ) wormholeBeginsAt: 8 andEndsAt: 	9.
 
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 4).
 	aGame := Game
@@ -1256,7 +1262,7 @@ CardTest >> test123GameSavesActiveMercenaryCards [
 		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 1
+		          distance: 1
 		          withEffects: OrderedCollection new
 		          wormholeBeginsAt: 8
 		          andEndsAt: 9.
@@ -1300,7 +1306,7 @@ CardTest >> test124GameSavesActiveMovementCards [
 		                  (SpaceshipData randomCardsfor: yetAnotherSpaceship).
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 1
+		          distance: 1
 		          withEffects: OrderedCollection new
 		          wormholeBeginsAt: 8
 		          andEndsAt: 9.
@@ -1338,7 +1344,7 @@ CardTest >> test125SpaceshipCannotAppointItselfAsItsMercenary [
 				                    with: AccelerationCard)).
 	aBoard := self
 		          createBoardOf: 10
-		          parsecs: 1
+		          distance: 1
 		          withEffects: OrderedCollection new
 		          wormholeBeginsAt: 8
 		          andEndsAt: 9.
@@ -1367,7 +1373,7 @@ CardTest >> test126WhenRedoCardCopiesMercenaryCardThenAlliedSpaceshipsDoNotBattl
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
 	
-	aBoard := self createBoardOf: 16 parsecs: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
+	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
 	aDie := LoadedDie arrayOf:
 		        (OrderedCollection with: 4 with: 5 with: 5).
@@ -1399,7 +1405,7 @@ CardTest >> test127WhenRedoCardCopiesAccelerationCardThenAllSpaceshipsIncreaseTh
 	yetAnotherSpaceship := Spaceship launch: 'Three'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: MercenaryCard  with: AccelerationCard )  ) with: (SpaceshipData for: anotherSpaceship withDeck: (OrderedCollection with: RedoCard  with: AccelerationCard ) ) with: (SpaceshipData randomCardsfor: yetAnotherSpaceship ).
 	
-	aBoard := self createBoardOf: 16 parsecs: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
+	aBoard := self createBoardOf: 16 distance: 5 withEffects: (OrderedCollection new) wormholeBeginsAt: 13 andEndsAt: 14.
 
 	aDie := LoadedDie arrayOf:
 		        (OrderedCollection with: 1 with: 4 with: 7).
@@ -1444,7 +1450,7 @@ CardTest >> test128WhenRedoCardCopiesCancellationCardThenThrowIncreaseIsCancelle
 
 	aBoard := self
 		          createBoardOf: 16
-		          parsecs: 5
+		          distance: 5
 		          withEffects: OrderedCollection new
 		          wormholeBeginsAt: 13
 		          andEndsAt: 14.
@@ -1493,7 +1499,7 @@ CardTest >> test129WhenRedoCardCopiesRepeatCardThenEffectIsAppliedAgain [
 
 	aBoard := self
 		          createBoardOf: 16
-		          parsecs: 5
+		          distance: 5
 		          withEffects: (OrderedCollection with: (HyperSpaceJumpEffect isIn: 4))
 		          wormholeBeginsAt: 13
 		          andEndsAt: 14.
@@ -1524,7 +1530,7 @@ CardTest >> test130CancellationCardCanRemoveActiveAccelerationCards [
 	anotherSpaceship := Spaceship launch: 'Two'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData for: aSpaceship  withDeck: (OrderedCollection with: AccelerationCard with: CancellationCard )  ) with: (SpaceshipData randomCardsfor: anotherSpaceship ).
 	
-	aBoard := self createBoardOf: 16 parsecs: 5 withEffects: {  } wormholeBeginsAt: 13 andEndsAt: 14.
+	aBoard := self createBoardOf: 16 distance: 5 withEffects: {  } wormholeBeginsAt: 13 andEndsAt: 14.
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 4 with: 5).
 	aGame := Game
 		         playedBy: spaceshipsData

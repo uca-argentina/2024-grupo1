@@ -5,14 +5,20 @@ Class {
 }
 
 { #category : #accessing }
-BoardTest >> createBoardOf: length parsecs: someParsecs withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
+BoardTest >> createBoardOf: length distance: aDistance withEffects: someEffects wormholeBeginsAt: startPoint andEndsAt: endPoint [
 
 	| squares |
-	squares := ZeroBasedArray newEmpty .
-	0 to: length -1 do: [: i| squares add: (Square with: (NullEffect isIn: i)) ].
-	
-	someEffects do: [ :effect | squares at: (effect position) put: (Square with:effect)  ].
-	^Board with: squares  parsecs: someParsecs  wormholeBeginsAt: startPoint  andEndsAt: endPoint .
+	squares := ZeroBasedArray newEmpty.
+	0 to: length - 1 do: [ :i |
+	squares add: (Square with: (NullEffect isIn: i)) ].
+
+	someEffects do: [ :effect |
+		squares at: effect position put: (Square with: effect) ].
+	^ Board
+		  with: squares
+		  parsecs: aDistance
+		  wormholeBeginsAt: startPoint
+		  andEndsAt: endPoint
 ]
 
 { #category : #tests }
@@ -458,7 +464,7 @@ BoardTest >> test068WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAhead [
 	squares at: 6 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 11
+		          parsecs: (ParsecDistance of: 11)
 		          wormholeBeginsAt: 0
 		          andEndsAt: 1.
 
@@ -500,7 +506,7 @@ BoardTest >> test070HyperJumpStoresAnArrayOfParsecsAndLoopsThroughThem [
 	squares at: 6 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 11
+		          parsecs: (ParsecDistance of: 11)
 		          wormholeBeginsAt: 0
 		          andEndsAt: 1.
 
@@ -537,7 +543,7 @@ BoardTest >> test071WhenSpaceshipLandsOnHyperJumpSquareGetsMovedOneParsecAndFour
 	squares at: 6 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 5
+		          parsecs: (ParsecDistance of: 5)
 		          wormholeBeginsAt: 0
 		          andEndsAt: 1.
 
@@ -571,7 +577,7 @@ BoardTest >> test072WhenBoardHasMoreParsecsThanSquaresThenSpaceshipMovesTwoParse
 	squares at: 6 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 40
+		          parsecs: (ParsecDistance of: 40)
 		          wormholeBeginsAt: 0
 		          andEndsAt: 1.
 
@@ -605,7 +611,7 @@ BoardTest >> test073SpaceshipOnlyMovesWhenParsecsToSquaresRatioIsAnEvenNumber [
 	squares at: 6 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 40
+		          parsecs: (ParsecDistance of: 40)
 		          wormholeBeginsAt: 0
 		          andEndsAt: 1.
 
@@ -674,7 +680,7 @@ BoardTest >> test076IfSpaceshipCompletesALapAndGoesBackBeyondTheFirstSquareThenI
 	aSpaceship := Spaceship launch: 'One'.
 	spaceshipsData:= OrderedCollection with: (SpaceshipData randomCardsfor: aSpaceship).
 
-	aBoard := self createBoardOf: 10 parsecs: 10 withEffects: { BlackholeEffect isIn: 2 } wormholeBeginsAt: 8 andEndsAt: 9.
+	aBoard := self createBoardOf: 10 distance: 10 withEffects: { BlackholeEffect isIn: 2 } wormholeBeginsAt: 8 andEndsAt: 9.
 
 	aDie := LoadedDie arrayOf: (OrderedCollection with: 5 with: 2).
 	aGame := Game
@@ -728,7 +734,7 @@ BoardTest >> test081HyperJumpEffectCanJumpLightyears [
 	squares at: 4 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 5
+		          parsecs: (ParsecDistance of: 5)
 		          wormholeBeginsAt: 1
 		          andEndsAt: 2.
 
@@ -763,7 +769,7 @@ BoardTest >> test082HyperJumpEffectStoresParsecAndLightYearArray [
 	squares at: 4 put: hyperJumpEffect.
 	aBoard := Board
 		          with: squares
-		          parsecs: 5
+		          parsecs: (ParsecDistance of: 5)
 		          wormholeBeginsAt: 1
 		          andEndsAt: 2.
 
@@ -797,7 +803,7 @@ BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareT
 					                    with: RedoCard)).
 	aBoard := self
 		          createBoardOf: 6
-		          parsecs: 6
+		          distance: (ParsecDistance of: 6)
 		          withEffects: { (HyperJumpEffect
 				           isIn: 3
 				           movesDistance:
@@ -824,7 +830,7 @@ BoardTest >> test121WhenSpaceshipUsesRepeatCardAndMovesFurtherThanTheLastSquareT
 BoardTest >> test131WhenBoardWithFiveSquaresAndFiveParsecsReturnsLengthInParsecsEqualsToFive [
 
 	| aBoard |
-	aBoard := self createBoardOf: 5 parsecs: (ParsecDistance of: 5) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: (ParsecDistance of: 5) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInParsecs  equals: 5.
 ]
 
@@ -832,7 +838,7 @@ BoardTest >> test131WhenBoardWithFiveSquaresAndFiveParsecsReturnsLengthInParsecs
 BoardTest >> test132BoardWithFiveParsecsEqualsFifteenLightYears [
 
 	| aBoard |
-	aBoard := self createBoardOf: 5 parsecs: (ParsecDistance of: 5) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: (ParsecDistance of: 5) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInLightYears  equals: 15.
 ]
 
@@ -840,7 +846,7 @@ BoardTest >> test132BoardWithFiveParsecsEqualsFifteenLightYears [
 BoardTest >> test133LengthInLightYearsEqualsThreeTimesLengthInParsecs [
 
 	| aBoard |
-	aBoard := self createBoardOf: 5 parsecs: (ParsecDistance of: 6) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: (ParsecDistance of: 6) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInLightYears  equals: 18.
 ]
 
@@ -848,7 +854,7 @@ BoardTest >> test133LengthInLightYearsEqualsThreeTimesLengthInParsecs [
 BoardTest >> test134BoardCanExpressItsLengthInParsecs [
 
 	| aBoard |
-	aBoard := self createBoardOf: 5 parsecs: (ParsecDistance of: 6) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: (ParsecDistance of: 6) withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInParsecs equals: 6.
 ]
 
@@ -857,7 +863,7 @@ BoardTest >> test135BoardCreatedWithAParsecDistance [
 
 	| aBoard aParsecDistance |
 	aParsecDistance := ParsecDistance of: 6.
-	aBoard := self createBoardOf: 5 parsecs: aParsecDistance withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: aParsecDistance withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInParsecs equals: 6.
 	
 ]
@@ -867,7 +873,7 @@ BoardTest >> test136BoardCreatedWithLightYearsDistance [
 
 	| aBoard aLightYearsDistance |
 	aLightYearsDistance := LightyearDistance of: 6.
-	aBoard := self createBoardOf: 5 parsecs: aLightYearsDistance withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
+	aBoard := self createBoardOf: 5 distance: aLightYearsDistance withEffects: OrderedCollection new wormholeBeginsAt: 3 andEndsAt: 4.
 	self assert: aBoard lengthInLightYears equals: 6.
 	
 ]
