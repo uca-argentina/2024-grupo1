@@ -135,5 +135,10 @@ Board >> length [
 
 { #category : #accessing }
 Board >> lengthInLightYears [
-	^ 15.
+	^ parsecs * 3.
+]
+
+{ #category : #accessing }
+Board >> lengthInParsecs [
+	^ parsecs.
 ]
